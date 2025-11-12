@@ -278,55 +278,6 @@ export const experience = [
     image: "/data_images/community_connect.jpeg",
     featured: true,
   },
-
-  // {
-  //   id: 2,
-  //   title: "Flutter Developer",
-  //   company: "Mobile Apps Co.",
-  //   period: "2021 - 2022",
-  //   location: "New York, NY",
-  //   description: "Developed cross-platform mobile applications using Flutter framework. Collaborated with design and backend teams to deliver high-quality products.",
-  //   achievements: [
-  //     "Developed 3 successful mobile apps with 100K+ downloads",
-  //     "Improved app performance by 35% through code optimization",
-  //     "Implemented CI/CD pipeline reducing deployment time by 50%"
-  //   ],
-  //   technologies: ["Flutter", "Dart", "Firebase", "Git", "REST APIs"],
-  //   image: "/data_images/Be10x.jpg",
-  //   featured: true
-  // },
-  // {
-  //   id: 3,
-  //   title: "Python Developer",
-  //   company: "Data Analytics Corp.",
-  //   period: "2020 - 2021",
-  //   location: "San Francisco, CA",
-  //   description: "Built data processing pipelines and machine learning models for business intelligence. Worked with large datasets and implemented predictive analytics.",
-  //   achievements: [
-  //     "Developed ML models with 85% accuracy for customer behavior prediction",
-  //     "Automated data processing reducing manual work by 70%",
-  //     "Created interactive dashboards for real-time data visualization"
-  //   ],
-  //   technologies: ["Python", "Pandas", "Scikit-learn", "TensorFlow", "PostgreSQL"],
-  //   image: "/data/data_images/experience3.jpg",
-  //   featured: false
-  // },
-  // {
-  //   id: 4,
-  //   title: "Frontend Developer",
-  //   company: "Web Solutions Ltd.",
-  //   period: "2019 - 2020",
-  //   location: "London, UK",
-  //   description: "Created responsive web applications and user interfaces. Collaborated with UX/UI designers to implement pixel-perfect designs.",
-  //   achievements: [
-  //     "Built 10+ responsive websites with 99% accessibility score",
-  //     "Improved website performance by 45% through optimization",
-  //     "Implemented modern CSS frameworks and design systems"
-  //   ],
-  //   technologies: ["React", "JavaScript", "HTML/CSS", "Git", "REST APIs"],
-  //   image: "/data_images/Be10x.jpg",
-  //   featured: false
-  // }
 ];
 
 export const education = [
