@@ -362,7 +362,7 @@ const Contact = () => {
             {/* Close Button */}
             <button
               onClick={() => setSubmitStatus(null)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors duration-200 hover:rotate-90 transform transition-transform"
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors duration-200 hover:rotate-90 transform"
             >
               <X className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
