@@ -46,7 +46,7 @@ type LeetCodeData = {
 export default function CodingProfile() {
   const [data, setData] = useState<GithubData | null>(null);
   const [leetcodeData, setLeetcodeData] = useState<LeetCodeData | null>(null);
-  const [personalData, setPersonalData] = useState<PersonalInfo | null>(null);
+  const [, setPersonalData] = useState<PersonalInfo | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 

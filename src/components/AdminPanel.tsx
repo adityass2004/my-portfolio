@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Save, LogOut, Edit2, Trash2, Copy, Plus, X, Check, AlertCircle, Loader } from 'lucide-react';
+import { Save, LogOut, Edit2, Trash2, Copy, Plus,  Check, AlertCircle, Loader } from 'lucide-react';
 
 interface PortfolioData {
   personalInfo: any;
@@ -177,13 +177,7 @@ const AdminPanel: React.FC = () => {
 
   const ADMIN_PASSWORD = '1';
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      loadData();
-    }
-  }, [isAuthenticated]);
-
-  const loadData = async () => {
+  const loadData = React.useCallback(async () => {
     setLoading(true);
     try {
       const portfolioData = await apiService.getPortfolio();
@@ -193,7 +187,13 @@ const AdminPanel: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadData();
+    }
+  }, [isAuthenticated, loadData]);
 
   const showNotification = (type: 'success' | 'error', message: string) => {
     setNotification({ type, message });

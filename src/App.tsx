@@ -17,7 +17,7 @@ import AllProjects from './components/AllProjects';
 import Certificates from './components/Certificates';
 import AllExperience from './components/AllExperience';
 import AllCertificates from './components/AllCertificates';
-import PortfolioEditor from './components/PortfolioEditor';
+// import PortfolioEditor from './components/PortfolioEditor';
 import AdminPanel from './components/AdminPanel';
 
 import GithubRepos from './components/GithubRepos';

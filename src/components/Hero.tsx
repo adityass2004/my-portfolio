@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Github, Linkedin, Mail, Download, Code, Sparkles, LucideIcon } from 'lucide-react';
 import { getPersonalInfo, getContactInfo, PersonalInfo, ContactInfo } from '../data/portfolioService';
 

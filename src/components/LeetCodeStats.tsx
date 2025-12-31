@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import {
   Target,
   TrendingUp,
-  Calendar,
+  // Calendar,
   Trophy,
   Star,
   Code,
