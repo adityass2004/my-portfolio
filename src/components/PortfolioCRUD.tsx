@@ -23,10 +23,13 @@ export default function PortfolioCRUD() {
   }
 
   const handlePersonalInfoChange = (field: keyof PortfolioData['personalInfo'], value: string | string[]) => {
-    setFormData(prev => ({
-      ...prev,
-      personalInfo: { ...prev.personalInfo, [field]: value }
-    }));
+    setFormData(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        personalInfo: { ...prev.personalInfo, [field]: value }
+      };
+    });
   };
 
   const addProject = () => {
@@ -41,26 +44,35 @@ export default function PortfolioCRUD() {
       category: '',
       featured: false
     };
-    setFormData(prev => ({
-      ...prev,
-      projects: [...prev.projects, newProject]
-    }));
+    setFormData(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        projects: [...prev.projects, newProject]
+      };
+    });
   };
 
   const updateProject = (id: number, field: string, value: any) => {
-    setFormData(prev => ({
-      ...prev,
-      projects: prev.projects.map(p => 
-        p.id === id ? { ...p, [field]: value } : p
-      )
-    }));
+    setFormData(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        projects: prev.projects.map(p => 
+          p.id === id ? { ...p, [field]: value } : p
+        )
+      };
+    });
   };
 
   const deleteProject = (id: number) => {
-    setFormData(prev => ({
-      ...prev,
-      projects: prev.projects.filter(p => p.id !== id)
-    }));
+    setFormData(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        projects: prev.projects.filter(p => p.id !== id)
+      };
+    });
   };
 
   const exportData = () => {
