@@ -1,5 +1,4 @@
-// LeetCode API utility for Create React App
-// Note: This file is for reference only - actual API is in setupProxy.js
+import { NextRequest, NextResponse } from 'next/server';
 
 interface LeetCodeUser {
   username: string;
@@ -20,9 +19,44 @@ interface LeetCodeUser {
   submissionCalendar: string;
 }
 
-export async function fetchLeetCodeData(username: string) {
+function processSubmissionCalendar(calendarData: string) {
+  try {
+    const data = JSON.parse(calendarData);
+    const monthlyStats: { [key: string]: number } = {};
+
+    Object.entries(data).forEach(([timestamp, count]) => {
+      const date = new Date(parseInt(timestamp) * 1000);
+      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+
+      if (!monthlyStats[monthKey]) {
+        monthlyStats[monthKey] = 0;
+      }
+      monthlyStats[monthKey] += count as number;
+    });
+
+    return Object.entries(monthlyStats)
+      .map(([month, submissions]) => ({
+        month,
+        submissions,
+        monthName: new Date(month + '-01').toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+        }),
+      }))
+      .sort((a, b) => a.month.localeCompare(b.month))
+      .slice(-12);
+  } catch (error) {
+    console.error('Error processing submission calendar:', error);
+    return [];
+  }
+}
+
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const username = searchParams.get('username');
+
   if (!username) {
-    throw new Error('Username is required');
+    return NextResponse.json({ error: 'Username is required' }, { status: 400 });
   }
 
   try {
@@ -64,18 +98,24 @@ export async function fetchLeetCodeData(username: string) {
     });
 
     if (!response.ok) {
-      throw new Error(`LeetCode API error: ${response.status}`);
+      return NextResponse.json(
+        { error: `LeetCode API error: ${response.status}` },
+        { status: response.status }
+      );
     }
 
     const data = await response.json();
 
     if (data.errors) {
-      throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
+      return NextResponse.json(
+        { error: 'GraphQL errors', details: data.errors },
+        { status: 502 }
+      );
     }
 
     const user: LeetCodeUser = data?.data?.matchedUser;
     if (!user) {
-      throw new Error('User not found');
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // Process submission stats
@@ -84,42 +124,9 @@ export async function fetchLeetCodeData(username: string) {
       statsMap[stat.difficulty.toLowerCase()] = stat;
     });
 
-    // Process submission calendar for monthly data
-    const processSubmissionCalendar = (calendarData: string) => {
-      try {
-        const data = JSON.parse(calendarData);
-        const monthlyStats: { [key: string]: number } = {};
-
-        Object.entries(data).forEach(([timestamp, count]) => {
-          const date = new Date(parseInt(timestamp) * 1000);
-          const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-
-          if (!monthlyStats[monthKey]) {
-            monthlyStats[monthKey] = 0;
-          }
-          monthlyStats[monthKey] += count as number;
-        });
-
-        return Object.entries(monthlyStats)
-          .map(([month, submissions]) => ({
-            month,
-            submissions,
-            monthName: new Date(month + '-01').toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'short',
-            }),
-          }))
-          .sort((a, b) => a.month.localeCompare(b.month))
-          .slice(-12);
-      } catch (error) {
-        console.error('Error processing submission calendar:', error);
-        return [];
-      }
-    };
-
     const monthlyData = processSubmissionCalendar(user.submissionCalendar);
 
-    return {
+    return NextResponse.json({
       name: user.profile.realName,
       avatar: user.profile.userAvatar,
       country: user.profile.countryName,
@@ -134,9 +141,12 @@ export async function fetchLeetCodeData(username: string) {
       submissions: statsMap.all?.submissions ?? 0,
       profileUrl: `https://leetcode.com/${user.username}`,
       monthlySubmissions: monthlyData,
-    };
+    });
   } catch (error) {
     console.error('LeetCode API error:', error);
-    throw error;
+    return NextResponse.json(
+      { error: 'Failed to fetch LeetCode data' },
+      { status: 500 }
+    );
   }
 }

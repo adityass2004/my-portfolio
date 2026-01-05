@@ -1,9 +1,11 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Calendar, MapPin, Building, Briefcase, Star, Target, Code, Server, Database, Cloud, Settings, Brain, Globe, LucideIcon } from 'lucide-react';
 import { getExperience, type Experience as ExperienceType } from '../data/portfolioService';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 interface TechIcon {
   icon: LucideIcon;
@@ -19,7 +21,7 @@ const Experience: React.FC = () => {
     threshold: 0.1,
   });
   const [modalImage, setModalImage] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     getExperience().then(data => {
@@ -228,7 +230,7 @@ const Experience: React.FC = () => {
               <div className="flex justify-center mt-8">
                 <button
                   className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
-                  onClick={() => navigate('/all-experience')}
+                  onClick={() => router.push('/all-experience')}
                 >
                   See All Experience
                 </button>

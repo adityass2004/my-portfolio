@@ -1,9 +1,11 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { ExternalLink, Github, FolderOpen, Star, Globe, Smartphone, Brain, Code, Server, Database, Cloud, Settings, LucideIcon } from 'lucide-react';
 import { getProjects, Project } from '../data/portfolioService';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 interface TechIcon {
   icon: LucideIcon;
@@ -18,7 +20,7 @@ const Projects: React.FC = () => {
     triggerOnce: true,
     threshold: 0.1,
   });
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     getProjects().then(data => {
@@ -240,7 +242,7 @@ const Projects: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-6 sm:px-8 py-3 sm:py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 w-full sm:w-auto flex items-center justify-center"
-              onClick={() => navigate('/all-projects')}
+              onClick={() => router.push('/all-projects')}
             >
               <FolderOpen className="w-4 h-4 mr-2" />
               View All Projects

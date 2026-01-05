@@ -1,6 +1,8 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import {
   Home,
   FolderOpen,
@@ -99,7 +101,7 @@ const Dashboard: React.FC = () => {
   const [leetcodeData, setLeetcodeData] = useState<LeetCodeData | null>(null);
   const [apiLoading, setApiLoading] = useState(true);
   const [apiError, setApiError] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     loadPortfolioData().then(data => {
@@ -246,7 +248,7 @@ const Dashboard: React.FC = () => {
   const scrollToSection = (href: string) => {
     if (href.startsWith('/')) {
       // It's a route, navigate to it
-      navigate(href);
+      router.push(href);
     } else {
       // It's an anchor, scroll to it
       const element = document.querySelector(href);

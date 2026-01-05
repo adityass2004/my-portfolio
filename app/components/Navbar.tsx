@@ -1,6 +1,8 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import Link from 'next/link';
 import { Menu, X, Download, Github, Linkedin, ExternalLink } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import { getPersonalInfo, PersonalInfo } from '../data/portfolioService';
@@ -14,7 +16,6 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     getPersonalInfo().then(setPersonalInfo).catch(console.error);
@@ -44,8 +45,8 @@ const Navbar: React.FC = () => {
 
   const scrollToSection = (href: string) => {
     if (href.startsWith('/')) {
-      // It's a route, navigate to it
-      navigate(href);
+      // It's a route, will be handled by Link component
+      return;
     } else {
       // It's an anchor, scroll to it
       const element = document.querySelector(href);
@@ -84,15 +85,27 @@ const Navbar: React.FC = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
             {navItems.map((item) => (
-              <motion.button
-                key={item.name}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => scrollToSection(item.href)}
-                className="nav-link text-secondary hover:text-primary font-medium text-sm lg:text-base"
-              >
-                {item.name}
-              </motion.button>
+              item.href.startsWith('/') ? (
+                <Link key={item.name} href={item.href}>
+                  <motion.span
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="nav-link text-secondary hover:text-primary font-medium text-sm lg:text-base cursor-pointer"
+                  >
+                    {item.name}
+                  </motion.span>
+                </Link>
+              ) : (
+                <motion.button
+                  key={item.name}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => scrollToSection(item.href)}
+                  className="nav-link text-secondary hover:text-primary font-medium text-sm lg:text-base"
+                >
+                  {item.name}
+                </motion.button>
+              )
             ))}
             
             {/* Tech Stack Icons */}
@@ -171,14 +184,26 @@ const Navbar: React.FC = () => {
             >
               <div className="flex flex-col space-y-4 bg-card border border-card rounded-lg p-4">
                 {navItems.map((item) => (
-                  <motion.button
-                    key={item.name}
-                    whileHover={{ x: 10 }}
-                    onClick={() => scrollToSection(item.href)}
-                    className="text-secondary hover:text-primary font-medium text-left py-2 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-700 transition-colors duration-300"
-                  >
-                    {item.name}
-                  </motion.button>
+                  item.href.startsWith('/') ? (
+                    <Link key={item.name} href={item.href}>
+                      <motion.span
+                        whileHover={{ x: 10 }}
+                        onClick={() => setIsOpen(false)}
+                        className="text-secondary hover:text-primary font-medium text-left py-2 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-700 transition-colors duration-300 block cursor-pointer"
+                      >
+                        {item.name}
+                      </motion.span>
+                    </Link>
+                  ) : (
+                    <motion.button
+                      key={item.name}
+                      whileHover={{ x: 10 }}
+                      onClick={() => scrollToSection(item.href)}
+                      className="text-secondary hover:text-primary font-medium text-left py-2 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-700 transition-colors duration-300"
+                    >
+                      {item.name}
+                    </motion.button>
+                  )
                 ))}
                 
                 {/* Theme Toggle in Mobile Menu */}

@@ -1,5 +1,4 @@
-// GitHub API utility for Create React App
-// Note: This file is for reference only - actual API is in setupProxy.js
+import { NextRequest, NextResponse } from 'next/server';
 
 interface GitHubUser {
   name: string;
@@ -20,27 +19,12 @@ interface GitHubRepo {
   stargazers_count: number;
 }
 
-// Interface matching CodingProfile component expectations
-export interface GithubData {
-  name: string;
-  username: string;
-  avatar: string;
-  bio: string;
-  location: string;
-  followers: number;
-  following: number;
-  publicRepos: number;
-  stars: number;
-  profileUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  topLanguages: string[];
-  contributions: Array<{ date: string; count: number; level: number }>;
-}
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const username = searchParams.get('username');
 
-export async function fetchGitHubData(username: string): Promise<GithubData> {
   if (!username) {
-    throw new Error('Username is required');
+    return NextResponse.json({ error: 'Username is required' }, { status: 400 });
   }
 
   try {
@@ -52,7 +36,10 @@ export async function fetchGitHubData(username: string): Promise<GithubData> {
     });
 
     if (!userResponse.ok) {
-      throw new Error(`GitHub API error: ${userResponse.status}`);
+      return NextResponse.json(
+        { error: `GitHub API error: ${userResponse.status}` },
+        { status: userResponse.status }
+      );
     }
 
     const userData: GitHubUser = await userResponse.json();
@@ -86,7 +73,7 @@ export async function fetchGitHubData(username: string): Promise<GithubData> {
       .slice(0, 3)
       .map(([language]) => language);
 
-    // Try to fetch contributions (optional, may fail due to CORS)
+    // Try to fetch contributions
     let contributions: Array<{ date: string; count: number; level: number }> = [];
     try {
       const contribResponse = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`);
@@ -98,8 +85,7 @@ export async function fetchGitHubData(username: string): Promise<GithubData> {
       console.warn('Failed to fetch contributions:', error);
     }
 
-    // Return data matching CodingProfile interface
-    return {
+    return NextResponse.json({
       name: userData.name,
       username: userData.login,
       avatar: userData.avatar_url,
@@ -114,9 +100,12 @@ export async function fetchGitHubData(username: string): Promise<GithubData> {
       updatedAt: userData.updated_at,
       topLanguages,
       contributions,
-    };
+    });
   } catch (error) {
     console.error('GitHub API error:', error);
-    throw error;
+    return NextResponse.json(
+      { error: 'Failed to fetch GitHub data' },
+      { status: 500 }
+    );
   }
 }

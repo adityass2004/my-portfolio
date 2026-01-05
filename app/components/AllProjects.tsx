@@ -1,13 +1,15 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { FolderOpen, Star, ExternalLink, Github } from 'lucide-react';
 import { getProjects, Project } from '../data/portfolioService';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 const AllProjects: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalImage, setModalImage] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     getProjects().then(data => {
@@ -89,7 +91,7 @@ const AllProjects: React.FC = () => {
         <div className="flex justify-center mt-10">
           <button
             className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
-            onClick={() => navigate('/')}
+            onClick={() => router.push('/')}
           >
             Back to Home
           </button>
