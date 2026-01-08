@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Award } from 'lucide-react';
-import { certifications } from '../data/portfolioData';
+import { getCertifications, Certification } from '../data/portfolioService';
 import { useNavigate } from 'react-router-dom';
 
-const AllCertificates = () => {
-  const [modalImage, setModalImage] = React.useState(null);
+const AllCertificates: React.FC = () => {
+  const [modalImage, setModalImage] = useState<string | null>(null);
+  const [certifications, setCertifications] = useState<Certification[]>([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getCertifications().then(data => {
+      setCertifications(data);
+      setLoading(false);
+    }).catch(error => {
+      console.error('Failed to load certifications:', error);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <section className="mobile-padding section-bg min-h-screen">
@@ -20,7 +36,7 @@ const AllCertificates = () => {
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {certifications.map(cert => (
+          {certifications.map((cert) => (
             <div key={cert.id} className="bg-card border border-card rounded-xl p-4 flex flex-col items-center">
               <div className="w-full sm:w-64 h-32 sm:h-40 mb-3 rounded-lg overflow-hidden cursor-pointer bg-gradient-to-br from-primary-500/10 to-secondary-500/10 flex items-center justify-center" onClick={() => setModalImage(cert.image)}>
                 <img src={cert.image} alt={cert.name} className="w-full h-full object-cover rounded-lg" />
@@ -54,4 +70,4 @@ const AllCertificates = () => {
   );
 };
 
-export default AllCertificates; 
+export default AllCertificates;

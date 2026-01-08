@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Award } from 'lucide-react';
-import { certifications } from '../data/portfolioData';
+import { getCertifications, Certification } from '../data/portfolioService';
 import { useNavigate } from 'react-router-dom';
 
-const Certificates = () => {
-  const [modalImage, setModalImage] = React.useState(null);
+const Certificates: React.FC = () => {
+  const [modalImage, setModalImage] = useState<string | null>(null);
+  const [certifications, setCertifications] = useState<Certification[]>([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getCertifications().then(data => {
+      setCertifications(data);
+      setLoading(false);
+    }).catch(error => {
+      console.error('Failed to load certifications:', error);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   // Sort featured certificates by id descending (most recent first)
   const featuredCertificates = certifications.filter(c => c.featured).sort((a, b) => b.id - a.id).slice(0, 2);
 
@@ -22,7 +38,7 @@ const Certificates = () => {
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {featuredCertificates.map(cert => (
+          {featuredCertificates.map((cert) => (
             <div key={cert.id} className="bg-card border border-card rounded-xl p-4 flex flex-col items-center">
               <div className="w-full sm:w-64 h-32 sm:h-40 mb-3 rounded-lg overflow-hidden cursor-pointer bg-gradient-to-br from-primary-500/10 to-secondary-500/10 flex items-center justify-center" onClick={() => setModalImage(cert.image)}>
                 <img src={cert.image} alt={cert.name} className="w-full h-full object-cover rounded-lg" />
@@ -57,4 +73,4 @@ const Certificates = () => {
   );
 };
 
-export default Certificates; 
+export default Certificates;

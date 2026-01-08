@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FolderOpen, Star, ExternalLink, Github } from 'lucide-react';
-import { projects } from '../data/portfolioData';
+import { getProjects, Project } from '../data/portfolioService';
 import { useNavigate } from 'react-router-dom';
 
-const AllProjects = () => {
-  const [modalImage, setModalImage] = React.useState(null);
+const AllProjects: React.FC = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [modalImage, setModalImage] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getProjects().then(data => {
+      setProjects(data);
+      setLoading(false);
+    }).catch(error => {
+      console.error('Failed to load projects:', error);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <section className="mobile-padding section-bg min-h-screen">
@@ -92,4 +108,4 @@ const AllProjects = () => {
   );
 };
 
-export default AllProjects; 
+export default AllProjects;

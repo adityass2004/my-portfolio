@@ -1,11 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Briefcase } from 'lucide-react';
-import { experience } from '../data/portfolioData';
+import { getExperience, Experience } from '../data/portfolioService';
 import { useNavigate } from 'react-router-dom';
 
-const AllExperience = () => {
-  const [modalImage, setModalImage] = useState(null);
+const AllExperience: React.FC = () => {
+  const [experience, setExperience] = useState<Experience[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [modalImage, setModalImage] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getExperience().then(data => {
+      setExperience(data);
+      setLoading(false);
+    }).catch(error => {
+      console.error('Failed to load experience:', error);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   // Show all experiences, most recent first
   const allExperience = experience.slice().sort((a, b) => b.id - a.id);
 
@@ -22,7 +38,7 @@ const AllExperience = () => {
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-          {allExperience.map((exp, index) => (
+          {allExperience.map((exp) => (
             <div key={exp.id} className="w-full relative bg-card border border-card rounded-xl p-6 flex flex-col">
               <div className="flex items-start space-x-6 mb-4">
                 <div className="w-20 h-20 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden cursor-pointer" onClick={() => setModalImage(exp.image)}>
@@ -81,4 +97,4 @@ const AllExperience = () => {
   );
 };
 
-export default AllExperience; 
+export default AllExperience;

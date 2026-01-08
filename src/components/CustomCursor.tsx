@@ -1,31 +1,40 @@
 import React, { useEffect, useState } from 'react';
 
-const CustomCursor = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+interface Position {
+  x: number;
+  y: number;
+}
+
+const CustomCursor: React.FC = () => {
+  const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Only show cursor on desktop
-    const isMobile = window.innerWidth <= 768;
-    if (isMobile) return;
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
 
-    const updatePosition = (e) => {
+    if (isMobile) {
+      return () => window.removeEventListener('resize', checkMobile);
+    }
+
+    const updatePosition = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
-      setIsVisible(true);
+      if (!isVisible) setIsVisible(true);
     };
 
-    const handleMouseEnter = () => {
-      setIsVisible(true);
-    };
+    const handleMouseEnter = () => setIsVisible(true);
+    const handleMouseLeave = () => setIsVisible(false);
 
-    const handleMouseLeave = () => {
-      setIsVisible(false);
-    };
-
-    const handleMouseOver = (e) => {
-      const target = e.target;
-      const isInteractive = target.closest('button, a, .interactive, .card-hover');
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const isInteractive = target.closest('button, a, .interactive, .card-hover, input, textarea, select, [role="button"]');
       setIsHovering(!!isInteractive);
     };
 
@@ -39,13 +48,11 @@ const CustomCursor = () => {
       document.removeEventListener('mouseenter', handleMouseEnter);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseover', handleMouseOver);
+      window.removeEventListener('resize', checkMobile);
     };
-  }, []);
+  }, [isMobile, isVisible]);
 
-  // Don't render on mobile
-  if (typeof window !== 'undefined' && window.innerWidth <= 768) {
-    return null;
-  }
+  if (isMobile) return null;
 
   return (
     <>
@@ -69,4 +76,4 @@ const CustomCursor = () => {
   );
 };
 
-export default CustomCursor; 
+export default CustomCursor;
