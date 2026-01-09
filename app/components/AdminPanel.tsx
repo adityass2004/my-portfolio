@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { Save, LogOut, Edit2, Trash2, Copy, Plus,  Check, AlertCircle, Loader } from 'lucide-react';
+import { Save, LogOut, Edit2, Trash2, Copy, Plus,  Check, AlertCircle, Loader, Upload } from 'lucide-react';
 
 interface PortfolioData {
   personalInfo: any;
@@ -551,22 +553,89 @@ const AdminPanel: React.FC = () => {
 };
 
 // Section Components
-const PersonalInfoSection = ({ data, updateField }: any) => (
-  <div className="space-y-6">
-    <h2 className="text-2xl font-bold text-primary mb-6">Personal Information</h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <InputField label="Name" value={data?.personalInfo?.name} onChange={(v: any) => updateField('personalInfo', 'name', v)} />
-      <InputField label="Title" value={data?.personalInfo?.title} onChange={(v: any) => updateField('personalInfo', 'title', v)} />
-      <InputField label="Subtitle" value={data?.personalInfo?.subtitle} onChange={(v: any) => updateField('personalInfo', 'subtitle', v)} className="md:col-span-2" />
-      <InputField label="Avatar" value={data?.personalInfo?.avatar} onChange={(v: any) => updateField('personalInfo', 'avatar', v)} />
-      <InputField label="GitHub URL" value={data?.personalInfo?.github} onChange={(v: any) => updateField('personalInfo', 'github', v)} />
-      <InputField label="LinkedIn URL" value={data?.personalInfo?.linkedin} onChange={(v: any) => updateField('personalInfo', 'linkedin', v)} />
-      <InputField label="LeetCode URL" value={data?.personalInfo?.leetcode} onChange={(v: any) => updateField('personalInfo', 'leetcode', v)} />
-      <InputField label="Resume Link" value={data?.personalInfo?.resumeLink} onChange={(v: any) => updateField('personalInfo', 'resumeLink', v)} />
-      <TextAreaField label="Bio" value={data?.personalInfo?.bio} onChange={(v: any) => updateField('personalInfo', 'bio', v)} className="md:col-span-2" rows={4} />
+const PersonalInfoSection = ({ data, updateField }: any) => {
+  const [uploadingResume, setUploadingResume] = React.useState(false);
+
+  const handleResumeUpload = async (file: File) => {
+    setUploadingResume(true);
+    try {
+      const formData = new FormData();
+      formData.append('resume', file);
+      
+      const response = await fetch('http://localhost:3001/api/upload-resume', {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        updateField('personalInfo', 'resumeLink', result.path);
+        alert(`Resume uploaded successfully!\nPath: ${result.path}`);
+      } else {
+        alert('Upload failed. Make sure server is running on port 3001');
+      }
+    } catch (error) {
+      alert('Upload failed. Make sure server is running: node server.js');
+    } finally {
+      setUploadingResume(false);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <h2 className="text-2xl font-bold text-primary mb-6">Personal Information</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <InputField label="Name" value={data?.personalInfo?.name} onChange={(v: any) => updateField('personalInfo', 'name', v)} />
+        <InputField label="Title" value={data?.personalInfo?.title} onChange={(v: any) => updateField('personalInfo', 'title', v)} />
+        <InputField label="Subtitle" value={data?.personalInfo?.subtitle} onChange={(v: any) => updateField('personalInfo', 'subtitle', v)} className="md:col-span-2" />
+        <InputField label="Avatar" value={data?.personalInfo?.avatar} onChange={(v: any) => updateField('personalInfo', 'avatar', v)} />
+        <InputField label="GitHub URL" value={data?.personalInfo?.github} onChange={(v: any) => updateField('personalInfo', 'github', v)} />
+        <InputField label="LinkedIn URL" value={data?.personalInfo?.linkedin} onChange={(v: any) => updateField('personalInfo', 'linkedin', v)} />
+        <InputField label="LeetCode URL" value={data?.personalInfo?.leetcode} onChange={(v: any) => updateField('personalInfo', 'leetcode', v)} />
+        
+        {/* Resume Upload Section */}
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-primary mb-2">Resume/CV</label>
+          <div className="flex gap-4 items-start">
+            <div className="flex-1">
+              <InputField label="" value={data?.personalInfo?.resumeLink} onChange={(v: any) => updateField('personalInfo', 'resumeLink', v)} />
+            </div>
+            <div>
+              <label className={`px-4 py-2.5 rounded-lg transition-colors cursor-pointer flex items-center gap-2 ${
+                uploadingResume ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
+              } text-white`}>
+                {uploadingResume ? (
+                  <><Loader className="w-4 h-4 animate-spin" /> Uploading...</>
+                ) : (
+                  <><Upload className="w-4 h-4" /> Upload PDF</>
+                )}
+                <input
+                  type="file"
+                  accept=".pdf"
+                  className="hidden"
+                  disabled={uploadingResume}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleResumeUpload(file);
+                  }}
+                />
+              </label>
+            </div>
+          </div>
+          {data?.personalInfo?.resumeLink && (
+            <div className="mt-2">
+              <a href={data.personalInfo.resumeLink} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 hover:underline">
+                View Current Resume
+              </a>
+            </div>
+          )}
+        </div>
+        
+        <TextAreaField label="Bio" value={data?.personalInfo?.bio} onChange={(v: any) => updateField('personalInfo', 'bio', v)} className="md:col-span-2" rows={4} />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const ContactInfoSection = ({ data, updateField, updateNestedField }: any) => (
   <div className="space-y-6">
@@ -589,18 +658,186 @@ const ContactInfoSection = ({ data, updateField, updateNestedField }: any) => (
   </div>
 );
 
-const ProjectsSection = ({ data, addItem, updateItem, deleteItem, duplicateItem, editingItem, setEditingItem }: any) => (
-  <div>
-    <div className="flex justify-between items-center mb-6">
-      <h2 className="text-2xl font-bold text-primary">Projects</h2>
-      <button
-        onClick={() => addItem('projects')}
-        className="px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg hover:shadow-lg transition-all duration-200 flex items-center gap-2"
-      >
-        <Plus className="w-4 h-4" />
-        Add Project
-      </button>
-    </div>
+const ProjectsSection = ({ data, addItem, updateItem, deleteItem, duplicateItem, editingItem, setEditingItem }: any) => {
+  const [importing, setImporting] = React.useState(false);
+  const [githubUsername, setGithubUsername] = React.useState('');
+  const [repos, setRepos] = React.useState<any[]>([]);
+  const [selectedRepos, setSelectedRepos] = React.useState<Set<number>>(new Set());
+  const [showRepoList, setShowRepoList] = React.useState(false);
+
+  const fetchGitHubRepos = async () => {
+    if (!githubUsername.trim()) {
+      alert('Please enter a GitHub username');
+      return;
+    }
+    
+    setImporting(true);
+    try {
+      const response = await fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=50`);
+      if (!response.ok) throw new Error('Failed to fetch repos');
+      
+      const repoData = await response.json();
+      const nonForkedRepos = repoData.filter((repo: any) => !repo.fork);
+      setRepos(nonForkedRepos);
+      setShowRepoList(true);
+    } catch (error) {
+      alert('Failed to fetch GitHub repos. Check username.');
+    } finally {
+      setImporting(false);
+    }
+  };
+
+  const importSelectedRepos = async () => {
+    if (selectedRepos.size === 0) {
+      alert('Please select at least one repository');
+      return;
+    }
+
+    setImporting(true);
+    try {
+      const existingData = JSON.parse(await (await fetch('http://localhost:3001/api/portfolio')).text());
+      
+      repos.forEach((repo, index) => {
+        if (selectedRepos.has(index)) {
+          const newProject = {
+            id: Date.now() + Math.random(),
+            title: repo.name.replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()),
+            description: repo.description || 'No description provided',
+            image: '',
+            technologies: repo.language ? [repo.language] : [],
+            github: repo.html_url,
+            live: repo.homepage || '',
+            category: 'Full Stack',
+            featured: false
+          };
+          existingData.projects.push(newProject);
+        }
+      });
+      
+      await fetch('http://localhost:3001/api/portfolio', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(existingData)
+      });
+      
+      setShowRepoList(false);
+      setSelectedRepos(new Set());
+      setRepos([]);
+      window.location.reload();
+    } catch (error) {
+      alert('Failed to import. Make sure server is running.');
+    } finally {
+      setImporting(false);
+    }
+  };
+
+  const toggleRepo = (index: number) => {
+    const newSelected = new Set(selectedRepos);
+    if (newSelected.has(index)) {
+      newSelected.delete(index);
+    } else {
+      newSelected.add(index);
+    }
+    setSelectedRepos(newSelected);
+  };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-primary">Projects</h2>
+        <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
+            <input
+              type="text"
+              placeholder="GitHub username"
+              value={githubUsername}
+              onChange={(e) => setGithubUsername(e.target.value)}
+              className="px-3 py-2 border-2 border-card rounded-lg focus:border-primary-500 focus:outline-none bg-card text-primary"
+            />
+            <button
+              onClick={fetchGitHubRepos}
+              disabled={importing}
+              className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center gap-2 disabled:opacity-50"
+            >
+              {importing ? <Loader className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+              {importing ? 'Loading...' : 'Fetch Repos'}
+            </button>
+          </div>
+          <button
+            onClick={() => addItem('projects')}
+            className="px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg hover:shadow-lg transition-all duration-200 flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Add Project
+          </button>
+        </div>
+      </div>
+
+      {/* Repository Selection Modal */}
+      {showRepoList && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-card border-card rounded-xl max-w-4xl w-full max-h-[80vh] overflow-hidden flex flex-col">
+            <div className="p-6 border-b border-card">
+              <h3 className="text-xl font-bold text-primary">Select Repositories to Import</h3>
+              <p className="text-sm text-secondary mt-1">{selectedRepos.size} selected</p>
+            </div>
+            <div className="overflow-y-auto flex-1 p-6">
+              <div className="grid gap-3">
+                {repos.map((repo, index) => (
+                  <div
+                    key={index}
+                    onClick={() => toggleRepo(index)}
+                    className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                      selectedRepos.has(index)
+                        ? 'border-primary-500 bg-primary-500/10'
+                        : 'border-card hover:border-primary-500/50'
+                    }`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <input
+                        type="checkbox"
+                        checked={selectedRepos.has(index)}
+                        onChange={() => toggleRepo(index)}
+                        className="mt-1 w-4 h-4"
+                      />
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-primary">{repo.name}</h4>
+                        <p className="text-sm text-secondary mt-1">{repo.description || 'No description'}</p>
+                        <div className="flex gap-2 mt-2">
+                          {repo.language && (
+                            <span className="px-2 py-1 bg-blue-500/20 text-blue-500 rounded text-xs">{repo.language}</span>
+                          )}
+                          <span className="px-2 py-1 bg-gray-500/20 text-gray-500 rounded text-xs">⭐ {repo.stargazers_count}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="p-6 border-t border-card flex gap-3 justify-end">
+              <button
+                onClick={() => {
+                  setShowRepoList(false);
+                  setSelectedRepos(new Set());
+                  setRepos([]);
+                }}
+                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={importSelectedRepos}
+                disabled={importing || selectedRepos.size === 0}
+                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center gap-2 disabled:opacity-50"
+              >
+                {importing ? <Loader className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+                Import {selectedRepos.size} Selected
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     <div className="space-y-4">
       {data?.projects?.map((project: any) => (
         <div key={project.id} className={`border-2 rounded-xl p-6 transition-all ${
@@ -654,7 +891,8 @@ const ProjectsSection = ({ data, addItem, updateItem, deleteItem, duplicateItem,
       ))}
     </div>
   </div>
-);
+  );
+};
 
 const ExperienceSection = ({ data, addItem, updateItem, deleteItem }: any) => (
   <div>
@@ -693,40 +931,105 @@ const ExperienceSection = ({ data, addItem, updateItem, deleteItem }: any) => (
   </div>
 );
 
-const CertificationsSection = ({ data, addItem, updateItem, deleteItem }: any) => (
-  <div>
-    <div className="flex justify-between items-center mb-6">
-      <h2 className="text-2xl font-bold text-primary">Certifications</h2>
-      <button onClick={() => addItem('certifications')} className="px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg hover:shadow-lg transition-all duration-200 flex items-center gap-2">
-        <Plus className="w-4 h-4" />
-        Add Certification
-      </button>
-    </div>
-    <div className="space-y-4">
-      {data?.certifications?.map((cert: any) => (
-        <div key={cert.id} className="border-2 border-card rounded-xl p-6 bg-card">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <InputField label="Name" value={cert.name} onChange={(v: any) => updateItem('certifications', cert.id, { name: v })} />
-            <InputField label="Issuer" value={cert.issuer} onChange={(v: any) => updateItem('certifications', cert.id, { issuer: v })} />
-            <InputField label="Date" value={cert.date} onChange={(v: any) => updateItem('certifications', cert.id, { date: v })} />
-            <InputField label="Credential ID" value={cert.credentialId} onChange={(v: any) => updateItem('certifications', cert.id, { credentialId: v })} />
-            <InputField label="Link" value={cert.link} onChange={(v: any) => updateItem('certifications', cert.id, { link: v })} />
-            <InputField label="Image URL" value={cert.image} onChange={(v: any) => updateItem('certifications', cert.id, { image: v })} />
-            <div className="flex items-center gap-4">
-              <label className="flex items-center gap-2">
-                <input type="checkbox" checked={cert.featured} onChange={(e) => updateItem('certifications', cert.id, { featured: e.target.checked })} className="w-4 h-4" />
-                <span className="text-sm font-medium">Featured</span>
-              </label>
-              <button onClick={() => deleteItem('certifications', cert.id)} className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
-                Delete
-              </button>
+const CertificationsSection = ({ data, addItem, updateItem, deleteItem }: any) => {
+  const [uploading, setUploading] = React.useState<number | null>(null);
+
+  const handleImageUpload = async (certId: number, file: File) => {
+    setUploading(certId);
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+      
+      const response = await fetch('http://localhost:3001/api/upload', {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        updateItem('certifications', certId, { image: result.path });
+        alert(`Image uploaded successfully!\nPath: ${result.path}`);
+      } else {
+        alert('Upload failed. Make sure server is running on port 3001');
+      }
+    } catch (error) {
+      alert('Upload failed. Make sure server is running: node server.js');
+    } finally {
+      setUploading(null);
+    }
+  };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-primary">Certifications</h2>
+        <button onClick={() => addItem('certifications')} className="px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg hover:shadow-lg transition-all duration-200 flex items-center gap-2">
+          <Plus className="w-4 h-4" />
+          Add Certification
+        </button>
+      </div>
+      <div className="space-y-4">
+        {data?.certifications?.map((cert: any) => (
+          <div key={cert.id} className="border-2 border-card rounded-xl p-6 bg-card">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InputField label="Name" value={cert.name} onChange={(v: any) => updateItem('certifications', cert.id, { name: v })} />
+              <InputField label="Issuer" value={cert.issuer} onChange={(v: any) => updateItem('certifications', cert.id, { issuer: v })} />
+              <InputField label="Date" value={cert.date} onChange={(v: any) => updateItem('certifications', cert.id, { date: v })} />
+              <InputField label="Credential ID" value={cert.credentialId} onChange={(v: any) => updateItem('certifications', cert.id, { credentialId: v })} />
+              <InputField label="Link" value={cert.link} onChange={(v: any) => updateItem('certifications', cert.id, { link: v })} className="md:col-span-2" />
+              
+              {/* Image Upload Section */}
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-primary mb-2">Certificate Image</label>
+                <div className="flex gap-4 items-start">
+                  <div className="flex-1">
+                    <InputField label="" value={cert.image} onChange={(v: any) => updateItem('certifications', cert.id, { image: v })} />
+                  </div>
+                  <div>
+                    <label className={`px-4 py-2.5 rounded-lg transition-colors cursor-pointer flex items-center gap-2 ${
+                      uploading === cert.id ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
+                    } text-white`}>
+                      {uploading === cert.id ? (
+                        <><Loader className="w-4 h-4 animate-spin" /> Uploading...</>
+                      ) : (
+                        <><Upload className="w-4 h-4" /> Upload</>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        disabled={uploading === cert.id}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleImageUpload(cert.id, file);
+                        }}
+                      />
+                    </label>
+                  </div>
+                </div>
+                {cert.image && (
+                  <div className="mt-2">
+                    <img src={cert.image} alt="Preview" className="h-24 rounded border" onError={(e) => (e.currentTarget.style.display = 'none')} />
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex items-center gap-4 md:col-span-2">
+                <label className="flex items-center gap-2">
+                  <input type="checkbox" checked={cert.featured} onChange={(e) => updateItem('certifications', cert.id, { featured: e.target.checked })} className="w-4 h-4" />
+                  <span className="text-sm font-medium">Featured</span>
+                </label>
+                <button onClick={() => deleteItem('certifications', cert.id)} className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const EducationSection = ({ data, addItem, updateItem, deleteItem }: any) => (
   <div>
