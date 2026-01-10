@@ -1,6 +1,8 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Github, Linkedin, Mail, Download, Code, Sparkles, LucideIcon } from 'lucide-react';
+import { Github, Linkedin, Mail, Eye, Code, Sparkles, X, LucideIcon } from 'lucide-react';
 import { getPersonalInfo, getContactInfo, PersonalInfo, ContactInfo } from '../data/portfolioService';
 
 interface SocialLink {
@@ -14,6 +16,7 @@ const Hero: React.FC = () => {
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentText, setCurrentText] = useState<number>(0);
+  const [showResume, setShowResume] = useState(false);
 
   useEffect(() => {
     Promise.all([getPersonalInfo(), getContactInfo()]).then(([personal, contact]) => {
@@ -181,22 +184,13 @@ const Hero: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8 sm:mb-12 px-4"
           >
-            <a
-              href={personalInfo.resumeLink}
-              download
+            <button
+              onClick={() => setShowResume(true)}
               className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold flex items-center space-x-2 hover:shadow-lg transition-all duration-300 w-full sm:w-auto justify-center"
             >
-              <Download size={18} className="sm:w-5 sm:h-5" />
-              <span>Download Resume</span>
-            </a>
-            <a
-              href={personalInfo.cvLink}
-              download
-              className="border-2 border-primary-500 text-primary-500 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold flex items-center space-x-2 hover:bg-primary-500 hover:text-white transition-all duration-300 w-full sm:w-auto justify-center"
-            >
-              <Download size={18} className="sm:w-5 sm:h-5" />
-              <span>Download CV</span>
-            </a>
+              <Eye size={18} className="sm:w-5 sm:h-5" />
+              <span>View Resume</span>
+            </button>
           </motion.div>
 
           {/* Social Links */}
@@ -268,6 +262,25 @@ const Hero: React.FC = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Resume Popup */}
+      {showResume && (
+        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
+          <button
+            onClick={() => setShowResume(false)}
+            className="absolute top-4 right-4 bg-white text-black rounded-full p-2 hover:bg-gray-200 transition-colors z-10"
+          >
+            <X size={24} />
+          </button>
+          <div className="w-full h-full max-w-6xl max-h-[90vh] bg-white rounded-lg overflow-hidden">
+            <iframe
+              src={personalInfo?.resumeLink}
+              className="w-full h-full"
+              title="Resume"
+            />
+          </div>
+        </div>
+      )}
 
       {/* Scroll Indicator */}
       <motion.div
