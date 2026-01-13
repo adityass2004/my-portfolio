@@ -167,136 +167,85 @@
   },
   "projects": [
     {
-      "id": 1,
-      "title": "TrackIt – Academic Tracker",
-      "description": "TrackIt is a smart academic tracking platform that helps students stay on top of their studies. From timetables and attendance to marks, courses, and academic calendars — TrackIt brings everything together in one place.",
-      "image": "/projects/trackit.jpg",
+      "id": 1768456977397.517,
+      "title": "My Portfolio",
+      "description": "My portfolio built using React and Tailwind CSS, showcasing my work as a passionate web developer .",
+      "image": "",
       "technologies": [
-        "Next.js",
-        "MongoDB",
-        "Tailwind CSS",
-        "Node.js"
+        "TypeScript"
       ],
-      "github": "https://github.com/adityass2004/track-it-nextjs",
-      "live": "https://trackitsrm.vercel.app",
+      "github": "https://github.com/adityass2004/my-portfolio",
+      "live": "https://adityass-portfolio.netlify.app",
+      "category": "Full Stack",
+      "featured": false
+    },
+    {
+      "id": 1768456977398.0222,
+      "title": "Pdf Chat",
+      "description": "AI-Powered PDF Analysis with RAG, Vision Models & Smart Auto-Formatting",
+      "image": "",
+      "technologies": [
+        "Python"
+      ],
+      "github": "https://github.com/adityass2004/pdf-chat",
+      "live": "",
+      "category": "Full Stack",
+      "featured": false
+    },
+    {
+      "id": 1768456977398.5781,
+      "title": "Symptom Analyzer Ml Ai",
+      "description": "This project utilizes Ollama with the Mistral model, a local Large Language Model (LLM), to analyze user-provided symptoms and generate potential medical advice, including medicines, precautions, and general guidance. It also incorporates a machine learning model for disease prediction.",
+      "image": "",
+      "technologies": [
+        "Jupyter Notebook"
+      ],
+      "github": "https://github.com/adityass2004/symptom-analyzer-ml-ai",
+      "live": "",
+      "category": "Full Stack",
+      "featured": false
+    },
+    {
+      "id": 1768456977398.1436,
+      "title": "Personal File Manager API",
+      "description": "A lightweight backend prototype built using Node.js, Express.js, MySQL, and Multer that allows users to upload, view, download, and delete files stored locally on the server. Designed for backend learning and project portfolio enhancement — no authentication required in this version.",
+      "image": "",
+      "technologies": [
+        "JavaScript"
+      ],
+      "github": "https://github.com/adityass2004/Personal-File-Manager-API",
+      "live": "",
       "category": "Full Stack",
       "featured": true
     },
     {
-      "id": 2,
-      "title": "PDF Chat Assistant",
-      "description": "An AI-powered PDF analysis assistant built with Streamlit and Ollama. Supports document chat, smart chunking, FAISS search, auto formatting, and optional image understanding for scanned PDFs.",
-      "image": "/projects/pdf-chat.jpg",
+      "id": 1768456977398.969,
+      "title": "Smart Plant Watering",
+      "description": "This project is an automated plant watering system using Arduino, a soil moisture sensor, a relay module, and a water pump. The system monitors the soil moisture level and automatically turns the pump ON or OFF based on the soil's moisture condition.",
+      "image": "",
       "technologies": [
-        "Python",
-        "Streamlit",
-        "FAISS",
-        "Ollama",
-        "LangChain"
+        "Dart"
       ],
-      "github": "https://github.com/adityass2004/pdf-chat",
+      "github": "https://github.com/adityass2004/Smart-Plant-Watering",
       "live": "",
-      "category": "AI / Productivity",
-      "featured": true
-    },
-    {
-      "id": 4,
-      "title": "StareWare – Focus-Enhancing Quiz App",
-      "description": "A React-based quiz application that tracks eye and face movements via webcam to improve user focus. Designed and developed the entire front-end with a clean, responsive UI.",
-      "image": "/projects/stareware-quiz-app.jpg",
-      "technologies": [
-        "React.js",
-        "JavaScript",
-        "Webcam API",
-        "CSS"
-      ],
-      "github": "https://github.com/adityass2004",
-      "live": "",
-      "category": "Frontend",
+      "category": "Full Stack",
       "featured": false
     },
     {
-      "id": 5,
-      "title": "Symptom Analyzer using Machine Learning and Ollama AI",
-      "description": "An intelligent health assistant built with Streamlit that combines machine learning and the Mistral model from Ollama AI to analyze symptoms and predict diseases.",
-      "image": "https://raw.githubusercontent.com/as6769-2004/symptom-analyzer-ml-ai/refs/heads/main/screenshots/Screenshot_1.png",
+      "title": "Track - It",
+      "description": "TrackIt is a smart academic tracking platform that helps studets stay on top of their studies . From timetable and attendance to mar, courses, and academic calenders - Trackit brings everything together in one place.",
+      "image": "",
       "technologies": [
-        "Python",
-        "Streamlit",
-        "Scikit-learn",
-        "Ollama",
-        "Pandas",
-        "NumPy"
-      ],
-      "github": "https://github.com/as6769-2004/symptom-analyzer-ml-ai",
-      "live": "",
-      "category": "AI/ML",
-      "featured": false
-    },
-    {
-      "id": 6,
-      "title": "AgriEasy 🌿",
-      "description": "A farmer-centric mobile app offering real-time weather alerts, pest management guidance, and expert help through a chatbot and multimedia help desk.",
-      "image": "https://raw.githubusercontent.com/as6769-2004/Agri-Easy/refs/heads/main/Screenshots/Homepage.jpg",
-      "technologies": [
-        "Flutter",
-        "Python",
-        "SQLite"
-      ],
-      "github": "https://github.com/as6769-2004/CropCare",
-      "live": "",
-      "category": "AgriTech / AI",
-      "featured": false
-    },
-    {
-      "id": 7,
-      "title": "Soil Moisture & Pump Control System",
-      "description": "An IoT-based automated plant watering system using Arduino that monitors soil moisture and controls a water pump automatically.",
-      "image": "https://raw.githubusercontent.com/as6769-2004/Smart-Plant-Watering/refs/heads/main/screenshots/components.png",
-      "technologies": [
-        "Arduino",
-        "C++",
-        "Flutter",
-        "HTML",
-        "CSS",
-        "JavaScript"
-      ],
-      "github": "https://github.com/as6769-2004/Smart-Plant-Watering",
-      "live": "",
-      "category": "IoT / Embedded",
-      "featured": false
-    },
-    {
-      "id": 8,
-      "title": "Portfolio Website",
-      "description": "A responsive personal portfolio built with React and Tailwind CSS, featuring smooth animations and project showcases.",
-      "image": "https://raw.githubusercontent.com/as6769-2004/my-portfolio/refs/heads/main/src/screenshots/front.png",
-      "technologies": [
-        "React",
+        "Next.js",
+        "Supabase(DB)",
         "Tailwind CSS",
-        "Framer Motion"
+        "Node.js"
       ],
-      "github": "https://github.com/as6769-2004/my-portfolio",
-      "live": "https://adityass-portfolio.netlify.app/",
-      "category": "Frontend",
-      "featured": false
-    },
-    {
-      "id": 9,
-      "title": "SnapTask 📸",
-      "description": "A privacy-first task manager that lets users capture tasks using camera or voice. Offers offline support and local storage.",
-      "image": "https://raw.githubusercontent.com/as6769-2004/snap-task/refs/heads/main/screenshorts/Home.png",
-      "technologies": [
-        "Flutter",
-        "Dart",
-        "Hive",
-        "camera",
-        "flutter_sound"
-      ],
-      "github": "https://github.com/as6769-2004/snap-task",
-      "live": "https://as6769-2004.github.io/snap-task/",
-      "category": "Productivity / Offline Tools",
-      "featured": false
+      "github": "",
+      "live": "https://trckitsrm/vercel.app",
+      "category": "Full Stack",
+      "featured": true,
+      "id": 1768457057716
     }
   ],
   "experience": [
@@ -388,7 +337,7 @@
       "credentialId": "Flip_3002",
       "link": "https://www.aaruush.org/verify/Flip_3002",
       "image": "/data_images/flipkart_workshop.jpg",
-      "featured": true
+      "featured": false
     },
     {
       "id": 2,
@@ -408,7 +357,57 @@
       "credentialId": "92a79e88-3d06-11f0-8be0-3b9f67dda36d",
       "link": "https://www.udacity.com/certificate/e/92a79e88-3d06-11f0-8be0-3b9f67dda36d",
       "image": "/data_images/udacity_gen_ai.png",
-      "featured": true
+      "featured": false
+    },
+    {
+      "name": "Gen AI Academy",
+      "issuer": "Hack2Skill",
+      "date": "August - 2025",
+      "credentialId": "",
+      "link": "https://certificate.hack2skill.com/user/genai12/2025H2S04GENAI-A1200022",
+      "image": "/data_images/Hack2skill-Certificate.png",
+      "featured": true,
+      "id": 1768453167553
+    },
+    {
+      "name": "Networking Basics",
+      "issuer": "Cisco",
+      "date": "October - 2025",
+      "credentialId": "",
+      "link": "https://www.credly.com/badges/df061665-ef63-4c20-812e-0887a06cbc2c/public_url",
+      "image": "/data_images/cisco.png",
+      "featured": false,
+      "id": 1768453979458
+    },
+    {
+      "name": "Oracle Fusion Cloud Applications ERP Process Essentials Certified - Rel 1",
+      "issuer": "Oracle",
+      "date": "Jan - 2026",
+      "credentialId": "",
+      "link": "https://catalog-education.oracle.com/pls/certview/sharebadge?id=12C8E82D259DC56F27023FB688E27B710B510546A422F9B01EA9B71D458F1341",
+      "image": "/data_images/oracle_cloud-associate.png",
+      "featured": false,
+      "id": 1768454178611
+    },
+    {
+      "name": "Oracle Cloud Infrastructure 2025 Certified Foundations Associate",
+      "issuer": "Oracle",
+      "date": "October - 2025",
+      "credentialId": "",
+      "link": "https://catalog-education.oracle.com/pls/certview/sharebadge?id=B0675F05D0E4F40A8CFE0D92E7A2B4716C9DB91F638A23CE11AF0131CF185718",
+      "image": "/data_images/oracle-cloud-infra.png",
+      "featured": true,
+      "id": 1768454179421
+    },
+    {
+      "name": "Gooogle Play Academy - Store Listing Certificate",
+      "issuer": "Google",
+      "date": "January - 2026",
+      "credentialId": "",
+      "link": "https://www.credential.net/3ad885ff-ec11-4080-91b2-aff3831fc3f8#acc.ScM37vFG",
+      "image": "/data_images/playstore.png",
+      "featured": false,
+      "id": 1768454180203
     }
   ],
   "contactInfo": {
