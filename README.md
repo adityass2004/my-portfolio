@@ -1,4 +1,5 @@
 # Modern Portfolio Website
+
 [Click To View](https://adityass-portfolio.netlify.app/)
 
 A beautiful, responsive portfolio website built with React, Tailwind CSS, and Framer Motion. Features dark/light mode toggle, smooth animations, and a comprehensive data-driven structure.
@@ -44,6 +45,12 @@ src/
 
 ## 🎨 Customization: Edit Your Data in `src/data/portfolioData.js`
 
+### Getting data from github in raw
+
+```
+https://raw.githubusercontent.com/adityass2004/my-portfolio/main/public/portfolioData.json
+```
+
 ### 1. Personal Information
 
 ```js
@@ -63,17 +70,10 @@ export const personalInfo = {
   heroImage: "/hero-image.jpg", // Place in public/
   favicon: "/favicon.ico", // Place in public/
   bio: "Your bio description...",
-  about: [
-    "First paragraph about you...",
-    "Second paragraph about you..."
-  ],
-  specialties: [
-    "Your specialty 1",
-    "Your specialty 2",
-    "Your specialty 3"
-  ],
+  about: ["First paragraph about you...", "Second paragraph about you..."],
+  specialties: ["Your specialty 1", "Your specialty 2", "Your specialty 3"],
   resumeLink: "/resume.pdf", // Place your resume in public/
-  cvLink: "/cv.pdf" // Place your CV in public/
+  cvLink: "/cv.pdf", // Place your CV in public/
 };
 ```
 
@@ -84,7 +84,7 @@ export const stats = [
   { icon: "Award", value: "5+", label: "Years Experience" },
   { icon: "Users", value: "50+", label: "Happy Clients" },
   { icon: "Code", value: "100+", label: "Projects Completed" },
-  { icon: "Coffee", value: "1000+", label: "Cups of Coffee" }
+  { icon: "Coffee", value: "1000+", label: "Cups of Coffee" },
 ];
 ```
 
@@ -99,10 +99,10 @@ export const skills = {
         { name: "React", level: 90, color: "from-blue-500 to-cyan-500" },
         { name: "Flutter", level: 95, color: "from-blue-600 to-indigo-600" },
         // Add more skills...
-      ]
+      ],
     },
     // Add more categories...
-  ]
+  ],
 };
 ```
 
@@ -119,7 +119,7 @@ export const projects = [
     github: "https://github.com/yourusername/project",
     live: "https://project-demo.vercel.app",
     category: "Full Stack",
-    featured: true // Only featured projects show on main page
+    featured: true, // Only featured projects show on main page
   },
   // Add more projects...
 ];
@@ -136,14 +136,10 @@ export const experience = [
     period: "2022 - Present",
     location: "Remote",
     description: "Job description...",
-    achievements: [
-      "Achievement 1",
-      "Achievement 2",
-      "Achievement 3"
-    ],
+    achievements: ["Achievement 1", "Achievement 2", "Achievement 3"],
     technologies: ["React", "Python", "AWS"],
     image: "/data_images/experience1.jpg", // Place images in public/data_images/
-    featured: true // Only featured experiences show on main page
+    featured: true, // Only featured experiences show on main page
   },
   // Add more experience...
 ];
@@ -163,9 +159,9 @@ export const education = [
     achievements: [
       "Graduated with honors",
       "Final year project award",
-      "Other achievements..."
-    ]
-  }
+      "Other achievements...",
+    ],
+  },
 ];
 ```
 
@@ -181,7 +177,7 @@ export const certifications = [
     credentialId: "AWS-123456",
     link: "https://aws.amazon.com/verification",
     image: "/data_images/certificate1.jpg", // Place images in public/data_images/
-    featured: true // Only featured certificates show on main page
+    featured: true, // Only featured certificates show on main page
   },
   // Add more certifications...
 ];
@@ -199,39 +195,45 @@ export const contactInfo = {
     linkedin: "https://linkedin.com/in/yourusername",
     twitter: "https://twitter.com/yourusername",
     instagram: "https://instagram.com/yourusername",
-    youtube: "https://youtube.com/@yourusername"
+    youtube: "https://youtube.com/@yourusername",
   },
   availability: "Available for freelance opportunities and full-time positions",
-  responseTime: "Usually responds within 24 hours"
+  responseTime: "Usually responds within 24 hours",
 };
 ```
 
 ## ⭐️ Featured Items & 'See All' Pages
+
 - Only items with `featured: true` are shown on the main page for Projects, Experience, and Certificates.
 - Use the 'See All' buttons to view all entries for each section (e.g., all projects, all experience, all certificates).
 
 ## 🖼️ Image Paths
+
 - Place all images in the `public/` or `public/data_images/` folder.
 - Use paths like `/data_images/your-image.jpg` in your data file.
 - For best results, use rectangular images for certificates.
 
 ## 📄 Resume & CV
+
 - Place your resume and CV files in the `public/` folder as `resume.pdf` and `cv.pdf`.
 - Update the `resumeLink` and `cvLink` in `personalInfo` if you use different filenames.
 
 ## 📱 Mobile Compatibility
+
 - The site is fully responsive and mobile-friendly.
 - All grids, images, and layouts adapt to mobile screens.
 
 ## 🚀 Getting Started
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd my-portfolio
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
@@ -242,6 +244,7 @@ export const contactInfo = {
    - Update social media links
 
 4. **Start development server**
+
    ```bash
    npm start
    ```
