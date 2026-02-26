@@ -9,22 +9,24 @@
     "github": "https://github.com/adityass2004",
     "linkedin": "https://www.linkedin.com/in/aditya-sagar-sharma-1955a7288/",
     "twitter": "",
-    "website": "https://adityass-portfolio.netlify.app",
+    "website": "https://adityass.vercel.app",
     "avatar": "AS",
     "profileImage": "/profile-image.jpg",
     "heroImage": "/hero-image.jpg",
     "favicon": "/favicon.ico",
     "bio": "I'm a B.Tech Computer Science student at SRM Institute of Science and Technology, focused on full-stack web development, data structures, and software engineering. I enjoy building scalable web applications using React, Node.js, MongoDB, and REST APIs that solve practical, real-world problems.",
     "about": [
-      "I specialize in building full-stack web applications with React.js, Node.js, Express.js, and databases like MongoDB and MySQL.",
+      "I specialize in building full-stack web applications with React.js, Node.js, Express.js, and databases like MongoDB, PostgreSQL and MySQL.",
       "My approach focuses on clean architecture, responsive UI, and writing maintainable code while continuously improving my problem-solving skills through DSA and real-world projects."
     ],
     "specialties": [
       "Full-Stack Web Development",
       "React.js & Modern Frontend",
       "Node.js & REST APIs",
-      "Database Design (MongoDB & MySQL)",
-      "Problem Solving & DSA"
+      "Database Design (MongoDB, PostgreSQL & MySQL)",
+      "Problem Solving & DSA",
+      "AI/ML & RAG Systems",
+      "Neural Network Pruning Research"
     ],
     "resumeLink": "/data_files/resume.pdf",
     "cvLink": "/data_files/resume.pdf",
@@ -42,14 +44,24 @@
             "color": "from-blue-500 to-indigo-500"
           },
           {
-            "name": "JavaScript",
+            "name": "JavaScript (ES6+)",
             "level": 90,
             "color": "from-yellow-400 to-orange-500"
+          },
+          {
+            "name": "TypeScript",
+            "level": 80,
+            "color": "from-blue-400 to-blue-600"
           },
           {
             "name": "Python",
             "level": 80,
             "color": "from-green-500 to-emerald-500"
+          },
+          {
+            "name": "Dart",
+            "level": 65,
+            "color": "from-sky-400 to-blue-500"
           },
           {
             "name": "HTML",
@@ -70,6 +82,11 @@
             "name": "React.js",
             "level": 90,
             "color": "from-blue-500 to-cyan-500"
+          },
+          {
+            "name": "Next.js",
+            "level": 85,
+            "color": "from-gray-700 to-gray-900"
           },
           {
             "name": "Tailwind CSS",
@@ -102,14 +119,59 @@
             "color": "from-slate-500 to-slate-700"
           },
           {
+            "name": "JWT Authentication",
+            "level": 80,
+            "color": "from-purple-500 to-purple-700"
+          },
+          {
             "name": "MongoDB",
             "level": 80,
             "color": "from-green-500 to-green-600"
           },
           {
+            "name": "PostgreSQL",
+            "level": 80,
+            "color": "from-blue-500 to-indigo-600"
+          },
+          {
             "name": "MySQL",
             "level": 85,
             "color": "from-blue-600 to-indigo-700"
+          }
+        ]
+      },
+      {
+        "name": "AI / ML",
+        "skills": [
+          {
+            "name": "RAG & LLM APIs",
+            "level": 80,
+            "color": "from-violet-500 to-purple-600"
+          },
+          {
+            "name": "Computer Vision",
+            "level": 75,
+            "color": "from-pink-500 to-rose-500"
+          },
+          {
+            "name": "NLP",
+            "level": 75,
+            "color": "from-indigo-400 to-indigo-600"
+          },
+          {
+            "name": "Neural Network Pruning",
+            "level": 78,
+            "color": "from-fuchsia-500 to-pink-500"
+          },
+          {
+            "name": "PyTorch",
+            "level": 75,
+            "color": "from-orange-500 to-red-600"
+          },
+          {
+            "name": "Jupyter Notebook",
+            "level": 75,
+            "color": "from-indigo-500 to-purple-500"
           }
         ]
       },
@@ -122,9 +184,19 @@
             "color": "from-orange-500 to-red-500"
           },
           {
+            "name": "Docker",
+            "level": 70,
+            "color": "from-blue-500 to-cyan-600"
+          },
+          {
             "name": "Firebase",
             "level": 80,
             "color": "from-amber-500 to-yellow-500"
+          },
+          {
+            "name": "Vercel",
+            "level": 80,
+            "color": "from-gray-600 to-gray-800"
           },
           {
             "name": "Netlify",
@@ -137,9 +209,9 @@
             "color": "from-orange-500 to-yellow-500"
           },
           {
-            "name": "Jupyter Notebook",
-            "level": 75,
-            "color": "from-indigo-500 to-purple-500"
+            "name": "Arduino",
+            "level": 65,
+            "color": "from-teal-500 to-cyan-600"
           }
         ]
       },
@@ -160,6 +232,16 @@
             "name": "Operating Systems",
             "level": 70,
             "color": "from-blue-400 to-indigo-500"
+          },
+          {
+            "name": "Computer Networks",
+            "level": 70,
+            "color": "from-sky-400 to-blue-500"
+          },
+          {
+            "name": "Discrete Mathematics",
+            "level": 70,
+            "color": "from-violet-400 to-purple-500"
           }
         ]
       }
@@ -167,85 +249,148 @@
   },
   "projects": [
     {
-      "id": 1768456977397.517,
-      "title": "My Portfolio",
-      "description": "My portfolio built using React and Tailwind CSS, showcasing my work as a passionate web developer .",
+      "id": 1,
+      "title": "PDF Chat – AI-Powered Document Analysis",
+      "description": "Built an end-to-end RAG pipeline enabling semantic Q&A over PDF documents using LLM APIs and vector embeddings; integrated Vision Models for image-rich PDFs.",
       "image": "",
       "technologies": [
-        "TypeScript"
-      ],
-      "github": "https://github.com/adityass2004/my-portfolio",
-      "live": "https://adityass-portfolio.netlify.app",
-      "category": "Full Stack",
-      "featured": false
-    },
-    {
-      "id": 1768456977398.0222,
-      "title": "Pdf Chat",
-      "description": "AI-Powered PDF Analysis with RAG, Vision Models & Smart Auto-Formatting",
-      "image": "",
-      "technologies": [
-        "Python"
+        "Python",
+        "LLM APIs",
+        "RAG",
+        "PDF parsing"
       ],
       "github": "https://github.com/adityass2004/pdf-chat",
       "live": "",
-      "category": "Full Stack",
-      "featured": false
+      "category": "AI / ML",
+      "featured": true
     },
     {
-      "id": 1768456977398.5781,
-      "title": "Symptom Analyzer Ml Ai",
-      "description": "This project utilizes Ollama with the Mistral model, a local Large Language Model (LLM), to analyze user-provided symptoms and generate potential medical advice, including medicines, precautions, and general guidance. It also incorporates a machine learning model for disease prediction.",
+      "id": 2,
+      "title": "Social Media Platform – Backend-First Full-Stack",
+      "description": "Designed scalable backend supporting profiles, posts, likes, comments, and follow relationships with JWT auth across dual PostgreSQL + MongoDB architecture.",
       "image": "",
       "technologies": [
-        "Jupyter Notebook"
+        "Node.js",
+        "Express.js",
+        "PostgreSQL",
+        "MongoDB",
+        "React.js",
+        "JWT"
       ],
-      "github": "https://github.com/adityass2004/symptom-analyzer-ml-ai",
-      "live": "",
-      "category": "Full Stack",
-      "featured": false
-    },
-    {
-      "id": 1768456977398.1436,
-      "title": "Personal File Manager API",
-      "description": "A lightweight backend prototype built using Node.js, Express.js, MySQL, and Multer that allows users to upload, view, download, and delete files stored locally on the server. Designed for backend learning and project portfolio enhancement — no authentication required in this version.",
-      "image": "",
-      "technologies": [
-        "JavaScript"
-      ],
-      "github": "https://github.com/adityass2004/Personal-File-Manager-API",
+      "github": "https://github.com/adityass2004",
       "live": "",
       "category": "Full Stack",
       "featured": true
     },
     {
-      "id": 1768456977398.969,
-      "title": "Smart Plant Watering",
-      "description": "This project is an automated plant watering system using Arduino, a soil moisture sensor, a relay module, and a water pump. The system monitors the soil moisture level and automatically turns the pump ON or OFF based on the soil's moisture condition.",
+      "id": 3,
+      "title": "Track-It – Academic Productivity Platform",
+      "description": "Full-stack system unifying attendance, placement notices, and student records with role-based access on Next.js API routes backed by optimized MongoDB schemas.",
       "image": "",
       "technologies": [
-        "Dart"
+        "Next.js",
+        "MongoDB",
+        "Tailwind CSS",
+        "Node.js"
       ],
-      "github": "https://github.com/adityass2004/Smart-Plant-Watering",
+      "github": "",
+      "live": "https://trckitsrm.vercel.app",
+      "category": "Full Stack",
+      "featured": true
+    },
+    {
+      "id": 4,
+      "title": "Airline Reservation System",
+      "description": "Complete airline management system with flight booking, seat allocation, and admin dashboard; relational MySQL schema with transactional integrity.",
+      "image": "",
+      "technologies": [
+        "Next.js",
+        "MySQL",
+        "Tailwind CSS",
+        "REST APIs"
+      ],
+      "github": "https://github.com/adityass2004",
       "live": "",
       "category": "Full Stack",
       "featured": false
     },
     {
-      "title": "Track - It",
-      "description": "TrackIt is a smart academic tracking platform that helps studets stay on top of their studies . From timetable and attendance to mar, courses, and academic calenders - Trackit brings everything together in one place.",
+      "id": 5,
+      "title": "StareWare – Real-Time In-Browser Gaze Detection",
+      "description": "Real-time face detection, eye tracking, and presence monitoring in-browser via webcam using browser-native CV APIs – zero backend, deployed as standalone app.",
       "image": "",
       "technologies": [
-        "Next.js",
-        "Supabase(DB)",
-        "Tailwind CSS",
-        "Node.js"
+        "JavaScript",
+        "Computer Vision",
+        "Web APIs"
       ],
-      "github": "",
-      "live": "https://trckitsrm/vercel.app",
+      "github": "https://github.com/adityass2004",
+      "live": "",
+      "category": "AI / ML",
+      "featured": false
+    },
+    {
+      "id": 6,
+      "title": "Symptom Analyzer ML AI",
+      "description": "Utilizes Ollama with the Mistral model (local LLM) to analyze user-provided symptoms and generate potential medical advice, including medicines, precautions, and disease prediction via ML.",
+      "image": "",
+      "technologies": [
+        "Python",
+        "Jupyter Notebook",
+        "Ollama",
+        "Mistral"
+      ],
+      "github": "https://github.com/adityass2004/symptom-analyzer-ml-ai",
+      "live": "",
+      "category": "AI / ML",
+      "featured": false
+    },
+    {
+      "id": 7,
+      "title": "Personal File Manager API",
+      "description": "A lightweight backend prototype built using Node.js, Express.js, MySQL, and Multer that allows users to upload, view, download, and delete files stored locally on the server.",
+      "image": "",
+      "technologies": [
+        "Node.js",
+        "Express.js",
+        "MySQL",
+        "Multer",
+        "JavaScript"
+      ],
+      "github": "https://github.com/adityass2004/Personal-File-Manager-API",
+      "live": "",
       "category": "Full Stack",
-      "featured": true,
-      "id": 1768457057716
+      "featured": false
+    },
+    {
+      "id": 8,
+      "title": "Smart Plant Watering",
+      "description": "Automated plant watering system using Arduino, a soil moisture sensor, a relay module, and a water pump. Monitors soil moisture and automatically controls the pump based on conditions.",
+      "image": "",
+      "technologies": [
+        "Arduino",
+        "C++",
+        "IoT"
+      ],
+      "github": "https://github.com/adityass2004/Smart-Plant-Watering",
+      "live": "",
+      "category": "IoT",
+      "featured": false
+    },
+    {
+      "id": 9,
+      "title": "My Portfolio",
+      "description": "Personal portfolio built using React and Tailwind CSS, showcasing projects, skills, and experience as a full-stack developer.",
+      "image": "",
+      "technologies": [
+        "React.js",
+        "TypeScript",
+        "Tailwind CSS"
+      ],
+      "github": "https://github.com/adityass2004/my-portfolio",
+      "live": "https://adityass.vercel.app",
+      "category": "Full Stack",
+      "featured": false
     }
   ],
   "experience": [
@@ -257,13 +402,14 @@
       "location": "Remote",
       "description": "Worked as a web development intern focusing on building responsive interfaces and integrating front-end components with backend APIs in an Agile environment.",
       "achievements": [
-        "Created and integrated React UI with a Node.js backend, reducing task completion time by ~30%.",
-        "Delivered 5+ fully functional features in Agile sprint cycles, closing backlog items with a ~95% code quality score.",
-        "Collaborated with other developers to maintain clean, modular, and reusable front-end components."
+        "Optimized Node.js and Express.js backend services, achieving a 30% reduction in average task completion time through query optimization and middleware restructuring.",
+        "Delivered 5+ production-ready backend features covering API design, database operations, and input validation across Agile sprint cycles.",
+        "Maintained 95%+ code quality score as measured by internal review metrics."
       ],
       "technologies": [
         "React.js",
         "Node.js",
+        "Express.js",
         "JavaScript",
         "Git",
         "REST APIs"
@@ -301,8 +447,8 @@
       "location": "Chennai, Tamil Nadu, India",
       "description": "Focus on software engineering, data structures, algorithms, and web development.",
       "achievements": [
-        "GPA: 8.87 (Till 4th semester).",
-        "Completed coursework in Data Structures & Algorithms, Web Development, DBMS, and Operating Systems."
+        "CGPA: 8.97 / 10.0 (Till 4th semester).",
+        "Completed coursework in Data Structures & Algorithms, Design & Analysis of Algorithms, Operating Systems, DBMS, Computer Networks, Artificial Intelligence, Machine Learning, NLP, Discrete Mathematics, and Formal Languages & Automata."
       ]
     },
     {
@@ -328,87 +474,113 @@
       ]
     }
   ],
+  "research": [
+    {
+      "id": 1,
+      "title": "Damage-Guided Adaptive Recovery for Efficient Neural Network Pruning",
+      "status": "Under Review",
+      "institution": "Dept. of Computing Technologies, SRMIST KTR",
+      "description": "Proposed a damage-aware pruning framework that addresses irreversible performance degradation in deep learning model compression. Introduces a composite importance metric combining weight magnitude, gradient sensitivity, and activation frequency to identify redundant parameters. A per-layer damage metric pinpoints the most severely affected layers, after which selective weight restoration and targeted retraining recover representational capacity.",
+      "highlights": [
+        "70% parameter reduction and ~60% FLOP reduction while maintaining or surpassing baseline accuracy at up to 70% sparsity.",
+        "Experiments conducted on CIFAR-10, CIFAR-100, and FashionMNIST (VGGSmall)."
+      ],
+      "keywords": [
+        "Neural Network Pruning",
+        "Model Compression",
+        "Deep Learning",
+        "Sparsity",
+        "CIFAR-10/100",
+        "PyTorch"
+      ]
+    }
+  ],
   "certifications": [
     {
       "id": 1,
-      "name": "Flipkart Workshop",
-      "issuer": "AARUSH",
-      "date": "Sep-2023",
-      "credentialId": "Flip_3002",
-      "link": "https://www.aaruush.org/verify/Flip_3002",
-      "image": "/data_images/flipkart_workshop.jpg",
-      "featured": false
-    },
-    {
-      "id": 2,
-      "name": "Cosmic Web Workshop",
-      "issuer": "AARUSH",
-      "date": "Sep-2023",
-      "credentialId": "Cosmic_1080",
-      "link": "https://www.aaruush.org/verify/Cosmic_1080",
-      "image": "/data_images/cosmic_workshop.jpg",
-      "featured": false
-    },
-    {
-      "id": 3,
-      "name": "Introducing Generative AI with AWS",
-      "issuer": "Udacity",
-      "date": "Jun-2025",
-      "credentialId": "92a79e88-3d06-11f0-8be0-3b9f67dda36d",
-      "link": "https://www.udacity.com/certificate/e/92a79e88-3d06-11f0-8be0-3b9f67dda36d",
-      "image": "/data_images/udacity_gen_ai.png",
-      "featured": false
-    },
-    {
-      "name": "Gen AI Academy",
-      "issuer": "Hack2Skill",
-      "date": "August - 2025",
-      "credentialId": "",
-      "link": "https://certificate.hack2skill.com/user/genai12/2025H2S04GENAI-A1200022",
-      "image": "/data_images/Hack2skill-Certificate.png",
-      "featured": true,
-      "id": 1768453167553
-    },
-    {
-      "name": "Networking Basics",
-      "issuer": "Cisco",
-      "date": "October - 2025",
-      "credentialId": "",
-      "link": "https://www.credly.com/badges/df061665-ef63-4c20-812e-0887a06cbc2c/public_url",
-      "image": "/data_images/cisco.png",
-      "featured": false,
-      "id": 1768453979458
-    },
-    {
-      "name": "Oracle Fusion Cloud Applications ERP Process Essentials Certified - Rel 1",
-      "issuer": "Oracle",
-      "date": "Jan - 2026",
-      "credentialId": "",
-      "link": "https://catalog-education.oracle.com/pls/certview/sharebadge?id=12C8E82D259DC56F27023FB688E27B710B510546A422F9B01EA9B71D458F1341",
-      "image": "/data_images/oracle_cloud-associate.png",
-      "featured": false,
-      "id": 1768454178611
-    },
-    {
       "name": "Oracle Cloud Infrastructure 2025 Certified Foundations Associate",
       "issuer": "Oracle",
       "date": "October - 2025",
       "credentialId": "",
       "link": "https://catalog-education.oracle.com/pls/certview/sharebadge?id=B0675F05D0E4F40A8CFE0D92E7A2B4716C9DB91F638A23CE11AF0131CF185718",
       "image": "/data_images/oracle-cloud-infra.png",
-      "featured": true,
-      "id": 1768454179421
+      "featured": true
     },
     {
-      "name": "Gooogle Play Academy - Store Listing Certificate",
+      "id": 2,
+      "name": "Oracle Fusion Cloud Applications ERP Process Essentials Certified - Rel 1",
+      "issuer": "Oracle",
+      "date": "Jan - 2026",
+      "credentialId": "",
+      "link": "https://catalog-education.oracle.com/pls/certview/sharebadge?id=12C8E82D259DC56F27023FB688E27B710B510546A422F9B01EA9B71D458F1341",
+      "image": "/data_images/oracle_cloud-associate.png",
+      "featured": false
+    },
+    {
+      "id": 3,
+      "name": "Introducing Generative AI with AWS",
+      "issuer": "Udacity",
+      "date": "Jun - 2025",
+      "credentialId": "92a79e88-3d06-11f0-8be0-3b9f67dda36d",
+      "link": "https://www.udacity.com/certificate/e/92a79e88-3d06-11f0-8be0-3b9f67dda36d",
+      "image": "/data_images/udacity_gen_ai.png",
+      "featured": false
+    },
+    {
+      "id": 4,
+      "name": "Gen AI Academy",
+      "issuer": "Hack2Skill",
+      "date": "August - 2025",
+      "credentialId": "",
+      "link": "https://certificate.hack2skill.com/user/genai12/2025H2S04GENAI-A1200022",
+      "image": "/data_images/Hack2skill-Certificate.png",
+      "featured": true
+    },
+    {
+      "id": 5,
+      "name": "Networking Basics",
+      "issuer": "Cisco",
+      "date": "October - 2025",
+      "credentialId": "",
+      "link": "https://www.credly.com/badges/df061665-ef63-4c20-812e-0887a06cbc2c/public_url",
+      "image": "/data_images/cisco.png",
+      "featured": false
+    },
+    {
+      "id": 6,
+      "name": "Google Play Academy - Store Listing Certificate",
       "issuer": "Google",
       "date": "January - 2026",
       "credentialId": "",
       "link": "https://www.credential.net/3ad885ff-ec11-4080-91b2-aff3831fc3f8#acc.ScM37vFG",
       "image": "/data_images/playstore.png",
-      "featured": false,
-      "id": 1768454180203
+      "featured": false
+    },
+    {
+      "id": 7,
+      "name": "Flipkart Workshop",
+      "issuer": "AARUSH",
+      "date": "Sep - 2023",
+      "credentialId": "Flip_3002",
+      "link": "https://www.aaruush.org/verify/Flip_3002",
+      "image": "/data_images/flipkart_workshop.jpg",
+      "featured": false
+    },
+    {
+      "id": 8,
+      "name": "Cosmic Web Workshop",
+      "issuer": "AARUSH",
+      "date": "Sep - 2023",
+      "credentialId": "Cosmic_1080",
+      "link": "https://www.aaruush.org/verify/Cosmic_1080",
+      "image": "/data_images/cosmic_workshop.jpg",
+      "featured": false
     }
+  ],
+  "achievements": [
+    "Solved 65+ DSA problems on LeetCode (graphs, DP, trees)",
+    "Participated in HackRx 6.0 hackathon",
+    "Live portfolio deployed – 10+ projects showcased"
   ],
   "contactInfo": {
     "email": "adityasagar9991@gmail.com",
