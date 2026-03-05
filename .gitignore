@@ -84,7 +84,7 @@ jspm_packages/
 .dynamodb/ 
 
 
-server.js
+# server.js
 /backups
 .vercel
 .env*.local
