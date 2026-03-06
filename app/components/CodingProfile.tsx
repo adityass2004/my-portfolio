@@ -32,6 +32,12 @@ type MonthlySubmission = {
   submissions: number;
   monthName: string;
 };
+type ContestStats = {
+  rating: number;
+  globalRanking: number | null;
+  contestsAttended: number;
+  topPercentage: number | null;
+};
 
 type LeetCodeData = {
   name: string;
@@ -43,6 +49,7 @@ type LeetCodeData = {
   submissions: number;
   profileUrl: string;
   monthlySubmissions: MonthlySubmission[];
+  contest: ContestStats;
 };
 
 export default function CodingProfile() {
@@ -135,7 +142,7 @@ export default function CodingProfile() {
       {/* GitHub Section */}
       <div className="w-full max-w-4xl mx-auto bg-card border-card rounded-3xl p-10 shadow-xl relative overflow-hidden">
         <div className="absolute -top-1/2 -right-1/4 w-[600px] h-[600px] bg-gradient-to-br from-primary-500/10 to-secondary-500/10 rounded-full blur-3xl pointer-events-none" />
-        
+
         <div className="flex flex-wrap gap-8 items-center relative z-10">
           <div className="w-24 h-24 rounded-full border-4 border-[#171515] shadow-lg flex items-center justify-center bg-[#171515]">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="#ffffff">
@@ -187,7 +194,7 @@ export default function CodingProfile() {
       {/* LeetCode Section */}
       <div className="w-full max-w-4xl mx-auto bg-card border-card rounded-3xl p-10 shadow-xl relative overflow-hidden">
         <div className="absolute -top-1/2 -left-1/4 w-[600px] h-[600px] bg-gradient-to-br from-primary-500/10 to-secondary-500/10 rounded-full blur-3xl pointer-events-none" />
-        
+
         <div className="flex flex-wrap gap-8 items-center relative z-10">
           <div className="w-24 h-24 rounded-full border-4 border-[#FFA116] shadow-lg flex items-center justify-center bg-[#FFA116]">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="#000000">
@@ -199,10 +206,14 @@ export default function CodingProfile() {
             <h2 className="text-3xl font-bold mb-2 gradient-text">LeetCode</h2>
             <div className="flex items-center gap-3 mb-4">
               <span className="text-secondary text-lg">
-                {leetcodeData ? `Rank: ${leetcodeData.ranking.toLocaleString()}` : "Algorithmic Challenges"}
+                {leetcodeData
+                  ? `Rank: ${leetcodeData.ranking.toLocaleString()} • Rating: ${Math.round(
+                    leetcodeData.contest.rating
+                  )}`
+                  : "Algorithmic Challenges"}
               </span>
               {leetcodeData && (
-                <span className="bg-card-hover px-2 py-1 rounded-xl text-sm text-secondary">
+                <span className="bg-card-hover px-2 py-1 rounded-xl text-lg text-secondary">
                   ⭐ {leetcodeData.star}
                 </span>
               )}
@@ -225,21 +236,46 @@ export default function CodingProfile() {
         </div>
 
         {leetcodeData && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mt-8 relative z-10">
             <div className="bg-card-hover border-card rounded-2xl p-5 text-center">
-              <span className="text-2xl font-bold text-primary-500">{leetcodeData.solved.total}</span>
+              <span className="text-2xl font-bold text-primary-500">
+                {leetcodeData.solved.total}
+              </span>
               <div className="text-sm text-secondary mt-1">Solved</div>
             </div>
+
             <div className="bg-card-hover border-card rounded-2xl p-5 text-center">
-              <span className="text-2xl font-bold text-green-500">{leetcodeData.solved.easy}</span>
+              <span className="text-2xl font-bold text-blue-500">
+                {Math.round(leetcodeData.contest.rating)}
+              </span>
+              <div className="text-sm text-secondary mt-1">Contest Rating</div>
+            </div>
+
+            <div className="bg-card-hover border-card rounded-2xl p-5 text-center">
+              <span className="text-2xl font-bold text-purple-500">
+                {leetcodeData.contest.contestsAttended}
+              </span>
+              <div className="text-sm text-secondary mt-1">Contests</div>
+            </div>
+
+            <div className="bg-card-hover border-card rounded-2xl p-5 text-center">
+              <span className="text-2xl font-bold text-green-500">
+                {leetcodeData.solved.easy}
+              </span>
               <div className="text-sm text-secondary mt-1">Easy</div>
             </div>
+
             <div className="bg-card-hover border-card rounded-2xl p-5 text-center">
-              <span className="text-2xl font-bold text-yellow-500">{leetcodeData.solved.medium}</span>
+              <span className="text-2xl font-bold text-yellow-500">
+                {leetcodeData.solved.medium}
+              </span>
               <div className="text-sm text-secondary mt-1">Medium</div>
             </div>
+
             <div className="bg-card-hover border-card rounded-2xl p-5 text-center">
-              <span className="text-2xl font-bold text-red-500">{leetcodeData.solved.hard}</span>
+              <span className="text-2xl font-bold text-red-500">
+                {leetcodeData.solved.hard}
+              </span>
               <div className="text-sm text-secondary mt-1">Hard</div>
             </div>
           </div>

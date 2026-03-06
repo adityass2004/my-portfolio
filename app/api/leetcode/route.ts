@@ -6,6 +6,7 @@ interface LeetCodeUser {
     realName: string;
     userAvatar: string;
     ranking: number;
+    globalRanking: number;
     starRating: number;
     countryName: string;
   };
@@ -26,11 +27,14 @@ function processSubmissionCalendar(calendarData: string) {
 
     Object.entries(data).forEach(([timestamp, count]) => {
       const date = new Date(parseInt(timestamp) * 1000);
-      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      const monthKey = `${date.getFullYear()}-${String(
+        date.getMonth() + 1
+      ).padStart(2, '0')}`;
 
       if (!monthlyStats[monthKey]) {
         monthlyStats[monthKey] = 0;
       }
+
       monthlyStats[monthKey] += count as number;
     });
 
@@ -67,6 +71,7 @@ export async function GET(request: NextRequest) {
           profile {
             realName
             userAvatar
+            globalRanking
             ranking
             starRating
             countryName
@@ -80,6 +85,24 @@ export async function GET(request: NextRequest) {
           }
           submissionCalendar
         }
+
+        userContestRanking(username: $username) {
+          rating
+          globalRanking
+          totalParticipants
+          attendedContestsCount
+          topPercentage
+        }
+
+        userContestRankingHistory(username: $username) {
+          attended
+          rating
+          ranking
+          contest {
+            title
+            startTime
+          }
+        }
       }
     `;
 
@@ -87,9 +110,10 @@ export async function GET(request: NextRequest) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Referer': 'https://leetcode.com',
-        'Origin': 'https://leetcode.com',
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        Referer: 'https://leetcode.com',
+        Origin: 'https://leetcode.com',
       },
       body: JSON.stringify({
         query,
@@ -106,19 +130,14 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json();
 
-    if (data.errors) {
-      return NextResponse.json(
-        { error: 'GraphQL errors', details: data.errors },
-        { status: 502 }
-      );
-    }
-
     const user: LeetCodeUser = data?.data?.matchedUser;
+    const contest = data?.data?.userContestRanking;
+    const contestHistory = data?.data?.userContestRankingHistory || [];
+
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // Process submission stats
     const statsMap: { [key: string]: any } = {};
     user.submitStatsGlobal.acSubmissionNum.forEach((stat: any) => {
       statsMap[stat.difficulty.toLowerCase()] = stat;
@@ -130,20 +149,42 @@ export async function GET(request: NextRequest) {
       name: user.profile.realName,
       avatar: user.profile.userAvatar,
       country: user.profile.countryName,
+      globalranking: user.profile.globalRanking,
       ranking: user.profile.ranking,
       star: user.profile.starRating,
+
       solved: {
         total: statsMap.all?.count ?? 0,
         easy: statsMap.easy?.count ?? 0,
         medium: statsMap.medium?.count ?? 0,
         hard: statsMap.hard?.count ?? 0,
       },
+
       submissions: statsMap.all?.submissions ?? 0,
       profileUrl: `https://leetcode.com/${user.username}`,
+
       monthlySubmissions: monthlyData,
+
+      contest: {
+        rating: contest?.rating ?? 0,
+        globalRanking: contest?.globalRanking ?? null,
+        contestsAttended: contest?.attendedContestsCount ?? 0,
+        topPercentage: contest?.topPercentage ?? null,
+      },
+
+      contestHistory: contestHistory
+        .filter((c: any) => c.attended)
+        .slice(-10)
+        .map((c: any) => ({
+          contest: c.contest.title,
+          rating: c.rating,
+          ranking: c.ranking,
+          time: c.contest.startTime,
+        })),
     });
   } catch (error) {
     console.error('LeetCode API error:', error);
+
     return NextResponse.json(
       { error: 'Failed to fetch LeetCode data' },
       { status: 500 }

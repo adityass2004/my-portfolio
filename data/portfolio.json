@@ -1,6 +1,11 @@
 {
   "personalInfo": {},
-  "projects": [],
+  "projects": [
+    {
+      "id": 1772111336519,
+      "title": "Updated"
+    }
+  ],
   "experience": [],
   "certifications": [],
   "education": [],

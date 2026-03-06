@@ -18,19 +18,30 @@ interface LeetCodeData {
   country: string;
   ranking: number;
   star: number;
+
+  contest: {
+    rating: number;
+    globalRanking: number | null;
+    contestsAttended: number;
+    topPercentage: number | null;
+  };
+
   solved: {
     total: number;
     easy: number;
     medium: number;
     hard: number;
   };
+
   submissions: number;
   profileUrl: string;
+
   monthlySubmissions: Array<{
     month: string;
     submissions: number;
     monthName: string;
   }>;
+
   submissionCalendar?: string;
 }
 
@@ -119,11 +130,11 @@ const LeetCodeStats: React.FC = () => {
   useEffect(() => {
     const fetchLeetCodeData = async () => {
       if (!personalInfo?.leetcode) return;
-      
+
       try {
         // Extract username from LeetCode URL
         const username = personalInfo.leetcode.split("/").pop() || "adityass2004";
-        
+
         const response = await fetch(
           `/api/leetcode?username=${encodeURIComponent(username)}`
         );
@@ -209,7 +220,7 @@ const LeetCodeStats: React.FC = () => {
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-8"
         >
           <div className="bg-white dark:bg-dark-800 rounded-xl shadow-lg p-6 text-center">
             <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mx-auto mb-4">
@@ -225,7 +236,32 @@ const LeetCodeStats: React.FC = () => {
               Total Solved
             </div>
           </div>
+          <div className="bg-white dark:bg-dark-800 rounded-xl shadow-lg p-6 text-center">
+            <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <TrendingUp className="text-indigo-600 dark:text-indigo-400" size={24} />
+            </div>
 
+            <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              {Math.round(leetcodeData.contest.rating)}
+            </div>
+
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              Contest Rating
+            </div>
+          </div>
+          <div className="bg-white dark:bg-dark-800 rounded-xl shadow-lg p-6 text-center">
+            <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Trophy className="text-purple-600 dark:text-purple-400" size={24} />
+            </div>
+
+            <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              {leetcodeData.contest.contestsAttended}
+            </div>
+
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              Contests Attended
+            </div>
+          </div>
           <div className="bg-white dark:bg-dark-800 rounded-xl shadow-lg p-6 text-center">
             <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mx-auto mb-4">
               <Trophy className="text-blue-600 dark:text-blue-400" size={24} />
@@ -328,31 +364,28 @@ const LeetCodeStats: React.FC = () => {
             <div className="flex bg-gray-100 dark:bg-dark-700 rounded-lg p-1">
               <button
                 onClick={() => setChartView("daily")}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                  chartView === "daily"
-                    ? "bg-white dark:bg-dark-600 text-primary-600 shadow-sm"
-                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
-                }`}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${chartView === "daily"
+                  ? "bg-white dark:bg-dark-600 text-primary-600 shadow-sm"
+                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+                  }`}
               >
                 Daily (30d)
               </button>
               <button
                 onClick={() => setChartView("weekly")}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                  chartView === "weekly"
-                    ? "bg-white dark:bg-dark-600 text-primary-600 shadow-sm"
-                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
-                }`}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${chartView === "weekly"
+                  ? "bg-white dark:bg-dark-600 text-primary-600 shadow-sm"
+                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+                  }`}
               >
                 Weekly (12w)
               </button>
               <button
                 onClick={() => setChartView("monthly")}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                  chartView === "monthly"
-                    ? "bg-white dark:bg-dark-600 text-primary-600 shadow-sm"
-                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
-                }`}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${chartView === "monthly"
+                  ? "bg-white dark:bg-dark-600 text-primary-600 shadow-sm"
+                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+                  }`}
               >
                 Monthly (12m)
               </button>
@@ -378,13 +411,13 @@ const LeetCodeStats: React.FC = () => {
               leetcodeData.monthlySubmissions.length === 0)) ||
             (chartView === "weekly" && weeklyData.length === 0) ||
             (chartView === "daily" && dailyData.length === 0)) && (
-            <div className="text-center py-8">
-              <TrendingUp size={48} className="mx-auto text-gray-400 mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">
-                No {chartView} submission data available
-              </p>
-            </div>
-          )}
+              <div className="text-center py-8">
+                <TrendingUp size={48} className="mx-auto text-gray-400 mb-4" />
+                <p className="text-gray-500 dark:text-gray-400">
+                  No {chartView} submission data available
+                </p>
+              </div>
+            )}
         </motion.div>
 
         {/* Profile Information */}
@@ -633,9 +666,8 @@ function WeeklyChart({ data }: { data: WeekSubmission[] }) {
                 textAnchor="middle"
                 fontSize="10"
                 fill="#94a3b8"
-                transform={`rotate(45, ${x + barWidth / 2}, ${
-                  chartHeight + 20
-                })`}
+                transform={`rotate(45, ${x + barWidth / 2}, ${chartHeight + 20
+                  })`}
               >
                 {item.weekLabel}
               </text>
@@ -719,9 +751,8 @@ function DailyChart({ data }: { data: DaySubmission[] }) {
                   textAnchor="middle"
                   fontSize="9"
                   fill="#94a3b8"
-                  transform={`rotate(45, ${x + barWidth / 2}, ${
-                    chartHeight + 20
-                  })`}
+                  transform={`rotate(45, ${x + barWidth / 2}, ${chartHeight + 20
+                    })`}
                 >
                   {item.dayName}
                 </text>
