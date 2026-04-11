@@ -116,9 +116,9 @@ export const loadPortfolioData = async (): Promise<PortfolioData> => {
   }
 
   try {
-    const response = await fetch('/portfolioData.json');
+    const response = await fetch('/api/portfolio');
     if (!response.ok) {
-      throw new Error('Failed to load portfolio data');
+      throw new Error('Failed to load portfolio data from API');
     }
     portfolioData = await response.json();
     return portfolioData!;

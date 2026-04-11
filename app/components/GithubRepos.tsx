@@ -115,17 +115,18 @@ const GithubRepos: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-dark-900 flex items-center justify-center">
+      <div className="min-h-screen bg-paper flex items-center justify-center">
         <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           className="text-center"
         >
-          <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <h2 className="text-2xl font-bold gradient-text">
-            Loading GitHub Repositories...<span className="loading-dots"></span>
-          </h2>
+          <div className="font-serif text-[2rem] text-ink mb-2 animate-pulse">
+            Fetching Repositories<span className="text-accent-new">...</span>
+          </div>
+          <div className="font-mono text-[0.7rem] tracking-[0.14em] uppercase text-muted">
+            GitHub API
+          </div>
         </motion.div>
       </div>
     );
@@ -133,230 +134,152 @@ const GithubRepos: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-white dark:bg-dark-900 flex items-center justify-center">
+      <div className="min-h-screen bg-paper flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-red-500 mb-4">
+          <h2 className="font-serif text-2xl text-accent-new mb-4">
             Error Loading Repositories
           </h2>
-          <p className="text-gray-600 dark:text-gray-400">{error}</p>
+          <p className="font-mono text-sm text-muted">{error}</p>
+          <button onClick={() => window.location.reload()} className="btn-ghost mt-6">Try Again</button>
         </div>
       </div>
     );
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="min-h-screen bg-white dark:bg-dark-900 py-20 px-4"
-    >
+    <section id="github-repos" className="p-[100px_4rem] border-b border-border-new bg-paper">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h1 className="text-4xl md:text-5xl font-bold gradient-text mb-4">
-            My GitHub Repositories
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Explore all my public repositories on GitHub. Each project
-            represents a step in my journey as a developer.
-          </p>
-        </motion.div>
+        <div className="section-header fade-in visible">
+          <span className="section-num">09</span>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-ink text-white rounded-xl flex items-center justify-center p-2.5 shadow-lg">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            </div>
+            <h2 className="font-serif text-[clamp(1.9rem,3.5vw,2.8rem)] leading-[1.1] text-ink">Open Source Repos</h2>
+          </div>
+        </div>
 
         {/* Stats and Filters */}
-        <motion.div
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-white dark:bg-dark-800 rounded-xl shadow-lg p-6 mb-8"
-        >
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-                  {repos.length}
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  Total Repos
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
-                  {repos.reduce((sum, repo) => sum + repo.stargazers_count, 0)}
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  Total Stars
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                  {repos.reduce((sum, repo) => sum + repo.forks_count, 0)}
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  Total Forks
-                </div>
-              </div>
+        <div className="grid lg:grid-cols-[1fr_auto] gap-8 items-end mb-12 fade-in visible">
+          <div className="flex flex-wrap gap-4">
+            <div className="stat-card min-w-[140px]">
+              <div className="font-serif text-[2rem] text-ink leading-none mb-1">{repos.length}</div>
+              <div className="font-mono text-[0.64rem] tracking-[0.1em] uppercase text-muted">Total Repos</div>
             </div>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <select
-                value={sortBy}
-                onChange={(e) =>
-                  setSortBy(e.target.value as "updated" | "stars" | "created")
-                }
-                className="px-4 py-2 bg-gray-100 dark:bg-dark-700 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500"
-              >
-                <option value="updated">Sort by Updated</option>
-                <option value="stars">Sort by Stars</option>
-                <option value="created">Sort by Created</option>
-              </select>
-
-              <select
-                value={filterLanguage}
-                onChange={(e) => setFilterLanguage(e.target.value)}
-                className="px-4 py-2 bg-gray-100 dark:bg-dark-700 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500"
-              >
-                <option value="all">All Languages</option>
-                {languages.map((lang) => (
-                  <option key={lang} value={lang}>
-                    {lang}
-                  </option>
-                ))}
-              </select>
+            <div className="stat-card min-w-[140px]">
+              <div className="font-serif text-[2rem] text-ink leading-none mb-1">
+                {repos.reduce((sum, repo) => sum + repo.stargazers_count, 0)}
+              </div>
+              <div className="font-mono text-[0.64rem] tracking-[0.1em] uppercase text-muted">Total Stars</div>
+            </div>
+            <div className="stat-card min-w-[140px]">
+              <div className="font-serif text-[2rem] text-ink leading-none mb-1">
+                {repos.reduce((sum, repo) => sum + repo.forks_count, 0)}
+              </div>
+              <div className="font-mono text-[0.64rem] tracking-[0.1em] uppercase text-muted">Total Forks</div>
             </div>
           </div>
-        </motion.div>
+
+          <div className="flex flex-wrap gap-3">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as "updated" | "stars" | "created")}
+              className="fi !w-auto min-w-[160px]"
+            >
+              <option value="updated">Sort by Updated</option>
+              <option value="stars">Sort by Stars</option>
+              <option value="created">Sort by Created</option>
+            </select>
+
+            <select
+              value={filterLanguage}
+              onChange={(e) => setFilterLanguage(e.target.value)}
+              className="fi !w-auto min-w-[160px]"
+            >
+              <option value="all">All Languages</option>
+              {languages.map((lang) => (
+                <option key={lang} value={lang}>
+                  {lang}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
 
         {/* Monthly Contributions Chart */}
-        <motion.div
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="bg-white dark:bg-dark-800 rounded-xl shadow-lg p-6 mb-8"
-        >
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-            <TrendingUp size={24} className="text-primary-500" />
-            Monthly Contributions
-          </h3>
+        <div className="aside-item mb-12 fade-in visible">
+          <div className="flex items-center gap-2 mb-6">
+            <div className="font-mono text-[0.7rem] tracking-[0.12em] uppercase text-muted">Contribution Activity</div>
+            <div className="h-[1px] flex-1 bg-border-new"></div>
+          </div>
           {contributions && contributions.length > 0 ? (
             <ContributionChart contributions={contributions} />
           ) : (
             <div className="text-center py-8">
-              <TrendingUp size={48} className="mx-auto text-gray-400 mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">
-                No contribution data available
-              </p>
+              <p className="font-mono text-sm text-muted">No contribution data available</p>
             </div>
           )}
-        </motion.div>
+        </div>
 
         {/* Repositories Grid */}
-        <motion.div
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1.4rem] fade-in visible">
           {filteredRepos.map((repo, index) => (
-            <motion.div
-              key={repo.id}
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.1 * index }}
-              className="bg-white dark:bg-dark-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
-            >
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                    {repo.name}
-                  </h3>
-                  <a
-                    href={repo.html_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-                  >
-                    <ExternalLink size={20} />
-                  </a>
-                </div>
+            <div key={repo.id} className="project-card h-full flex flex-col">
+              <div className="flex justify-between items-start mb-2">
+                <span className="pcat font-mono text-[0.64rem] tracking-[0.12em] uppercase text-accent-new">
+                  {repo.language || "Markdown"}
+                </span>
+                <span className="font-mono text-[0.6rem] text-muted">{formatSize(repo.size)}</span>
+              </div>
+              <h3 className="pname font-serif text-[1.2rem] text-ink leading-[1.3] mb-2">{repo.name}</h3>
+              <p className="pdesc text-[0.87rem] text-muted leading-[1.7] flex-1 mb-4 line-clamp-3">
+                {repo.description || "No description available"}
+              </p>
 
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
-                  {repo.description || "No description available"}
-                </p>
-
-                {repo.language && (
-                  <div className="flex items-center gap-2 mb-4">
-                    <Code size={16} className="text-gray-400" />
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
-                      {repo.language}
-                    </span>
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-1">
-                      <Star size={14} />
-                      <span>{repo.stargazers_count}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <GitFork size={14} />
-                      <span>{repo.forks_count}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Eye size={14} />
-                      <span>{repo.watchers_count}</span>
-                    </div>
+              <div className="flex items-center justify-between text-[0.7rem] text-muted font-mono mb-4 pt-4 border-t border-border-new/50">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1">
+                    <Star size={12} className="text-accent-new" />
+                    <span>{repo.stargazers_count}</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <Calendar size={14} />
-                    <span>{formatDate(repo.updated_at)}</span>
+                    <GitFork size={12} className="text-accent-new" />
+                    <span>{repo.forks_count}</span>
                   </div>
                 </div>
-
-                {repo.topics && repo.topics.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {repo.topics.slice(0, 3).map((topic) => (
-                      <span
-                        key={topic}
-                        className="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 text-xs rounded-full"
-                      >
-                        {topic}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                <div className="text-xs text-gray-500 dark:text-gray-400">
-                  Size: {formatSize(repo.size)}
-                </div>
+                <span>{formatDate(repo.updated_at)}</span>
               </div>
-            </motion.div>
+
+              {repo.topics && repo.topics.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mb-5">
+                  {repo.topics.slice(0, 3).map((topic) => (
+                    <span key={topic} className="pill !text-[0.6rem] !px-2 !py-0.5">{topic}</span>
+                  ))}
+                </div>
+              )}
+
+              <a href={repo.html_url} target="_blank" rel="noopener noreferrer" className="btn-ghost w-full justify-center text-[0.7rem]">
+                View Repository ↗
+              </a>
+            </div>
           ))}
-        </motion.div>
+        </div>
 
         {filteredRepos.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-12"
-          >
-            <Github size={48} className="mx-auto text-gray-400 mb-4" />
-            <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-400 mb-2">
-              No repositories found
-            </h3>
-            <p className="text-gray-500 dark:text-gray-500">
-              Try adjusting your filters or check back later.
-            </p>
-          </motion.div>
+          <div className="text-center py-20 fade-in visible">
+            <h3 className="font-serif text-xl text-ink mb-2">No repositories found</h3>
+            <p className="font-mono text-sm text-muted">Try adjusting your filters or check back later.</p>
+          </div>
         )}
+
+        <div className="flex justify-center mt-16 fade-in visible">
+          <button onClick={() => window.history.back()} className="btn-primary">
+            ← Back to Portfolio
+          </button>
+        </div>
       </div>
-    </motion.div>
+    </section>
   );
 };
 // Updated Contribution Chart Component

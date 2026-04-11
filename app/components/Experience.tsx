@@ -74,180 +74,73 @@ const Experience: React.FC = () => {
     visible: { opacity: 1, y: 0 },
   };
 
-  // Only show 2 most recent featured experiences, ordered by id descending (most recent first)
-  const featuredExperience = experience.filter(e => e.featured).sort((a, b) => b.id - a.id).slice(0, 2);
+  // Filter for featured experiences
+  const featuredExperience = experience.filter(e => e.featured).sort((a, b) => b.id - a.id);
 
   return (
-    <section id="experience" className="mobile-padding section-bg relative overflow-hidden">
-      {/* Enhanced Background */}
-      <div className="absolute inset-0">
-        <motion.div
-          animate={{ 
-            rotate: 360,
-            scale: [1, 1.1, 1]
-          }}
-          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-          className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-primary-500/5 to-secondary-500/5 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{ 
-            rotate: -360,
-            scale: [1.1, 1, 1.1]
-          }}
-          transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-secondary-500/5 to-primary-500/5 rounded-full blur-3xl"
-        />
+    <section id="experience" className="p-[100px_4rem] border-b border-border-new bg-paper">
+      <div className="section-header fade-in visible">
+        <span className="section-num">05</span>
+        <h2 className="font-serif text-[clamp(1.9rem,3.5vw,2.8rem)] line-height-[1.1] text-ink">Work Experience</h2>
       </div>
 
-      <div className="max-w-7xl mx-auto mobile-optimized relative z-10">
-        <motion.div
-          ref={ref}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          variants={containerVariants}
-          className="text-center mb-12 sm:mb-16"
+      <div className="relative pl-8 md:pl-12 fade-in visible">
+        {/* Vertical Line */}
+        <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-accent-new via-accent-soft to-transparent ml-[5px] md:ml-[7px]"></div>
+
+        {featuredExperience.map((exp, index) => (
+          <motion.div 
+            key={exp.id} 
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.1 }}
+            className="relative mb-16 last:mb-0"
+          >
+            {/* Dot */}
+            <div className="absolute -left-8 md:-left-12 top-0 w-[12px] md:w-[16px] h-[12px] md:h-[16px] bg-paper border-2 border-accent-new rounded-full z-10 flex items-center justify-center">
+              <div className="w-1.5 md:w-2 h-1.5 md:h-2 bg-accent-new rounded-full animate-pulse"></div>
+            </div>
+
+            <div className="grid md:grid-cols-[200px_1fr] gap-4 md:gap-12">
+              <div className="flex flex-col pt-1">
+                <span className="font-mono text-[0.75rem] tracking-[0.1em] text-accent-new uppercase font-medium">{exp.period}</span>
+                <span className="font-serif text-lg text-ink mt-1">{exp.company}</span>
+                <div className="flex items-center gap-1.5 text-muted mt-1">
+                  <MapPin size={12} />
+                  <span className="font-mono text-[0.65rem] uppercase tracking-wider">{exp.location}</span>
+                </div>
+              </div>
+
+              <div className="bg-white/5 backdrop-blur-sm border border-border-new/40 p-8 rounded-2xl hover:border-accent-new/30 transition-all duration-300 shadow-sm hover:shadow-xl group">
+                <h3 className="font-serif text-xl text-ink mb-4 group-hover:text-accent-new transition-colors">{exp.title}</h3>
+                <p className="text-[0.95rem] text-muted mb-6 leading-relaxed">{exp.description}</p>
+                
+                <ul className="flex flex-col gap-3 mb-8">
+                  {exp.achievements.map((achievement, idx) => (
+                    <li key={idx} className="text-[0.92rem] text-muted leading-relaxed pl-6 relative before:content-['→'] before:absolute before:left-0 before:text-accent-new/70 before:font-bold">{achievement}</li>
+                  ))}
+                </ul>
+
+                <div className="flex flex-wrap gap-2">
+                  {exp.technologies.map((tech) => (
+                    <span key={tech} className="font-mono text-[0.68rem] text-muted border border-border-new/30 px-3 py-1 rounded-full group-hover:border-accent-new/20 transition-colors">{tech}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="flex justify-center mt-16 fade-in visible">
+        <button
+          className="btn-ghost rounded-full px-10 py-4 hover:bg-accent-new hover:text-white hover:border-accent-new transition-all"
+          onClick={() => router.push('/all-experience')}
         >
-          <motion.h2
-            variants={itemVariants}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-primary flex items-center justify-center"
-          >
-            <Briefcase className="w-8 h-8 sm:w-10 sm:h-10 mr-3 text-primary-500" />
-            Featured <span className="gradient-text">Experience</span>
-          </motion.h2>
-          <motion.p
-            variants={itemVariants}
-            className="text-lg sm:text-xl text-secondary max-w-2xl sm:max-w-3xl mx-auto px-4"
-          >
-            My professional journey and achievements
-          </motion.p>
-        </motion.div>
-        <div className="flex justify-center">
-          <div className="w-full max-w-3xl">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6 }}
-            >
-              <h3 className="text-xl sm:text-2xl font-bold text-primary mb-6 sm:mb-8 flex items-center">
-                <Briefcase className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 text-primary-500" />
-                Professional Experience
-              </h3>
-              <div className="space-y-6 sm:space-y-8">
-                {featuredExperience.map((exp, index) => (
-                  <motion.div
-                    key={exp.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={inView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="relative"
-                  >
-                    {/* Timeline Line */}
-                    {index < featuredExperience.length - 1 && (
-                      <div className="absolute left-4 sm:left-6 top-16 w-0.5 h-12 sm:h-16 bg-gradient-to-b from-primary-500 to-secondary-500"></div>
-                    )}
-
-                    <div className="flex items-start space-x-4 sm:space-x-6">
-                      {/* Company Logo or Experience Image */}
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden cursor-pointer" onClick={() => setModalImage(exp.image)}>
-                        {exp.image ? (
-                          <img src={exp.image} alt={exp.title} className="w-full h-full object-cover" />
-                        ) : (
-                          <span className="text-white font-bold text-xs sm:text-sm">{exp.company.charAt(0)}</span>
-                        )}
-                      </div>
-
-                      {/* Content */}
-                      <div className="flex-1 bg-card border border-card rounded-xl p-4 sm:p-6">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4">
-                          <div>
-                            <h4 className="text-lg sm:text-xl font-bold text-primary mb-1 flex items-center">
-                              <Target className="w-4 h-4 mr-2 text-primary-500" />
-                              {exp.title}
-                            </h4>
-                            <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 text-xs sm:text-sm text-secondary space-y-1 sm:space-y-0">
-                              <span className="flex items-center">
-                                <Building className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                                {exp.company}
-                              </span>
-                              <span className="flex items-center">
-                                <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                                {exp.location}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-2 mt-2 sm:mt-0">
-                            <span className="px-2 sm:px-3 py-1 bg-primary-500/20 text-primary-500 rounded-full text-xs flex items-center">
-                              <Calendar className="w-3 h-3 mr-1" />
-                              {exp.period}
-                            </span>
-                          </div>
-                        </div>
-
-                        <p className="text-secondary mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
-                          {exp.description}
-                        </p>
-
-                        {/* Technologies */}
-                        <div className="flex flex-wrap gap-1 sm:gap-2 mb-3 sm:mb-4">
-                          {exp.technologies.map((tech) => {
-                            const techInfo = techIconMap[tech];
-                            const IconComponent = techInfo ? techInfo.icon : Code;
-                            const bgColor = techInfo ? techInfo.bgColor : 'bg-gray-500';
-                            const textColor = techInfo ? techInfo.textColor : 'text-white';
-                            
-                            return (
-                              <span
-                                key={tech}
-                                className={`px-2 sm:px-3 py-1 ${bgColor} ${textColor} text-xs rounded-full flex items-center space-x-1`}
-                              >
-                                <IconComponent className="w-3 h-3" />
-                                <span>{tech}</span>
-                              </span>
-                            );
-                          })}
-                        </div>
-
-                        {/* Achievements */}
-                        <div className="space-y-2">
-                          <h5 className="text-xs sm:text-sm font-semibold text-primary mb-2 flex items-center">
-                            <Star className="w-3 h-3 mr-1" />
-                            Key Achievements:
-                          </h5>
-                          <ul className="space-y-1">
-                            {exp.achievements.map((achievement, idx) => (
-                              <li key={idx} className="text-xs sm:text-sm text-secondary flex items-start">
-                                <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-primary-500 rounded-full mt-1.5 sm:mt-2 mr-2 flex-shrink-0"></span>
-                                {achievement}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-              <div className="flex justify-center mt-8">
-                <button
-                  className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
-                  onClick={() => router.push('/all-experience')}
-                >
-                  See All Experience
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        </div>
+          View Full Career Path ↗
+        </button>
       </div>
-      {/* Modal for experience image enlargement - overlays whole page */}
-      {modalImage && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50" onClick={() => setModalImage(null)}>
-          <div className="bg-white rounded-lg overflow-hidden shadow-lg max-w-2xl w-full relative">
-            <button className="absolute top-2 right-2 text-black bg-white rounded-full p-1 z-10" onClick={() => setModalImage(null)}>&times;</button>
-            <img src={modalImage} alt="Experience" className="w-full h-auto max-h-[80vh] object-contain" />
-          </div>
-        </div>
-      )}
     </section>
   );
 };

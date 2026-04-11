@@ -13,7 +13,7 @@ interface PortfolioData {
 }
 
 // Mock API Service - Replace with your actual backend URLs
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = '/api';
 
 const apiService = {
   // GET all portfolio data
@@ -46,46 +46,20 @@ const apiService = {
 
   // CREATE new item in a section
   async createItem(section: string, item: any): Promise<any> {
-    try {
-      const response = await fetch(`${API_BASE_URL}/${section}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(item)
-      });
-      if (!response.ok) throw new Error('Failed to create item');
-      return await response.json();
-    } catch (error) {
-      console.error('Error creating item:', error);
-      return { ...item, id: Date.now() };
-    }
+    // For Next.js API route, we handle IDs locally and save the whole portfolio
+    return { ...item, id: Date.now() };
   },
 
   // UPDATE specific item
   async updateItem(section: string, id: number, updates: any): Promise<boolean> {
-    try {
-      const response = await fetch(`${API_BASE_URL}/${section}/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updates)
-      });
-      return response.ok;
-    } catch (error) {
-      console.error('Error updating item:', error);
-      return false;
-    }
+    // We update local state and use the main PUT to save
+    return true;
   },
 
   // DELETE specific item
   async deleteItem(section: string, id: number): Promise<boolean> {
-    try {
-      const response = await fetch(`${API_BASE_URL}/${section}/${id}`, {
-        method: 'DELETE'
-      });
-      return response.ok;
-    } catch (error) {
-      console.error('Error deleting item:', error);
-      return false;
-    }
+    // We update local state and use the main PUT to save
+    return true;
   }
 };
 
@@ -562,7 +536,7 @@ const PersonalInfoSection = ({ data, updateField }: any) => {
       const formData = new FormData();
       formData.append('resume', file);
       
-      const response = await fetch('http://localhost:3001/api/upload-resume', {
+      const response = await fetch('/api/upload-resume', {
         method: 'POST',
         body: formData
       });
@@ -572,10 +546,10 @@ const PersonalInfoSection = ({ data, updateField }: any) => {
         updateField('personalInfo', 'resumeLink', result.path);
         alert(`Resume uploaded successfully!\nPath: ${result.path}`);
       } else {
-        alert('Upload failed. Make sure server is running on port 3001');
+        alert('Upload failed. Next.js API for upload not implemented yet.');
       }
     } catch (error) {
-      alert('Upload failed. Make sure server is running: node server.js');
+      alert('Upload failed.');
     } finally {
       setUploadingResume(false);
     }
@@ -695,7 +669,7 @@ const ProjectsSection = ({ data, addItem, updateItem, deleteItem, duplicateItem,
 
     setImporting(true);
     try {
-      const existingData = JSON.parse(await (await fetch('http://localhost:3001/api/portfolio')).text());
+      const existingData = await (await fetch('/api/portfolio')).json();
       
       repos.forEach((repo, index) => {
         if (selectedRepos.has(index)) {
@@ -714,7 +688,7 @@ const ProjectsSection = ({ data, addItem, updateItem, deleteItem, duplicateItem,
         }
       });
       
-      await fetch('http://localhost:3001/api/portfolio', {
+      await fetch('/api/portfolio', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(existingData)
@@ -725,7 +699,7 @@ const ProjectsSection = ({ data, addItem, updateItem, deleteItem, duplicateItem,
       setRepos([]);
       window.location.reload();
     } catch (error) {
-      alert('Failed to import. Make sure server is running.');
+      alert('Failed to import.');
     } finally {
       setImporting(false);
     }
@@ -940,7 +914,7 @@ const CertificationsSection = ({ data, addItem, updateItem, deleteItem }: any) =
       const formData = new FormData();
       formData.append('image', file);
       
-      const response = await fetch('http://localhost:3001/api/upload', {
+      const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData
       });
@@ -950,10 +924,10 @@ const CertificationsSection = ({ data, addItem, updateItem, deleteItem }: any) =
         updateItem('certifications', certId, { image: result.path });
         alert(`Image uploaded successfully!\nPath: ${result.path}`);
       } else {
-        alert('Upload failed. Make sure server is running on port 3001');
+        alert('Upload failed. Next.js API for upload not implemented yet.');
       }
     } catch (error) {
-      alert('Upload failed. Make sure server is running: node server.js');
+      alert('Upload failed.');
     } finally {
       setUploading(null);
     }

@@ -23,17 +23,18 @@ export default function Page() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-dark-900 flex items-center justify-center">
+      <div className="min-h-screen bg-paper flex items-center justify-center">
         <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           className="text-center"
         >
-          <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <h2 className="text-2xl font-bold gradient-text">
-            Loading Portfolio<span className="loading-dots">...</span>
-          </h2>
+          <div className="font-serif text-[2.5rem] text-ink mb-2 animate-pulse">
+            Aditya Sagar<span className="text-accent-new">.</span>
+          </div>
+          <div className="font-mono text-[0.7rem] tracking-[0.14em] uppercase text-muted">
+            Portfolio 2026
+          </div>
         </motion.div>
       </div>
     );

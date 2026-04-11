@@ -16,7 +16,7 @@ import {
   AlertCircle,
   LucideIcon
 } from "lucide-react";
-import { getPersonalInfo, PersonalInfo } from '../data/portfolioService';
+import { getPersonalInfo, getContactInfo, PersonalInfo, ContactInfo } from '../data/portfolioService';
 
 interface FormData {
   name: string;
@@ -26,14 +26,14 @@ interface FormData {
 }
 
 interface ContactDetail {
-  icon: LucideIcon;
+  icon: React.ComponentType<any>;
   title: string;
   value: string;
   link: string;
 }
 
 interface SocialLink {
-  icon: LucideIcon;
+  icon: React.ComponentType<any>;
   href: string;
   label: string;
 }
@@ -48,6 +48,7 @@ const FORMSPREE_FORM_ID = "mzznaryk";
 
 const Contact: React.FC = () => {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
+  const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -59,27 +60,17 @@ const Contact: React.FC = () => {
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | "gmail" | null>(null);
 
   useEffect(() => {
-    getPersonalInfo().then(setPersonalInfo).catch(console.error);
+    Promise.all([getPersonalInfo(), getContactInfo()])
+      .then(([personal, contact]) => {
+        setPersonalInfo(personal);
+        setContactInfo(contact);
+      })
+      .catch(console.error);
   }, []);
 
-  if (!personalInfo) {
+  if (!personalInfo || !contactInfo) {
     return <div>Loading...</div>;
   }
-
-  const contactInfo = {
-    email: personalInfo.email,
-    phone: personalInfo.phone,
-    location: personalInfo.location,
-    availability: "Available for new projects",
-    responseTime: "Usually responds within 24 hours",
-    social: {
-      github: "https://github.com/yourusername",
-      linkedin: "https://linkedin.com/in/yourusername",
-      twitter: "https://twitter.com/yourusername",
-      instagram: "https://instagram.com/yourusername",
-      youtube: "https://youtube.com/@yourusername"
-    }
-  };
 
   const contactDetails: ContactDetail[] = [
     {
@@ -103,7 +94,15 @@ const Contact: React.FC = () => {
   ];
 
   const socialLinks: SocialLink[] = [
-    { icon: Github, href: contactInfo.social.github, label: "GitHub" },
+    { 
+      icon: (props: any) => (
+        <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+        </svg>
+      ), 
+      href: contactInfo.social.github, 
+      label: "GitHub" 
+    },
     { icon: Linkedin, href: contactInfo.social.linkedin, label: "LinkedIn" },
     { icon: Twitter, href: contactInfo.social.twitter, label: "Twitter" },
     { icon: Instagram, href: contactInfo.social.instagram, label: "Instagram" },
@@ -171,297 +170,168 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <section
-      id="contact"
-      className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 relative overflow-hidden"
-    >
-      {/* Background Effects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-20 -left-20 w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-20 -right-20 w-56 h-56 sm:w-72 sm:h-72 md:w-80 md:h-80 bg-gradient-to-tl from-purple-500/10 to-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+    <section id="contact" className="p-[100px_4rem] border-b border-border-new bg-paper">
+      <div className="section-header fade-in visible">
+        <span className="section-num">08</span>
+        <h2 className="font-serif text-[clamp(1.9rem,3.5vw,2.8rem)] line-height-[1.1] text-ink">Get in touch</h2>
       </div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        {/* Header */}
-        <div className="text-center mb-8 sm:mb-12 md:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 text-gray-900 dark:text-white flex items-center justify-center flex-wrap gap-2">
-            <MessageCircle className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-blue-600 dark:text-blue-400 flex-shrink-0" />
-            <span>Get In</span>
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Touch</span>
-          </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
-            Let's discuss your next project and bring your ideas to life
+      <div className="grid lg:grid-cols-[1fr_1.2fr] gap-24 items-start fade-in visible">
+        <div className="contact-info">
+          <p className="text-[1.05rem] text-muted leading-relaxed mb-12 max-w-[480px]">
+            I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions. 
+            Feel free to reach out through any of the channels below or use the form.
           </p>
-        </div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
-          {/* Contact Information - Left Side */}
-          <div className="space-y-6 sm:space-y-8">
-            {/* Introduction */}
-            <div>
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 md:mb-6 flex items-center flex-wrap gap-2">
-                <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400 flex-shrink-0" />
-                <span>Let's Start a</span>
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Conversation</span>
-              </h3>
-              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
-                {personalInfoBio.bio}
-              </p>
-            </div>
-
-            {/* Contact Info Cards */}
-            <div className="space-y-3 sm:space-y-4 md:space-y-6">
-              {contactDetails.map((info) => (
-                <a
-                  key={info.title}
-                  href={info.link}
-                  className="flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-lg hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-300 group"
-                >
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
-                    <info.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h4 className="text-gray-900 dark:text-white font-semibold text-sm sm:text-base">{info.title}</h4>
-                    <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm truncate">{info.value}</p>
-                  </div>
-                </a>
-              ))}
-            </div>
-
-            {/* Social Links */}
-            <div>
-              <h4 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center">
-                <MessageCircle className="w-4 h-4 mr-2 flex-shrink-0" />
-                Follow Me
-              </h4>
-              <div className="flex flex-wrap gap-3 sm:gap-4">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 sm:w-12 sm:h-12 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-500 dark:hover:border-blue-400 hover:shadow-lg hover:scale-110 transition-all duration-300"
-                  >
-                    <social.icon className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </a>
-                ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-12">
+            {contactDetails.map((info) => (
+              <div key={info.title} className="bg-white/5 backdrop-blur-sm border border-border-new/40 p-6 rounded-2xl hover:border-accent-new/30 transition-all duration-300 group">
+                <div className="w-10 h-10 bg-accent-new/10 text-accent-new rounded-xl flex items-center justify-center mb-4 group-hover:bg-accent-new group-hover:text-white transition-all">
+                  <info.icon size={18} />
+                </div>
+                <div className="font-mono text-[0.65rem] tracking-[0.14em] uppercase text-muted mb-1">{info.title}</div>
+                <a href={info.link} className="text-[0.95rem] text-ink font-medium no-underline hover:text-accent-new transition-colors break-words">{info.value}</a>
               </div>
-            </div>
-
-            {/* Availability Status */}
-            <div className="p-4 sm:p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl">
-              <div className="flex items-center space-x-2 sm:space-x-3 mb-2 sm:mb-3">
-                <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full animate-pulse flex-shrink-0"></div>
-                <span className="text-green-600 dark:text-green-400 font-medium text-xs sm:text-sm md:text-base flex items-center">
-                  <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
-                  {contactInfo.availability}
-                </span>
-              </div>
-              <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm flex items-center">
-                <MessageCircle className="w-3 h-3 mr-1 flex-shrink-0" />
-                {contactInfo.responseTime}
-              </p>
-            </div>
+            ))}
           </div>
 
-          {/* Contact Form - Right Side */}
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 sm:p-6 md:p-8 shadow-lg">
-            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 flex items-center">
-              <Send className="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-blue-600 dark:text-blue-400 flex-shrink-0" />
-              Send Message
-            </h3>
+          <div className="font-mono text-[0.68rem] tracking-[0.14em] uppercase text-muted mb-6 flex items-center gap-4">
+            <span className="h-[1px] w-8 bg-border-new"></span>
+            Social Ecosystem
+          </div>
+          <div className="flex flex-wrap gap-3 mb-12">
+            {socialLinks.map((social) => (
+              <a 
+                key={social.label} 
+                href={social.href} 
+                target="_blank" 
+                rel="noopener" 
+                className="w-12 h-12 flex items-center justify-center bg-white/5 border border-border-new/40 rounded-full text-muted hover:text-accent-new hover:border-accent-new hover:bg-accent-new/5 transition-all duration-300"
+                aria-label={social.label}
+              >
+                <social.icon className="w-5 h-5" />
+              </a>
+            ))}
+          </div>
 
-            <div className="space-y-4 sm:space-y-6">
-              {/* Name and Email Row */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
-                    placeholder="Your name"
-                  />
-                </div>
+          <div className="avail-row flex items-center gap-3 font-mono text-[0.75rem] text-muted bg-accent-new/5 w-fit px-5 py-2.5 rounded-full border border-accent-new/20 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-accent-new animate-pulse"></span>
+            {contactInfo.availability}
+          </div>
+        </div>
 
-                <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
-                    placeholder="your.email@example.com"
-                  />
-                </div>
-              </div>
-
-              {/* Subject */}
-              <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Subject *
-                </label>
-                <input
-                  type="text"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
-                  placeholder="What's this about?"
-                />
-              </div>
-
-              {/* Message */}
-              <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Message *
-                </label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                  rows={4}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none text-sm sm:text-base"
-                  placeholder="Tell me about your project..."
-                />
-              </div>
-
-              {/* Buttons */}
-              <div className="space-y-3 sm:space-y-4">
-                {/* Primary: Formspree Button */}
-                <button
-                  onClick={handleFormspreeSubmit}
-                  disabled={isSubmitting}
-                  className={`w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2.5 sm:py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all duration-300 text-sm sm:text-base ${
-                    isSubmitting
-                      ? "opacity-50 cursor-not-allowed"
-                      : "hover:shadow-lg hover:from-blue-700 hover:to-purple-700 hover:scale-[1.02] active:scale-[0.98]"
-                  }`}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      <span>Sending...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4 sm:w-5 sm:h-5" />
-                      <span className="hidden sm:inline">Send Message via Form</span>
-                      <span className="sm:hidden">Send via Form</span>
-                    </>
-                  )}
-                </button>
-
-                {/* Secondary: Gmail Button */}
-                <button
-                  onClick={handleGmailOption}
-                  disabled={isSubmitting}
-                  className={`w-full bg-transparent border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-2.5 sm:py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all duration-300 text-sm sm:text-base ${
-                    isSubmitting
-                      ? "opacity-50 cursor-not-allowed"
-                      : "hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 hover:scale-[1.02] active:scale-[0.98]"
-                  }`}
-                >
-                  <MailOpen className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span className="hidden sm:inline">Open in Gmail (Alternative)</span>
-                  <span className="sm:hidden">Open in Gmail</span>
-                </button>
-              </div>
-
-
+        <div className="contact-form bg-white/5 backdrop-blur-md border border-border-new/40 p-12 rounded-[40px] shadow-sm flex flex-col gap-10 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-accent-new/5 blur-3xl -z-10 group-hover:bg-accent-new/10 transition-colors"></div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div className="flex flex-col gap-3">
+              <label className="font-mono text-[0.68rem] tracking-[0.14em] uppercase text-muted ml-1">Name</label>
+              <input 
+                type="text" 
+                name="name" 
+                value={formData.name} 
+                onChange={handleInputChange} 
+                className="bg-transparent border-b border-border-new/60 py-3 px-1 focus:outline-none focus:border-accent-new transition-colors text-ink placeholder:text-muted/30 text-[0.95rem]" 
+                placeholder="Aditya Sagar" 
+              />
             </div>
+            <div className="flex flex-col gap-3">
+              <label className="font-mono text-[0.68rem] tracking-[0.14em] uppercase text-muted ml-1">Email</label>
+              <input 
+                type="email" 
+                name="email" 
+                value={formData.email} 
+                onChange={handleInputChange} 
+                className="bg-transparent border-b border-border-new/60 py-3 px-1 focus:outline-none focus:border-accent-new transition-colors text-ink placeholder:text-muted/30 text-[0.95rem]" 
+                placeholder="hello@example.com" 
+              />
+            </div>
+          </div>
+          
+          <div className="flex flex-col gap-3">
+            <label className="font-mono text-[0.68rem] tracking-[0.14em] uppercase text-muted ml-1">Subject</label>
+            <input 
+              type="text" 
+              name="subject" 
+              value={formData.subject} 
+              onChange={handleInputChange} 
+              className="bg-transparent border-b border-border-new/60 py-3 px-1 focus:outline-none focus:border-accent-new transition-colors text-ink placeholder:text-muted/30 text-[0.95rem]" 
+              placeholder="Project Collaboration" 
+            />
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <label className="font-mono text-[0.68rem] tracking-[0.14em] uppercase text-muted ml-1">Message</label>
+            <textarea 
+              name="message" 
+              rows={4} 
+              value={formData.message} 
+              onChange={handleInputChange} 
+              className="bg-transparent border-b border-border-new/60 py-3 px-1 focus:outline-none focus:border-accent-new transition-colors text-ink placeholder:text-muted/30 resize-none text-[0.95rem] leading-relaxed" 
+              placeholder="Tell me about your project..." 
+            />
+          </div>
+
+          <div className="flex flex-col gap-5 mt-4">
+            <button 
+              onClick={handleFormspreeSubmit}
+              disabled={isSubmitting}
+              className="btn-primary w-full py-5 flex items-center justify-center gap-3 group/btn"
+            >
+              {isSubmitting ? "Sending..." : "Send Message"}
+              <Send size={18} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+            </button>
+            
+            <div className="flex items-center gap-4">
+              <div className="h-[1px] flex-1 bg-border-new/30"></div>
+              <span className="font-mono text-[0.65rem] text-muted uppercase tracking-widest">or</span>
+              <div className="h-[1px] flex-1 bg-border-new/30"></div>
+            </div>
+
+            <button 
+              onClick={handleGmailOption}
+              className="btn-ghost w-full py-4 flex items-center justify-center gap-3 text-[0.75rem]"
+            >
+              Quick Mail via Gmail <MailOpen size={16} />
+            </button>
           </div>
         </div>
       </div>
 
       {/* Popup Modal */}
       {submitStatus && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 transform animate-in zoom-in-95 duration-300">
-            {/* Close Button */}
-            <button
-              onClick={() => setSubmitStatus(null)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors duration-200 hover:rotate-90 transform"
+        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="relative bg-paper border border-border-new p-10 max-w-md w-full shadow-2xl rounded-[32px]"
+          >
+            <button 
+              onClick={() => setSubmitStatus(null)} 
+              className="absolute top-6 right-6 font-mono text-sm hover:text-accent-new transition-colors"
             >
-              <X className="w-5 h-5 sm:w-6 sm:h-6" />
+              ✕
             </button>
-
-            {/* Success Message */}
-            {submitStatus === "success" && (
-              <div className="text-center">
-                <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
-                  <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-green-600 dark:text-green-400" />
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                  Message Sent!
-                </h3>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-6">
-                  Your message has been sent successfully via Formspree. I'll get back to you soon!
-                </p>
-                <button
-                  onClick={() => setSubmitStatus(null)}
-                  className="w-full bg-gradient-to-r from-green-600 to-green-500 text-white py-2.5 sm:py-3 rounded-lg font-semibold hover:from-green-700 hover:to-green-600 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  Close
-                </button>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-accent-new/10 text-accent-new rounded-2xl flex items-center justify-center mx-auto mb-6">
+                {submitStatus === "success" ? <CheckCircle size={32} /> : submitStatus === "gmail" ? <MailOpen size={32} /> : <AlertCircle size={32} />}
               </div>
-            )}
-
-            {/* Gmail Message */}
-            {submitStatus === "gmail" && (
-              <div className="text-center">
-                <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-4">
-                  <MailOpen className="w-8 h-8 sm:w-10 sm:h-10 text-blue-600 dark:text-blue-400" />
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                  Gmail Opened!
-                </h3>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-6">
-                  Please send the email in Gmail to complete your message. Make sure to check your drafts if needed.
-                </p>
-                <button
-                  onClick={() => setSubmitStatus(null)}
-                  className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white py-2.5 sm:py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-600 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  Close
-                </button>
+              <div className="font-serif text-2xl text-ink mb-3">
+                {submitStatus === "success" ? "Message Sent!" : submitStatus === "gmail" ? "Gmail Opened!" : "Oops!"}
               </div>
-            )}
-
-            {/* Error Message */}
-            {submitStatus === "error" && (
-              <div className="text-center">
-                <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4">
-                  <AlertCircle className="w-8 h-8 sm:w-10 sm:h-10 text-red-600 dark:text-red-400" />
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                  Oops! Something Went Wrong
-                </h3>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-6">
-                  There was an error sending your message. Please try again or use the Gmail option as an alternative.
-                </p>
-                <button
-                  onClick={() => setSubmitStatus(null)}
-                  className="w-full bg-gradient-to-r from-red-600 to-red-500 text-white py-2.5 sm:py-3 rounded-lg font-semibold hover:from-red-700 hover:to-red-600 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  Close
-                </button>
-              </div>
-            )}
-          </div>
+              <p className="font-mono text-[0.85rem] text-muted mb-8 leading-relaxed">
+                {submitStatus === "success" ? "Your message has been sent successfully. I'll get back to you soon!" : 
+                 submitStatus === "gmail" ? "Please complete and send the email in your Gmail tab." : 
+                 "There was an error sending your message. Please try again or use the Gmail option."}
+              </p>
+              <button 
+                onClick={() => setSubmitStatus(null)} 
+                className="w-full py-4 rounded-xl bg-ink text-white font-mono text-[0.75rem] tracking-[0.1em] uppercase hover:bg-accent-new transition-all"
+              >
+                Close
+              </button>
+            </div>
+          </motion.div>
         </div>
       )}
     </section>

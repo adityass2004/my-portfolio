@@ -283,6 +283,22 @@
       "featured": false
     },
     {
+      "id": 3,
+      "title": "Track-It – Academic Productivity Platform",
+      "description": "Full-stack system unifying attendance, placement notices, and student records with role-based access on Next.js API routes backed by optimized MongoDB schemas.",
+      "image": "",
+      "technologies": [
+        "Next.js",
+        "MongoDB",
+        "Tailwind CSS",
+        "Node.js"
+      ],
+      "github": "",
+      "live": "https://trckitsrm.vercel.app",
+      "category": "Full Stack",
+      "featured": true
+    },
+    {
       "id": 4,
       "title": "Airline Reservation System",
       "description": "Complete airline management system with flight booking, seat allocation, and admin dashboard; relational MySQL schema with transactional integrity.",
@@ -378,19 +394,16 @@
     },
     {
       "id": 1775379895076.8513,
-      "title": "Track-It – Academic Productivity Platform",
-      "description": "Full-stack system unifying attendance, and with 2000+ active users. Next.js API routes backed by optimized MongoDB schemas.",
+      "title": "Trackit",
+      "description": "No description provided",
       "image": "",
       "technologies": [
-        "Next.js",
-        "MongoDB",
-        "Tailwind CSS",
-        "Node.js"
+        "HTML"
       ],
       "github": "https://github.com/adityass2004/Trackit",
-      "live": "https://trackitsrm.vercel.app",
+      "live": "",
       "category": "Full Stack",
-      "featured": true
+      "featured": false
     }
   ],
   "experience": [

@@ -1,12 +1,15 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, DM_Serif_Display, DM_Mono, Instrument_Sans } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from './context/ThemeContext';
 import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const dmSerif = DM_Serif_Display({ weight: '400', subsets: ['latin'], variable: '--font-serif' });
+const dmMono = DM_Mono({ weight: ['300', '400', '500'], subsets: ['latin'], variable: '--font-mono' });
+const instrumentSans = Instrument_Sans({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: 'Aditya Sagar - Full Stack Developer',
@@ -28,10 +31,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${dmSerif.variable} ${dmMono.variable} ${instrumentSans.variable}`}>
+      <body className={instrumentSans.className}>
         <ThemeProvider>
-          <div className="min-h-screen bg-white dark:bg-dark-900">
+          <div className="min-h-screen bg-paper text-ink">
             <CustomCursor />
             <Navbar />
             {children}

@@ -280,7 +280,23 @@
       "github": "https://github.com/adityass2004",
       "live": "",
       "category": "Full Stack",
-      "featured": false
+      "featured": true
+    },
+    {
+      "id": 3,
+      "title": "Track-It – Academic Productivity Platform",
+      "description": "Full-stack system unifying attendance, placement notices, and student records with role-based access on Next.js API routes backed by optimized MongoDB schemas.",
+      "image": "",
+      "technologies": [
+        "Next.js",
+        "MongoDB",
+        "Tailwind CSS",
+        "Node.js"
+      ],
+      "github": "",
+      "live": "https://trckitsrm.vercel.app",
+      "category": "Full Stack",
+      "featured": true
     },
     {
       "id": 4,
@@ -375,22 +391,6 @@
       "live": "https://adityass.vercel.app",
       "category": "Full Stack",
       "featured": false
-    },
-    {
-      "id": 1775379895076.8513,
-      "title": "Track-It – Academic Productivity Platform",
-      "description": "Full-stack system unifying attendance, and with 2000+ active users. Next.js API routes backed by optimized MongoDB schemas.",
-      "image": "",
-      "technologies": [
-        "Next.js",
-        "MongoDB",
-        "Tailwind CSS",
-        "Node.js"
-      ],
-      "github": "https://github.com/adityass2004/Trackit",
-      "live": "https://trackitsrm.vercel.app",
-      "category": "Full Stack",
-      "featured": true
     }
   ],
   "experience": [

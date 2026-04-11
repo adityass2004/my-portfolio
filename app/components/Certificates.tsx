@@ -25,54 +25,54 @@ const Certificates: React.FC = () => {
     return <div>Loading...</div>;
   }
   // Sort featured certificates by id descending (most recent first)
-  const featuredCertificates = certifications.filter(c => c.featured).sort((a, b) => b.id - a.id).slice(0, 2);
+  const featuredCertificates = certifications.filter(c => c.featured).sort((a, b) => b.id - a.id);
 
   return (
-    <section id="certificates" className="mobile-padding section-bg">
-      <div className="max-w-7xl mx-auto mobile-optimized">
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-primary flex items-center justify-center">
-            <Award className="w-8 h-8 sm:w-10 sm:h-10 mr-3 text-primary-500" />
-            Featured <span className="gradient-text ml-1">Certificates</span>
-          </h2>
-          <p className="text-lg sm:text-xl text-secondary max-w-2xl sm:max-w-3xl mx-auto px-4">
-            A selection of my most relevant certifications
-          </p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {featuredCertificates.map((cert) => (
-            <div key={cert.id} className="bg-card border border-card rounded-xl p-4 flex flex-col items-center">
-              <div className="w-full sm:w-64 h-32 sm:h-40 mb-3 rounded-lg overflow-hidden cursor-pointer bg-gradient-to-br from-primary-500/10 to-secondary-500/10 flex items-center justify-center" onClick={() => setModalImage(cert.image)}>
-                <img src={cert.image} alt={cert.name} className="w-full h-full object-cover rounded-lg" />
-              </div>
-              <div className="text-lg font-semibold text-primary mb-1">{cert.name}</div>
-              <div className="text-sm text-secondary mb-1">{cert.issuer}</div>
-              <div className="text-xs text-secondary mb-2">{cert.date}</div>
-              <a href={cert.link} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 underline">Verify</a>
-            </div>
-          ))}
-        </div>
-        <div className="flex justify-center mt-6">
-          <button
-            className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
-            onClick={() => router.push('/all-certificates')}
-          >
-            <Award className="w-4 h-4 mr-2 inline" />
-            View All Certificates
-          </button>
-        </div>
+    <section id="certifications" className="p-[100px_4rem] border-b border-border-new bg-paper">
+      <div className="section-header fade-in visible">
+        <span className="section-num">06</span>
+        <h2 className="font-serif text-[clamp(1.9rem,3.5vw,2.8rem)] line-height-[1.1] text-ink">Certifications</h2>
       </div>
-      {/* Modal for certificate image enlargement - overlays whole page */}
-      {modalImage && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50" onClick={() => setModalImage(null)}>
-          <div className="bg-white rounded-lg overflow-hidden shadow-lg max-w-2xl w-full relative">
-            <button className="absolute top-2 right-2 text-black bg-white rounded-full p-1 z-10" onClick={() => setModalImage(null)}>&times;</button>
-            <img src={modalImage} alt="Certificate" className="w-full h-auto max-h-[80vh] object-contain" />
-          </div>
-        </div>
-      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in visible">
+        {featuredCertificates.map((cert) => (
+          <motion.div 
+            key={cert.id} 
+            whileHover={{ y: -5, borderColor: 'var(--accent-new)' }}
+            className="bg-white/5 backdrop-blur-sm border border-border-new/40 p-8 rounded-2xl transition-all duration-300 group flex flex-col justify-between"
+          >
+            <div className="flex justify-between items-start mb-6">
+              <div className="flex flex-col">
+                <span className="font-mono text-[0.7rem] tracking-[0.14em] uppercase text-accent-new mb-2">{cert.issuer}</span>
+                <h3 className="font-serif text-lg text-ink leading-snug group-hover:text-accent-new transition-colors">{cert.name}</h3>
+              </div>
+              <div className="w-10 h-10 bg-accent-new/10 text-accent-new rounded-lg flex items-center justify-center">
+                <Award size={20} />
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between pt-6 border-t border-border-new/20">
+              <span className="font-mono text-[0.75rem] text-muted">{cert.date}</span>
+              <a href={cert.link} target="_blank" rel="noopener noreferrer" className="font-mono text-[0.75rem] tracking-[0.06em] uppercase text-muted hover:text-accent-new transition-all flex items-center gap-1.5">
+                Verify Credential <ExternalLink size={12} />
+              </a>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="flex justify-center mt-16 fade-in visible">
+        <button
+          className="btn-ghost rounded-full px-10 py-4 hover:bg-accent-new hover:text-white hover:border-accent-new transition-all"
+          onClick={() => router.push('/all-certificates')}
+        >
+          View All Certifications ↗
+        </button>
+      </div>
     </section>
   );
 };
 
+import { motion } from 'framer-motion';
+import { ExternalLink } from 'lucide-react';
 export default Certificates;

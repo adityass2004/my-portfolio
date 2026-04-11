@@ -3,6 +3,14 @@ const nextConfig = {
   images: {
     domains: ['raw.githubusercontent.com'],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://localhost:3001/api/:path*',
+      },
+    ];
+  },
   async headers() {
     return [
       {

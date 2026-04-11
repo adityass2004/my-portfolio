@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { Menu, X, Download, Github, Linkedin, ExternalLink } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { Menu, X } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import { getPersonalInfo, PersonalInfo } from '../data/portfolioService';
 
@@ -14,239 +15,104 @@ interface NavItem {
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     getPersonalInfo().then(setPersonalInfo).catch(console.error);
-    
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   if (!personalInfo) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   const navItems: NavItem[] = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Experience', href: '#experience' },
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/#about' },
+    { name: 'Skills', href: '/#skills' },
+    { name: 'Projects', href: '/#projects' },
+    { name: 'Experience', href: '/#experience' },
     { name: 'GitHub Repos', href: '/github-repos' },
     { name: 'LeetCode Stats', href: '/leetcode-stats' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Contact', href: '/#contact' },
   ];
 
-  const scrollToSection = (href: string) => {
-    if (href.startsWith('/')) {
-      // It's a route, will be handled by Link component
-      return;
-    } else {
-      // It's an anchor, scroll to it
-      const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-    setIsOpen(false);
-  };
-
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white/80 dark:bg-dark-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-dark-700 py-2' : 'bg-transparent py-4'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto mobile-optimized">
-        <div className="flex justify-between items-center">
-          {/* Logo */}
+    <nav className="fixed top-0 left-0 right-0 z-[100] flex justify-between items-center p-[1.1rem_4rem] bg-paper/70 backdrop-blur-[10px] border-b border-white/5 sticky-navbar">
+      <Link href="/" className="nav-logo font-serif text-[1.2rem] text-ink no-underline font-medium tracking-tight">
+        Aditya Sagar.
+      </Link>
+
+      <ul className="hidden md:flex gap-[2.5rem] list-none items-center">
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <li key={item.name} className="relative">
+              <Link
+                href={item.href}
+                className={`font-mono text-[0.75rem] font-normal no-underline tracking-[0.1em] uppercase transition-colors duration-300 hover:text-accent-new py-2 ${isActive ? 'text-accent-new' : 'text-muted'
+                  }`}
+              >
+                {item.name}
+              </Link>
+              {isActive && (
+                <motion.div
+                  layoutId="nav-underline"
+                  className="absolute bottom-0 left-0 right-0 h-[2px] bg-accent-new rounded-full"
+                  initial={false}
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
+            </li>
+          );
+        })}
+        <li className="ml-2"><ThemeToggle /></li>
+      </ul>
+
+      <button
+        className="md:hidden flex flex-col gap-[5px] cursor-pointer bg-none border-none p-1"
+        onClick={() => setIsOpen(true)}
+        aria-label="Menu"
+      >
+        <span className="block w-6 h-[2px] bg-ink"></span>
+        <span className="block w-6 h-[2px] bg-ink"></span>
+        <span className="block w-6 h-[2px] bg-ink"></span>
+      </button>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center space-x-2 sm:space-x-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-paper/95 backdrop-blur-md z-[200] flex flex-col justify-center items-center gap-10"
           >
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg sm:text-xl">{personalInfo.avatar.charAt(0)}</span>
-            </div>
-            <div className="flex flex-col min-w-0">
-              <span className="text-base sm:text-lg lg:text-xl font-bold gradient-text leading-tight truncate">{personalInfo.name}</span>
-              <span className="text-xs sm:text-sm text-secondary hidden sm:block truncate">{personalInfo.title}</span>
+            <button
+              className="absolute top-6 right-6 font-mono text-[0.78rem] border border-border-new p-[0.4rem_0.8rem] cursor-pointer text-ink"
+              onClick={() => setIsOpen(false)}
+            >
+              ✕ Close
+            </button>
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`font-serif text-[2rem] no-underline ${pathname === item.href ? 'text-accent-new' : 'text-ink'
+                  }`}
+                onClick={() => setIsOpen(false)}
+              >
+                {item.name}
+              </Link>
+            ))}
+            <div className="flex items-center gap-4 mt-4">
+              <span className="font-mono text-sm text-muted">Theme</span>
+              <ThemeToggle />
             </div>
           </motion.div>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
-            {navItems.map((item) => (
-              item.href.startsWith('/') ? (
-                <Link key={item.name} href={item.href}>
-                  <motion.span
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="nav-link text-secondary hover:text-primary font-medium text-sm lg:text-base cursor-pointer"
-                  >
-                    {item.name}
-                  </motion.span>
-                </Link>
-              ) : (
-                <motion.button
-                  key={item.name}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => scrollToSection(item.href)}
-                  className="nav-link text-secondary hover:text-primary font-medium text-sm lg:text-base"
-                >
-                  {item.name}
-                </motion.button>
-              )
-            ))}
-            
-            {/* Tech Stack Icons */}
-            <div className="hidden lg:flex items-center space-x-3 px-4 py-2 bg-gray-100 dark:bg-dark-700 rounded-lg">
-              <motion.a
-                href={personalInfo.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1, y: -2 }}
-                className="w-6 h-6 bg-black rounded flex items-center justify-center cursor-pointer"
-                title="GitHub"
-              >
-                <Github className="w-4 h-4 text-white" />
-              </motion.a>
-              <motion.a
-                href={personalInfo.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1, y: -2 }}
-                className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center cursor-pointer"
-                title="LinkedIn"
-              >
-                <Linkedin className="w-4 h-4 text-white" />
-              </motion.a>
-              <motion.a
-                href={personalInfo.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1, y: -2 }}
-                className="w-6 h-6 bg-orange-500 rounded flex items-center justify-center cursor-pointer"
-                title="Portfolio"
-              >
-                <ExternalLink className="w-4 h-4 text-white" />
-              </motion.a>
-              <motion.div
-                whileHover={{ scale: 1.1, y: -2 }}
-                className="w-6 h-6 bg-blue-500 rounded flex items-center justify-center"
-                title="MySQL"
-              >
-                <span className="text-white text-xs font-bold">SQL</span>
-              </motion.div>
-            </div>
-            
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-4 lg:px-6 py-2 rounded-lg font-medium flex items-center space-x-2 hover:shadow-lg transition-all duration-300 text-sm lg:text-base"
-            >
-              <Download size={14} className="lg:w-4 lg:h-4" />
-              <span>Resume</span>
-            </motion.button>
-            <ThemeToggle />
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-secondary hover:text-primary p-2"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </motion.button>
-          </div>
-        </div>
-
-        {/* Mobile Navigation */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden mt-4 pb-4"
-            >
-              <div className="flex flex-col space-y-4 bg-card border border-card rounded-lg p-4">
-                {navItems.map((item) => (
-                  item.href.startsWith('/') ? (
-                    <Link key={item.name} href={item.href}>
-                      <motion.span
-                        whileHover={{ x: 10 }}
-                        onClick={() => setIsOpen(false)}
-                        className="text-secondary hover:text-primary font-medium text-left py-2 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-700 transition-colors duration-300 block cursor-pointer"
-                      >
-                        {item.name}
-                      </motion.span>
-                    </Link>
-                  ) : (
-                    <motion.button
-                      key={item.name}
-                      whileHover={{ x: 10 }}
-                      onClick={() => scrollToSection(item.href)}
-                      className="text-secondary hover:text-primary font-medium text-left py-2 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-700 transition-colors duration-300"
-                    >
-                      {item.name}
-                    </motion.button>
-                  )
-                ))}
-                
-                {/* Theme Toggle in Mobile Menu */}
-                <div className="flex items-center justify-between py-2 px-4">
-                  <span className="text-secondary font-medium">Theme</span>
-                  <ThemeToggle />
-                </div>
-                
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-6 py-3 rounded-lg font-medium flex items-center space-x-2 w-full justify-center mt-4"
-                >
-                  <Download size={16} />
-                  <span>Resume</span>
-                </motion.button>
-                
-                {/* Mobile Social Links */}
-                <div className="flex justify-center space-x-4 mt-4 pt-4 border-t border-gray-200 dark:border-dark-700">
-                  <motion.a
-                    href={personalInfo.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1 }}
-                    className="w-8 h-8 bg-black rounded-full flex items-center justify-center"
-                  >
-                    <Github className="w-4 h-4 text-white" />
-                  </motion.a>
-                  <motion.a
-                    href={personalInfo.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1 }}
-                    className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center"
-                  >
-                    <Linkedin className="w-4 h-4 text-white" />
-                  </motion.a>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.nav>
+        )}
+      </AnimatePresence>
+    </nav>
   );
 };
 

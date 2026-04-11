@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Github, Code, ExternalLink } from "lucide-react";
 import { getPersonalInfo, PersonalInfo } from "../data/portfolioService";
 
 interface GithubData {
@@ -138,149 +140,89 @@ export default function CodingProfile() {
   }
 
   return (
-    <section className="w-full py-16 px-4 flex flex-col gap-12">
-      {/* GitHub Section */}
-      <div className="w-full max-w-4xl mx-auto bg-card border-card rounded-3xl p-10 shadow-xl relative overflow-hidden">
-        <div className="absolute -top-1/2 -right-1/4 w-[600px] h-[600px] bg-gradient-to-br from-primary-500/10 to-secondary-500/10 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="flex flex-wrap gap-8 items-center relative z-10">
-          <div className="w-24 h-24 rounded-full border-4 border-[#171515] shadow-lg flex items-center justify-center bg-[#171515]">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="#ffffff">
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-            </svg>
-          </div>
-
-          <div className="flex-1 min-w-[250px]">
-            <h2 className="text-3xl font-bold mb-2 gradient-text">GitHub</h2>
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-secondary text-lg">@{data.username}</span>
-              {data.location && (
-                <span className="bg-card-hover px-2 py-1 rounded-xl text-sm text-secondary">
-                  📍 {data.location}
-                </span>
-              )}
-            </div>
-            <div className="flex flex-wrap gap-2 mb-4">
-              <span className="bg-primary-500/20 px-3 py-1 rounded-full text-xs text-primary-500">Open Source</span>
-              <span className="bg-primary-500/20 px-3 py-1 rounded-full text-xs text-primary-500">Full Stack</span>
-              <span className="bg-primary-500/20 px-3 py-1 rounded-full text-xs text-primary-500">React</span>
-            </div>
-            <p className="text-secondary leading-relaxed max-w-xl">
-              {data.bio || "Full Stack Developer passionate about building scalable web applications."}
-            </p>
-          </div>
-
-          <a href="/github-repos" className="px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
-            View GitHub
-          </a>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 relative z-10">
-          {[
-            { label: "Repositories", value: data.publicRepos, icon: "📚" },
-            { label: "Total Stars", value: data.stars, icon: "⭐" },
-            { label: "Followers", value: data.followers, icon: "👥" },
-            { label: "Following", value: data.following, icon: "👣" },
-          ].map((stat, index) => (
-            <div key={index} className="bg-card-hover border-card rounded-2xl p-5 flex flex-col items-center hover:bg-primary-500/10 transition-colors">
-              <span className="text-2xl mb-2">{stat.icon}</span>
-              <span className="text-2xl font-bold text-primary">{stat.value}</span>
-              <span className="text-sm text-secondary">{stat.label}</span>
-            </div>
-          ))}
-        </div>
+    <section id="coding" className="p-[100px_4rem] border-b border-border-new bg-paper">
+      <div className="section-header fade-in visible">
+        <span className="section-num">03</span>
+        <h2 className="font-serif text-[clamp(1.9rem,3.5vw,2.8rem)] line-height-[1.1] text-ink">Coding profile</h2>
       </div>
 
-      {/* LeetCode Section */}
-      <div className="w-full max-w-4xl mx-auto bg-card border-card rounded-3xl p-10 shadow-xl relative overflow-hidden">
-        <div className="absolute -top-1/2 -left-1/4 w-[600px] h-[600px] bg-gradient-to-br from-primary-500/10 to-secondary-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        {/* GitHub Card */}
+        <motion.div 
+          whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
+          className="bg-white/5 backdrop-blur-sm border border-border-new/40 p-10 rounded-3xl transition-all duration-300 group"
+        >
+          <div className="flex justify-between items-center mb-10">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-ink text-white rounded-xl flex items-center justify-center p-2.5 shadow-lg group-hover:scale-110 transition-transform">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+              </div>
+              <div>
+                <div className="font-serif text-xl text-ink">GitHub</div>
+                <div className="font-mono text-[0.7rem] text-muted">@adityass2004</div>
+              </div>
+            </div>
+            <a href="https://github.com/adityass2004" target="_blank" rel="noopener" className="text-muted hover:text-accent-new transition-colors">
+              <ExternalLink size={18} />
+            </a>
+          </div>
+          
+          <div className="grid grid-cols-3 gap-6 mb-10">
+            {[
+              { label: "Repos", value: data.publicRepos },
+              { label: "Stars", value: data.stars },
+              { label: "Followers", value: data.followers }
+            ].map((stat, i) => (
+              <div key={i} className="text-center p-4 rounded-2xl bg-paper-warm/50 border border-border-new/20">
+                <div className="font-serif text-[24px] text-ink leading-none mb-1">{stat.value}</div>
+                <div className="font-mono text-[12px] tracking-wider uppercase text-muted">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+          <p className="text-[0.92rem] text-muted leading-[1.7] mb-8">{data.bio || "Full Stack Developer passionate about building scalable web applications."}</p>
+          <a href="https://github.com/adityass2004" target="_blank" rel="noopener" className="btn-ghost w-full justify-center rounded-xl border-border-new/40 hover:border-accent-new hover:text-accent-new transition-all">View Profile ↗</a>
+        </motion.div>
 
-        <div className="flex flex-wrap gap-8 items-center relative z-10">
-          <div className="w-24 h-24 rounded-full border-4 border-[#FFA116] shadow-lg flex items-center justify-center bg-[#FFA116]">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="#000000">
-              <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z" />
-            </svg>
+        {/* LeetCode Card */}
+        <motion.div 
+          whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
+          className="bg-white/5 backdrop-blur-sm border border-border-new/40 p-10 rounded-3xl transition-all duration-300 group"
+        >
+          <div className="flex justify-between items-center mb-10">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-orange-500 text-white rounded-xl flex items-center justify-center p-2.5 shadow-lg group-hover:scale-110 transition-transform">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full"><path d="M13.483 0a1.374 1.374 0 0 0-.961.414l-9.77 9.77a1.359 1.359 0 0 0-.415.962c0 .356.141.695.392.945l1.627 1.627a1.356 1.356 0 0 0 .945.392c.358 0 .697-.141.946-.392l7.848-7.847a1.391 1.391 0 0 0 .5-1.059c0-.354-.14-.69-.391-.94l-1.637-1.637A1.357 1.357 0 0 0 13.483 0zm-5.17 5.03a1.377 1.377 0 0 0-.961.414l-7.415 7.416a1.386 1.386 0 0 0-.414.96c0 .356.141.694.392.944l1.627 1.627a1.356 1.356 0 0 0 .945.392c.358 0 .697-.141.946-.392l5.488-5.489a1.396 1.396 0 0 0 .501-1.06c0-.354-.14-.69-.391-.94l-1.638-1.638a1.358 1.358 0 0 0-.936-.416zm12.564 3.424c-.357 0-.696.141-.945.392l-5.488 5.49a1.391 1.391 0 0 0-.501 1.059c0 .354.14.69.391.94l1.637 1.638a1.357 1.357 0 0 0 .962.414c.357 0 .696-.141.945-.392l7.415-7.416a1.386 1.386 0 0 0 .414-.96c0-.356-.141-.694-.392-.944l-1.627-1.627a1.356 1.356 0 0 0-.945-.392zM4.568 13.313c-.356 0-.695.14-.945.391l-1.627 1.627a1.359 1.359 0 0 0-.415.962c0 .356.141.695.392.945l9.77 9.77A1.391 1.391 0 0 0 12.703 24c.354 0 .69-.14.94-.391l1.637-1.638a1.357 1.357 0 0 0 .414-.962c0-.357-.141-.696-.392-.945l-7.847-7.848a1.356 1.356 0 0 0-.945-.392z"/></svg>
+              </div>
+              <div>
+                <div className="font-serif text-xl text-ink">LeetCode</div>
+                <div className="font-mono text-[0.7rem] text-muted">adityasagar9991 · {Math.round(leetcodeData?.contest.rating || 1633)} Rating</div>
+              </div>
+            </div>
+            <a href="https://leetcode.com/u/adityasagar9991" target="_blank" rel="noopener" className="text-muted hover:text-accent-new transition-colors">
+              <ExternalLink size={18} />
+            </a>
           </div>
 
-          <div className="flex-1 min-w-[250px]">
-            <h2 className="text-3xl font-bold mb-2 gradient-text">LeetCode</h2>
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-secondary text-lg">
-                {leetcodeData
-                  ? `Rank: ${leetcodeData.ranking.toLocaleString()} • Rating: ${Math.round(
-                    leetcodeData.contest.rating
-                  )}`
-                  : "Algorithmic Challenges"}
-              </span>
-              {leetcodeData && (
-                <span className="bg-card-hover px-2 py-1 rounded-xl text-lg text-secondary">
-                  ⭐ {leetcodeData.star}
-                </span>
-              )}
-            </div>
-            <div className="flex flex-wrap gap-2 mb-4">
-              <span className="bg-primary-500/20 px-3 py-1 rounded-full text-xs text-primary-500">Algorithms</span>
-              <span className="bg-primary-500/20 px-3 py-1 rounded-full text-xs text-primary-500">Data Structures</span>
-              <span className="bg-primary-500/20 px-3 py-1 rounded-full text-xs text-primary-500">Problem Solving</span>
-            </div>
-            <p className="text-secondary leading-relaxed max-w-xl">
-              {leetcodeData
-                ? `Passionate about solving algorithmic challenges. Solved ${leetcodeData.solved.total} problems with ${leetcodeData.submissions.toLocaleString()} total submissions.`
-                : "Passionate about solving algorithmic challenges and improving problem-solving skills through consistent practice."}
-            </p>
+          <div className="grid grid-cols-3 gap-6 mb-10">
+            {[
+              { label: "Solved", value: leetcodeData?.solved.total || "120+" },
+              { label: "Rating", value: Math.round(leetcodeData?.contest.rating || 1633) },
+              { label: "Global", value: "Top 20%" },
+              { label: "Easy", value: leetcodeData?.solved.easy || "—" },
+              { label: "Medium", value: leetcodeData?.solved.medium || "—" },
+              { label: "Hard", value: leetcodeData?.solved.hard || "—" }
+            ].map((stat, i) => (
+              <div key={i} className="text-center p-4 rounded-2xl bg-paper-warm/50 border border-border-new/20">
+                <div className="font-serif text-[24px] text-ink leading-none mb-1">{stat.value}</div>
+                <div className="font-mono text-[12px] tracking-wider uppercase text-muted">{stat.label}</div>
+              </div>
+            ))}
           </div>
-
-          <a href="/leetcode-stats" className="px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
-            View LeetCode
-          </a>
-        </div>
-
-        {leetcodeData && (
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mt-8 relative z-10">
-            <div className="bg-card-hover border-card rounded-2xl p-5 text-center">
-              <span className="text-2xl font-bold text-primary-500">
-                {leetcodeData.solved.total}
-              </span>
-              <div className="text-sm text-secondary mt-1">Solved</div>
-            </div>
-
-            <div className="bg-card-hover border-card rounded-2xl p-5 text-center">
-              <span className="text-2xl font-bold text-blue-500">
-                {Math.round(leetcodeData.contest.rating)}
-              </span>
-              <div className="text-sm text-secondary mt-1">Contest Rating</div>
-            </div>
-
-            <div className="bg-card-hover border-card rounded-2xl p-5 text-center">
-              <span className="text-2xl font-bold text-purple-500">
-                {leetcodeData.contest.contestsAttended}
-              </span>
-              <div className="text-sm text-secondary mt-1">Contests</div>
-            </div>
-
-            <div className="bg-card-hover border-card rounded-2xl p-5 text-center">
-              <span className="text-2xl font-bold text-green-500">
-                {leetcodeData.solved.easy}
-              </span>
-              <div className="text-sm text-secondary mt-1">Easy</div>
-            </div>
-
-            <div className="bg-card-hover border-card rounded-2xl p-5 text-center">
-              <span className="text-2xl font-bold text-yellow-500">
-                {leetcodeData.solved.medium}
-              </span>
-              <div className="text-sm text-secondary mt-1">Medium</div>
-            </div>
-
-            <div className="bg-card-hover border-card rounded-2xl p-5 text-center">
-              <span className="text-2xl font-bold text-red-500">
-                {leetcodeData.solved.hard}
-              </span>
-              <div className="text-sm text-secondary mt-1">Hard</div>
-            </div>
-          </div>
-        )}
+          <a href="https://leetcode.com/u/adityasagar9991" target="_blank" rel="noopener" className="btn-ghost w-full justify-center rounded-xl border-border-new/40 hover:border-accent-new hover:text-accent-new transition-all">View Profile ↗</a>
+        </motion.div>
       </div>
     </section>
   );
 }
+
+// export default CodingProfile;

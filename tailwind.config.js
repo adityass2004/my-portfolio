@@ -9,17 +9,27 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'inter': ['Inter', 'sans-serif'],
+        'inter': ['var(--font-inter)', 'sans-serif'],
         'poppins': ['Poppins', 'sans-serif'],
+        'mono': ['var(--font-mono)', 'monospace'],
+        'serif': ['var(--font-serif)', 'serif'],
+        'sans': ['var(--font-sans)', 'sans-serif'],
       },
       colors: {
+        ink: 'rgb(var(--ink-rgb) / <alpha-value>)',
+        paper: 'rgb(var(--paper-rgb) / <alpha-value>)',
+        'paper-warm': 'var(--paper-warm)',
+        'accent-new': 'rgb(var(--accent-new-rgb) / <alpha-value>)',
+        'accent-soft': 'var(--accent-soft)',
+        muted: 'var(--muted)',
+        'border-new': 'rgb(var(--border-new-rgb) / <alpha-value>)',
         primary: {
           50: '#f5f3ff',
           100: '#ede9fe',
           200: '#ddd6fe',
           300: '#c4b5fd',
           400: '#a78bfa',
-          500: '#a259ec', 
+          500: '#a259ec',
           600: '#7c3aed',
           700: '#6d28d9',
           800: '#5b21b6',

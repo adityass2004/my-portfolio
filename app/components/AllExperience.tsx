@@ -28,73 +28,46 @@ const AllExperience: React.FC = () => {
   const allExperience = experience.slice().sort((a, b) => b.id - a.id);
 
   return (
-    <section className="mobile-padding section-bg min-h-screen">
-      <div className="max-w-5xl mx-auto mobile-optimized">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-primary flex items-center justify-center">
-            <Briefcase className="w-8 h-8 sm:w-10 sm:h-10 mr-3 text-primary-500" />
-            All <span className="gradient-text ml-1">Experience</span>
-          </h2>
-          <p className="text-lg sm:text-xl text-secondary max-w-2xl mx-auto px-4">
-            My complete professional journey
-          </p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-          {allExperience.map((exp) => (
-            <div key={exp.id} className="w-full relative bg-card border border-card rounded-xl p-6 flex flex-col">
-              <div className="flex items-start space-x-6 mb-4">
-                <div className="w-20 h-20 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden cursor-pointer" onClick={() => setModalImage(exp.image)}>
-                  {exp.image ? (
-                    <img src={exp.image} alt={exp.title} className="w-full h-full object-cover" />
-                  ) : (
-                    <span className="text-white font-bold text-xl">{exp.company.charAt(0)}</span>
-                  )}
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-primary mb-1 flex items-center">
-                    {exp.title}
-                  </h3>
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 text-xs sm:text-sm text-secondary mb-2">
-                    <span className="flex items-center">{exp.company}</span>
-                    <span className="flex items-center">{exp.location}</span>
-                    <span className="flex items-center">{exp.period}</span>
-                  </div>
-                  <p className="text-secondary mb-2 leading-relaxed text-sm sm:text-base">{exp.description}</p>
-                  <div className="flex flex-wrap gap-2 mb-2">
-                    {exp.technologies.map((tech) => (
-                      <span key={tech} className="px-2 py-1 bg-primary-500/10 text-primary-500 rounded-full text-xs">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                  <ul className="list-disc list-inside text-xs text-secondary space-y-1">
-                    {exp.achievements.map((ach, idx) => (
-                      <li key={idx}>{ach}</li>
-                    ))}
-                  </ul>
-                </div>
+    <section id="all-experience" className="p-[8rem_4rem_5rem] min-h-screen bg-paper">
+      <div className="section-header fade-in visible">
+        <span className="section-num">Archive</span>
+        <h2 className="font-serif text-[clamp(1.9rem,3.5vw,2.8rem)] line-height-[1.1] text-ink">All Experience</h2>
+      </div>
+
+      <div className="flex flex-col fade-in visible">
+        {allExperience.map((exp) => (
+          <div key={exp.id} className="exp-item">
+            <div className="exp-left">
+              <div className="ep font-mono text-[0.7rem] tracking-[0.08em] text-muted mb-[0.3rem]">{exp.period}</div>
+              <div className="ec font-serif text-[1.1rem] text-ink mb-[0.15rem]">{exp.company}</div>
+              <div className="el font-mono text-[0.66rem] text-muted">{exp.location}</div>
+            </div>
+            <div className="exp-right">
+              <div className="er font-semibold text-base text-ink mb-[0.5rem]">{exp.title}</div>
+              <div className="ed text-[0.9rem] text-muted mb-[0.9rem] leading-[1.7]">{exp.description}</div>
+              <ul className="epoints list-none flex flex-col gap-[0.5rem] mb-[0.9rem]">
+                {exp.achievements.map((achievement, idx) => (
+                  <li key={idx} className="text-[0.9rem] text-muted leading-[1.65] pl-[1.2rem] relative before:content-['→'] before:absolute before:left-0 before:text-accent-new before:text-[0.76rem]">{achievement}</li>
+                ))}
+              </ul>
+              <div className="etechs flex flex-wrap gap-[0.35rem]">
+                {exp.technologies.map((tech) => (
+                  <span key={tech} className="pill">{tech}</span>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
-        <div className="flex justify-center mt-10">
-          <button
-            className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
-            onClick={() => router.push('/')}
-          >
-            Back to Home
-          </button>
-        </div>
-      </div>
-      {/* Modal for experience image enlargement - overlays whole page */}
-      {modalImage && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50" onClick={() => setModalImage(null)}>
-          <div className="bg-white rounded-lg overflow-hidden shadow-lg max-w-2xl w-full relative">
-            <button className="absolute top-2 right-2 text-black bg-white rounded-full p-1 z-10" onClick={() => setModalImage(null)}>&times;</button>
-            <img src={modalImage} alt="Experience" className="w-full h-auto max-h-[80vh] object-contain" />
           </div>
-        </div>
-      )}
+        ))}
+      </div>
+
+      <div className="flex justify-center mt-12 fade-in visible">
+        <button
+          className="btn-ghost"
+          onClick={() => router.push('/')}
+        >
+          Back to Home ↗
+        </button>
+      </div>
     </section>
   );
 };

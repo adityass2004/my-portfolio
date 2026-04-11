@@ -22,7 +22,6 @@ import {
   GitBranch,
   Database,
   Server,
-//   Docker,
   Zap
 } from 'lucide-react';
 import { loadPortfolioData, PortfolioData } from '../data/portfolioService';
