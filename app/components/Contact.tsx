@@ -1,4 +1,5 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
+import { motion } from "framer-motion";
 import {
   Mail,
   Phone,

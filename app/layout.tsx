@@ -12,6 +12,7 @@ const dmMono = DM_Mono({ weight: ['300', '400', '500'], subsets: ['latin'], vari
 const instrumentSans = Instrument_Sans({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://adityass-portfolio.netlify.app'),
   title: 'Aditya Sagar - Full Stack Developer',
   description: 'B.Tech CSE Student & Full Stack Developer building scalable web applications with React, Node.js & Databases',
   keywords: 'Full Stack Developer, React, Node.js, TypeScript, Web Development, Portfolio',
