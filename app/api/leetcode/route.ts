@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 interface LeetCodeUser {
   username: string;
   profile: {
@@ -10,6 +12,19 @@ interface LeetCodeUser {
     starRating: number;
     countryName: string;
   };
+  activeBadge: {
+    id: string;
+    name: string;
+    icon: string;
+    displayName: string;
+  } | null;
+  badges: Array<{
+    id: string;
+    name: string;
+    icon: string;
+    displayName: string;
+    hoverText: string;
+  }>;
   submitStatsGlobal: {
     acSubmissionNum: Array<{
       difficulty: string;
@@ -75,6 +90,19 @@ export async function GET(request: NextRequest) {
             ranking
             starRating
             countryName
+          }
+          activeBadge {
+            id
+            name
+            icon
+            displayName
+          }
+          badges {
+            id
+            name
+            icon
+            displayName
+            hoverText
           }
           submitStatsGlobal {
             acSubmissionNum {
@@ -152,6 +180,19 @@ export async function GET(request: NextRequest) {
       globalranking: user.profile.globalRanking,
       ranking: user.profile.ranking,
       star: user.profile.starRating,
+      activeBadge: user.activeBadge ? {
+        id: user.activeBadge.id,
+        name: user.activeBadge.name,
+        icon: user.activeBadge.icon.startsWith('http') ? user.activeBadge.icon : `https://leetcode.com${user.activeBadge.icon}`,
+        displayName: user.activeBadge.displayName
+      } : null,
+      badges: user.badges ? user.badges.map((b: any) => ({
+        id: b.id,
+        name: b.name,
+        icon: b.icon.startsWith('http') ? b.icon : `https://leetcode.com${b.icon}`,
+        displayName: b.displayName,
+        hoverText: b.hoverText
+      })) : [],
 
       solved: {
         total: statsMap.all?.count ?? 0,

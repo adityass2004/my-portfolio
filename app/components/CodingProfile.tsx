@@ -20,6 +20,7 @@ interface GithubData {
   updatedAt: string;
   topLanguages: string[];
   contributions: Array<{ date: string; count: number; level: number }>;
+  achievements?: Array<{ displayName: string; icon: string }>;
 }
 
 type SolvedStats = {
@@ -52,6 +53,19 @@ type LeetCodeData = {
   profileUrl: string;
   monthlySubmissions: MonthlySubmission[];
   contest: ContestStats;
+  activeBadge: {
+    id: string;
+    name: string;
+    icon: string;
+    displayName: string;
+  } | null;
+  badges: Array<{
+    id: string;
+    name: string;
+    icon: string;
+    displayName: string;
+    hoverText: string;
+  }>;
 };
 
 export default function CodingProfile() {
@@ -150,7 +164,7 @@ export default function CodingProfile() {
         {/* GitHub Card */}
         <motion.div 
           whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
-          className="bg-white/5 backdrop-blur-sm border border-border-new/40 p-10 rounded-3xl transition-all duration-300 group"
+          className="bg-white/80 dark:bg-white/5 backdrop-blur-sm border border-border-new/40 p-10 rounded-3xl transition-all duration-300 group"
         >
           <div className="flex justify-between items-center mb-10">
             <div className="flex items-center gap-3">
@@ -180,13 +194,33 @@ export default function CodingProfile() {
             ))}
           </div>
           <p className="text-[0.92rem] text-muted leading-[1.7] mb-8">{data.bio || "Full Stack Developer passionate about building scalable web applications."}</p>
+
+          {/* GitHub Achievements Section */}
+          {data.achievements && data.achievements.length > 0 && (
+            <div className="mb-8">
+              <div className="font-mono text-[0.65rem] tracking-[0.1em] uppercase text-muted mb-3">Earned Achievements</div>
+              <div className="flex flex-wrap gap-2.5">
+                {data.achievements.map((achievement, idx) => (
+                  <div 
+                    key={idx} 
+                    className="flex items-center gap-1.5 bg-paper-warm/50 border border-border-new/20 rounded-full pl-2 pr-3 py-1 text-xs text-ink hover:border-accent-new transition-all group/ach" 
+                    title={achievement.displayName}
+                  >
+                    <img src={achievement.icon} alt={achievement.displayName} className="w-5 h-5 object-contain" />
+                    <span className="font-mono text-[0.7rem] text-muted group-hover/ach:text-accent-new transition-colors">{achievement.displayName}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <a href="https://github.com/adityass2004" target="_blank" rel="noopener" className="btn-ghost w-full justify-center rounded-xl border-border-new/40 hover:border-accent-new hover:text-accent-new transition-all">View Profile ↗</a>
         </motion.div>
 
         {/* LeetCode Card */}
         <motion.div 
           whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
-          className="bg-white/5 backdrop-blur-sm border border-border-new/40 p-10 rounded-3xl transition-all duration-300 group"
+          className="bg-white/80 dark:bg-white/5 backdrop-blur-sm border border-border-new/40 p-10 rounded-3xl transition-all duration-300 group"
         >
           <div className="flex justify-between items-center mb-10">
             <div className="flex items-center gap-3">
@@ -194,7 +228,17 @@ export default function CodingProfile() {
                 <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full"><path d="M13.483 0a1.374 1.374 0 0 0-.961.414l-9.77 9.77a1.359 1.359 0 0 0-.415.962c0 .356.141.695.392.945l1.627 1.627a1.356 1.356 0 0 0 .945.392c.358 0 .697-.141.946-.392l7.848-7.847a1.391 1.391 0 0 0 .5-1.059c0-.354-.14-.69-.391-.94l-1.637-1.637A1.357 1.357 0 0 0 13.483 0zm-5.17 5.03a1.377 1.377 0 0 0-.961.414l-7.415 7.416a1.386 1.386 0 0 0-.414.96c0 .356.141.694.392.944l1.627 1.627a1.356 1.356 0 0 0 .945.392c.358 0 .697-.141.946-.392l5.488-5.489a1.396 1.396 0 0 0 .501-1.06c0-.354-.14-.69-.391-.94l-1.638-1.638a1.358 1.358 0 0 0-.936-.416zm12.564 3.424c-.357 0-.696.141-.945.392l-5.488 5.49a1.391 1.391 0 0 0-.501 1.059c0 .354.14.69.391.94l1.637 1.638a1.357 1.357 0 0 0 .962.414c.357 0 .696-.141.945-.392l7.415-7.416a1.386 1.386 0 0 0 .414-.96c0-.356-.141-.694-.392-.944l-1.627-1.627a1.356 1.356 0 0 0-.945-.392zM4.568 13.313c-.356 0-.695.14-.945.391l-1.627 1.627a1.359 1.359 0 0 0-.415.962c0 .356.141.695.392.945l9.77 9.77A1.391 1.391 0 0 0 12.703 24c.354 0 .69-.14.94-.391l1.637-1.638a1.357 1.357 0 0 0 .414-.962c0-.357-.141-.696-.392-.945l-7.847-7.848a1.356 1.356 0 0 0-.945-.392z"/></svg>
               </div>
               <div>
-                <div className="font-serif text-xl text-ink">LeetCode</div>
+                <div className="font-serif text-xl text-ink flex items-center gap-2">
+                  LeetCode
+                  {leetcodeData?.activeBadge && (
+                    <img 
+                      src={leetcodeData.activeBadge.icon} 
+                      alt={leetcodeData.activeBadge.displayName} 
+                      title={leetcodeData.activeBadge.displayName}
+                      className="w-6 h-6 object-contain inline-block hover:scale-110 transition-transform"
+                    />
+                  )}
+                </div>
                 <div className="font-mono text-[0.7rem] text-muted">adityasagar9991 · {Math.round(leetcodeData?.contest.rating || 1633)} Rating</div>
               </div>
             </div>
@@ -203,7 +247,7 @@ export default function CodingProfile() {
             </a>
           </div>
 
-          <div className="grid grid-cols-3 gap-6 mb-10">
+          <div className="grid grid-cols-3 gap-6 mb-8">
             {[
               { label: "Solved", value: leetcodeData?.solved.total || "120+" },
               { label: "Rating", value: Math.round(leetcodeData?.contest.rating || 1633) },
@@ -218,6 +262,26 @@ export default function CodingProfile() {
               </div>
             ))}
           </div>
+
+          {/* Badges Section */}
+          {leetcodeData?.badges && leetcodeData.badges.length > 0 && (
+            <div className="mb-8">
+              <div className="font-mono text-[0.65rem] tracking-[0.1em] uppercase text-muted mb-3">Earned Badges</div>
+              <div className="flex flex-wrap gap-2.5">
+                {leetcodeData.badges.map((badge) => (
+                  <div 
+                    key={badge.id} 
+                    className="flex items-center gap-1.5 bg-paper-warm/50 border border-border-new/20 rounded-full pl-2 pr-3 py-1 text-xs text-ink hover:border-accent-new transition-all group/badge" 
+                    title={badge.hoverText}
+                  >
+                    <img src={badge.icon} alt={badge.displayName} className="w-5 h-5 object-contain" />
+                    <span className="font-mono text-[0.7rem] text-muted group-hover/badge:text-accent-new transition-colors">{badge.displayName}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <a href="https://leetcode.com/u/adityasagar9991" target="_blank" rel="noopener" className="btn-ghost w-full justify-center rounded-xl border-border-new/40 hover:border-accent-new hover:text-accent-new transition-all">View Profile ↗</a>
         </motion.div>
       </div>

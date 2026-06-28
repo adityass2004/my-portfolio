@@ -43,6 +43,19 @@ interface LeetCodeData {
   }>;
 
   submissionCalendar?: string;
+  activeBadge: {
+    id: string;
+    name: string;
+    icon: string;
+    displayName: string;
+  } | null;
+  badges: Array<{
+    id: string;
+    name: string;
+    icon: string;
+    displayName: string;
+    hoverText: string;
+  }>;
 }
 
 interface DaySubmission {
@@ -304,6 +317,28 @@ const LeetCodeStats: React.FC = () => {
           <div className="font-serif text-[1.4rem] text-ink">{leetcodeData.star} Stars</div>
         </div>
       </div>
+
+      {/* Badges Section */}
+      {leetcodeData.badges && leetcodeData.badges.length > 0 && (
+        <div className="coding-card mt-12 mb-12 fade-in visible">
+          <div className="font-mono text-[0.7rem] tracking-[0.12em] uppercase text-muted mb-6">Earned Badges</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {leetcodeData.badges.map((badge) => (
+              <div 
+                key={badge.id} 
+                className="flex items-center gap-4 p-5 rounded-2xl bg-paper-warm/50 border border-border-new/20 hover:border-accent-new hover:shadow-lg transition-all group"
+                title={badge.hoverText}
+              >
+                <img src={badge.icon} alt={badge.displayName} className="w-12 h-12 object-contain group-hover:scale-110 transition-transform" />
+                <div>
+                  <div className="font-serif text-[1rem] text-ink leading-tight">{badge.displayName}</div>
+                  <div className="font-mono text-[0.65rem] text-muted uppercase mt-1">{badge.name}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="flex flex-wrap gap-4 mt-16 fade-in visible">
         <a href={leetcodeData.profileUrl} target="_blank" rel="noopener noreferrer" className="btn-primary">

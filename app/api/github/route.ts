@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 interface GitHubUser {
   name: string;
   login: string;
@@ -85,6 +87,37 @@ export async function GET(request: NextRequest) {
       console.warn('Failed to fetch contributions:', error);
     }
 
+    // Try to fetch achievements/badges from public GitHub profile
+    let achievements: Array<{ displayName: string; icon: string }> = [];
+    try {
+      const profileResponse = await fetch(`https://github.com/${username}`, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)',
+        },
+      });
+      if (profileResponse.ok) {
+        const html = await profileResponse.text();
+        const regex = /<img[^>]+class="achievement-badge-sidebar"[^>]*>/g;
+        let match;
+        const uniqueNames = new Set<string>();
+        while ((match = regex.exec(html)) !== null) {
+          const imgTag = match[0];
+          const srcMatch = imgTag.match(/src="([^"]+)"/);
+          const altMatch = imgTag.match(/alt="Achievement:\s*([^"]+)"/);
+          if (srcMatch && altMatch) {
+            const displayName = altMatch[1];
+            const icon = srcMatch[1];
+            if (!uniqueNames.has(displayName)) {
+              uniqueNames.add(displayName);
+              achievements.push({ displayName, icon });
+            }
+          }
+        }
+      }
+    } catch (achError) {
+      console.warn('Failed to fetch GitHub achievements:', achError);
+    }
+
     return NextResponse.json({
       name: userData.name,
       username: userData.login,
@@ -100,6 +133,7 @@ export async function GET(request: NextRequest) {
       updatedAt: userData.updated_at,
       topLanguages,
       contributions,
+      achievements,
     });
   } catch (error) {
     console.error('GitHub API error:', error);

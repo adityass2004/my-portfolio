@@ -22,6 +22,20 @@ const Navbar: React.FC = () => {
     getPersonalInfo().then(setPersonalInfo).catch(console.error);
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [isOpen]);
+
   if (!personalInfo) {
     return null;
   }
@@ -38,19 +52,19 @@ const Navbar: React.FC = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[100] flex justify-between items-center p-[1.1rem_4rem] bg-paper/70 backdrop-blur-[10px] border-b border-white/5 sticky-navbar">
-      <Link href="/" className="nav-logo font-serif text-[1.2rem] text-ink no-underline font-medium tracking-tight">
+    <nav className="fixed top-0 left-0 right-0 z-[100] flex justify-between items-center p-[1.4rem_2rem] md:p-[1.6rem_4rem] bg-paper/70 backdrop-blur-[10px] border-b border-white/5 sticky-navbar">
+      <Link href="/" className="nav-logo font-serif text-[1.3rem] md:text-[1.5rem] text-ink no-underline font-medium tracking-tight hover:text-accent-new transition-colors">
         Aditya Sagar.
       </Link>
 
-      <ul className="hidden md:flex gap-[2.5rem] list-none items-center">
+      <ul className="hidden md:flex gap-[3rem] list-none items-center">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
             <li key={item.name} className="relative">
               <Link
                 href={item.href}
-                className={`font-mono text-[0.75rem] font-normal no-underline tracking-[0.1em] uppercase transition-colors duration-300 hover:text-accent-new py-2 ${isActive ? 'text-accent-new' : 'text-muted'
+                className={`font-mono text-[0.8rem] md:text-[0.85rem] font-normal no-underline tracking-[0.1em] uppercase transition-colors duration-300 hover:text-accent-new py-2 ${isActive ? 'text-accent-new' : 'text-muted'
                   }`}
               >
                 {item.name}
@@ -70,26 +84,26 @@ const Navbar: React.FC = () => {
       </ul>
 
       <button
-        className="md:hidden flex flex-col gap-[5px] cursor-pointer bg-none border-none p-1"
+        className="md:hidden flex flex-col gap-[5px] cursor-pointer bg-none border-none p-2 rounded-lg hover:bg-ink/5 dark:hover:bg-white/5 transition-colors text-ink"
         onClick={() => setIsOpen(true)}
-        aria-label="Menu"
+        aria-label="Open Menu"
       >
-        <span className="block w-6 h-[2px] bg-ink"></span>
-        <span className="block w-6 h-[2px] bg-ink"></span>
-        <span className="block w-6 h-[2px] bg-ink"></span>
+        <span className="block w-6 h-[2px] bg-current"></span>
+        <span className="block w-6 h-[2px] bg-current"></span>
+        <span className="block w-6 h-[2px] bg-current"></span>
       </button>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-paper/95 backdrop-blur-md z-[200] flex flex-col justify-center items-center gap-10"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 w-full h-[100dvh] bg-white/95 dark:bg-black/95 backdrop-blur-xl z-[200] flex flex-col justify-start items-center gap-6 overflow-y-auto pt-24 pb-12"
           >
             <button
-              className="absolute top-6 right-6 font-mono text-[0.78rem] border border-border-new p-[0.4rem_0.8rem] cursor-pointer text-ink"
+              className="absolute top-6 right-6 font-mono text-[0.78rem] border border-border-new p-[0.4rem_0.8rem] cursor-pointer text-ink hover:border-ink hover:text-accent-new transition-all rounded"
               onClick={() => setIsOpen(false)}
             >
               ✕ Close
@@ -98,15 +112,15 @@ const Navbar: React.FC = () => {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`font-serif text-[2rem] no-underline ${pathname === item.href ? 'text-accent-new' : 'text-ink'
+                className={`font-serif text-[1.5rem] md:text-[2rem] no-underline transition-colors hover:text-accent-new ${pathname === item.href ? 'text-accent-new' : 'text-ink'
                   }`}
                 onClick={() => setIsOpen(false)}
               >
                 {item.name}
               </Link>
             ))}
-            <div className="flex items-center gap-4 mt-4">
-              <span className="font-mono text-sm text-muted">Theme</span>
+            <div className="flex items-center gap-4 mt-6 border-t border-border-new/40 pt-6 w-1/2 justify-center">
+              <span className="font-mono text-[0.75rem] uppercase tracking-[0.1em] text-muted">Theme</span>
               <ThemeToggle />
             </div>
           </motion.div>

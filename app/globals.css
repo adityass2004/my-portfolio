@@ -145,7 +145,7 @@
   }
 
   .glass-card {
-    @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-sm hover:shadow-xl transition-all duration-300;
+    @apply bg-white/80 dark:bg-white/5 backdrop-blur-md border border-border-new/40 shadow-sm hover:shadow-xl transition-all duration-300;
   }
 
   .section-header {
@@ -157,11 +157,11 @@
   }
 
   .pill {
-    @apply font-mono text-[0.72rem] text-muted px-[1rem] py-[0.4rem] border border-border-new/40 bg-white/5 rounded-full transition-all hover:border-accent-new/30 hover:text-accent-new;
+    @apply font-mono text-[0.72rem] text-muted px-[1rem] py-[0.4rem] border border-border-new/40 bg-white/80 dark:bg-white/5 rounded-full transition-all hover:border-accent-new/30 hover:text-accent-new;
   }
 
   .stat-card {
-    @apply bg-white/5 backdrop-blur-md border border-white/10 p-[1.8rem] rounded-2xl relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+    @apply bg-white/80 dark:bg-white/5 backdrop-blur-md border border-border-new/40 p-[1.8rem] rounded-2xl relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
   }
 
   .stat-card::after {
@@ -189,6 +189,10 @@
 
   .reveal.active {
     @apply opacity-100 translate-y-0;
+  }
+
+  .coding-card {
+    @apply bg-white/80 dark:bg-white/5 border border-border-new/40 p-8 rounded-3xl transition-all duration-300;
   }
 }
 
