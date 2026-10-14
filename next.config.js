@@ -3,14 +3,10 @@ const nextConfig = {
   images: {
     domains: ['raw.githubusercontent.com'],
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'http://localhost:3001/api/:path*',
-      },
-    ];
-  },
+  // NOTE: no rewrites — /api/* is served by Next.js route handlers in app/api/*.
+  // (An old rewrite to http://localhost:3001 broke /api/github, /api/leetcode
+  // and /api/portfolio whenever the express server wasn't running, and the
+  // express server doesn't even implement /api/github or /api/leetcode.)
   async headers() {
     return [
       {

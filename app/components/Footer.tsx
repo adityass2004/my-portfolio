@@ -88,13 +88,17 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="p-[2rem_4rem] flex justify-between items-center font-mono text-[0.7rem] text-muted tracking-[0.06em] bg-paper border-t border-border-new">
+    <footer className="flex flex-col items-start gap-4 px-4 py-6 font-mono text-[0.7rem] text-muted tracking-[0.06em] bg-paper border-t border-border-new sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-8 md:px-8 lg:px-16">
       <div className="fade-in visible">
         © {currentYear} {portfolioData?.personalInfo?.name || 'Aditya Sagar'}. Built with Next.js & Tailwind.
       </div>
-      <div className="flex gap-6 fade-in visible">
-        <a href="https://github.com/adityass2004" target="_blank" rel="noopener" className="no-underline hover:text-accent-new transition-colors duration-200">GitHub</a>
-        <a href="https://www.linkedin.com/in/aditya-sagar-sharma-1955a7288/" target="_blank" rel="noopener" className="no-underline hover:text-accent-new transition-colors duration-200">LinkedIn</a>
+      <div className="flex flex-wrap gap-4 sm:gap-6 fade-in visible">
+        {portfolioData?.contactInfo?.social?.github && (
+          <a href={portfolioData.contactInfo.social.github} target="_blank" rel="noopener" className="no-underline hover:text-accent-new transition-colors duration-200">GitHub</a>
+        )}
+        {portfolioData?.contactInfo?.social?.linkedin && (
+          <a href={portfolioData.contactInfo.social.linkedin} target="_blank" rel="noopener" className="no-underline hover:text-accent-new transition-colors duration-200">LinkedIn</a>
+        )}
       </div>
     </footer>
   );

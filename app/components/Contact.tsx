@@ -37,15 +37,12 @@ interface SocialLink {
   icon: React.ComponentType<any>;
   href: string;
   label: string;
+  show?: boolean;
 }
 
 // Mock data - replace with your actual data
 
-const personalInfoBio = {
-  bio: "I'm passionate about creating innovative solutions and bringing ideas to life through code. Let's collaborate on your next project!"
-};
-
-const FORMSPREE_FORM_ID = "mzznaryk";
+const FORMSPREE_FALLBACK_ID = "mzznaryk";
 
 const Contact: React.FC = () => {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
@@ -102,13 +99,14 @@ const Contact: React.FC = () => {
         </svg>
       ), 
       href: contactInfo.social.github, 
-      label: "GitHub" 
+      label: "GitHub",
+      show: !!contactInfo.social.github
     },
-    { icon: Linkedin, href: contactInfo.social.linkedin, label: "LinkedIn" },
-    { icon: Twitter, href: contactInfo.social.twitter, label: "Twitter" },
-    { icon: Instagram, href: contactInfo.social.instagram, label: "Instagram" },
-    { icon: Youtube, href: contactInfo.social.youtube, label: "YouTube" },
-  ];
+    { icon: Linkedin, href: contactInfo.social.linkedin, label: "LinkedIn", show: !!contactInfo.social.linkedin },
+    { icon: Twitter, href: contactInfo.social.twitter, label: "Twitter", show: !!contactInfo.social.twitter },
+    { icon: Instagram, href: contactInfo.social.instagram, label: "Instagram", show: !!contactInfo.social.instagram },
+    { icon: Youtube, href: contactInfo.social.youtube, label: "YouTube", show: !!contactInfo.social.youtube },
+  ].filter(s => s.show);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -118,12 +116,14 @@ const Contact: React.FC = () => {
     }));
   };
 
+  const formspreeId = contactInfo?.formspreeId || FORMSPREE_FALLBACK_ID;
+
   const handleFormspreeSubmit = async () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
     try {
-      const response = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
+      const response = await fetch(`https://formspree.io/f/${formspreeId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -171,130 +171,131 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="p-[100px_4rem] border-b border-border-new bg-paper">
-      <div className="section-header fade-in visible">
-        <span className="section-num">08</span>
-        <h2 className="font-serif text-[clamp(1.9rem,3.5vw,2.8rem)] line-height-[1.1] text-ink">Get in touch</h2>
-      </div>
-
-      <div className="grid lg:grid-cols-[1fr_1.2fr] gap-24 items-start fade-in visible">
-        <div className="contact-info">
-          <p className="text-[1.05rem] text-muted leading-relaxed mb-12 max-w-[480px]">
-            I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions. 
-            Feel free to reach out through any of the channels below or use the form.
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-12">
-            {contactDetails.map((info) => (
-              <div key={info.title} className="bg-white/5 backdrop-blur-sm border border-border-new/40 p-6 rounded-2xl hover:border-accent-new/30 transition-all duration-300 group">
-                <div className="w-10 h-10 bg-accent-new/10 text-accent-new rounded-xl flex items-center justify-center mb-4 group-hover:bg-accent-new group-hover:text-white transition-all">
-                  <info.icon size={18} />
-                </div>
-                <div className="font-mono text-[0.65rem] tracking-[0.14em] uppercase text-muted mb-1">{info.title}</div>
-                <a href={info.link} className="text-[0.95rem] text-ink font-medium no-underline hover:text-accent-new transition-colors break-words">{info.value}</a>
-              </div>
-            ))}
-          </div>
-
-          <div className="font-mono text-[0.68rem] tracking-[0.14em] uppercase text-muted mb-6 flex items-center gap-4">
-            <span className="h-[1px] w-8 bg-border-new"></span>
-            Social Ecosystem
-          </div>
-          <div className="flex flex-wrap gap-3 mb-12">
-            {socialLinks.map((social) => (
-              <a 
-                key={social.label} 
-                href={social.href} 
-                target="_blank" 
-                rel="noopener" 
-                className="w-12 h-12 flex items-center justify-center bg-white/5 border border-border-new/40 rounded-full text-muted hover:text-accent-new hover:border-accent-new hover:bg-accent-new/5 transition-all duration-300"
-                aria-label={social.label}
-              >
-                <social.icon className="w-5 h-5" />
-              </a>
-            ))}
-          </div>
-
-          <div className="avail-row flex items-center gap-3 font-mono text-[0.75rem] text-muted bg-accent-new/5 w-fit px-5 py-2.5 rounded-full border border-accent-new/20 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-accent-new animate-pulse"></span>
-            {contactInfo.availability}
-          </div>
+    <section id="contact" className="page-section border-b border-border-new bg-paper">
+      <div className="container-shell">
+        <div className="section-header fade-in visible">
+          <span className="section-num">08</span>
+          <h2 className="font-serif text-[clamp(1.9rem,3.2vw,2.8rem)] leading-[1.08] text-ink">Get in touch</h2>
         </div>
 
-        <div className="contact-form bg-white/5 backdrop-blur-md border border-border-new/40 p-12 rounded-[40px] shadow-sm flex flex-col gap-10 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-accent-new/5 blur-3xl -z-10 group-hover:bg-accent-new/10 transition-colors"></div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <div className="flex flex-col gap-3">
-              <label className="font-mono text-[0.68rem] tracking-[0.14em] uppercase text-muted ml-1">Name</label>
-              <input 
-                type="text" 
-                name="name" 
-                value={formData.name} 
-                onChange={handleInputChange} 
-                className="bg-transparent border-b border-border-new/60 py-3 px-1 focus:outline-none focus:border-accent-new transition-colors text-ink placeholder:text-muted/30 text-[0.95rem]" 
-                placeholder="Aditya Sagar" 
+        <div className="grid items-start gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10 fade-in visible">
+          <div className="contact-info">
+            <p className="text-[0.96rem] md:text-base text-muted leading-relaxed mb-7 max-w-[480px]">
+              {contactInfo.contactIntro ?? personalInfo.bio}
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-8">
+              {contactDetails.map((info) => (
+                <div key={info.title} className="bg-white/5 backdrop-blur-sm border border-border-new/40 p-4 rounded-2xl hover:border-accent-new/30 transition-all duration-300 group">
+                  <div className="w-10 h-10 bg-accent-new/10 text-accent-new rounded-xl flex items-center justify-center mb-3 group-hover:bg-accent-new group-hover:text-white transition-all">
+                    <info.icon size={18} />
+                  </div>
+                  <div className="font-mono text-[0.62rem] tracking-[0.14em] uppercase text-muted mb-1">{info.title}</div>
+                  <a href={info.link} className="text-[0.92rem] text-ink font-medium no-underline hover:text-accent-new transition-colors break-words">{info.value}</a>
+                </div>
+              ))}
+            </div>
+
+            <div className="font-mono text-[0.64rem] tracking-[0.14em] uppercase text-muted mb-4 flex items-center gap-4">
+              <span className="h-[1px] w-8 bg-border-new"></span>
+              Social Ecosystem
+            </div>
+            <div className="flex flex-wrap gap-2.5 mb-8">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener"
+                  className="w-11 h-11 flex items-center justify-center bg-white/5 border border-border-new/40 rounded-full text-muted hover:text-accent-new hover:border-accent-new hover:bg-accent-new/5 transition-all duration-300"
+                  aria-label={social.label}
+                >
+                  <social.icon className="w-4 h-4" />
+                </a>
+              ))}
+            </div>
+
+            <div className="avail-row flex items-center gap-3 font-mono text-[0.72rem] text-muted bg-accent-new/5 w-fit px-4 py-2.5 rounded-full border border-accent-new/20 shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-accent-new animate-pulse"></span>
+              {contactInfo.availability}
+            </div>
+          </div>
+
+          <div className="contact-form bg-white/5 backdrop-blur-md border border-border-new/40 p-6 md:p-8 rounded-[2rem] shadow-sm flex flex-col gap-8 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-28 h-28 bg-accent-new/5 blur-3xl -z-10 group-hover:bg-accent-new/10 transition-colors"></div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-7">
+              <div className="flex flex-col gap-2.5">
+                <label className="font-mono text-[0.62rem] tracking-[0.14em] uppercase text-muted ml-1">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="bg-transparent border-b border-border-new/60 py-2.5 px-1 focus:outline-none focus:border-accent-new transition-colors text-ink placeholder:text-muted/30 text-[0.95rem]"
+                  placeholder="Aditya Sagar"
+                />
+              </div>
+              <div className="flex flex-col gap-2.5">
+                <label className="font-mono text-[0.62rem] tracking-[0.14em] uppercase text-muted ml-1">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="bg-transparent border-b border-border-new/60 py-2.5 px-1 focus:outline-none focus:border-accent-new transition-colors text-ink placeholder:text-muted/30 text-[0.95rem]"
+                  placeholder="hello@example.com"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2.5">
+              <label className="font-mono text-[0.62rem] tracking-[0.14em] uppercase text-muted ml-1">Subject</label>
+              <input
+                type="text"
+                name="subject"
+                value={formData.subject}
+                onChange={handleInputChange}
+                className="bg-transparent border-b border-border-new/60 py-2.5 px-1 focus:outline-none focus:border-accent-new transition-colors text-ink placeholder:text-muted/30 text-[0.95rem]"
+                placeholder="Project Collaboration"
               />
             </div>
-            <div className="flex flex-col gap-3">
-              <label className="font-mono text-[0.68rem] tracking-[0.14em] uppercase text-muted ml-1">Email</label>
-              <input 
-                type="email" 
-                name="email" 
-                value={formData.email} 
-                onChange={handleInputChange} 
-                className="bg-transparent border-b border-border-new/60 py-3 px-1 focus:outline-none focus:border-accent-new transition-colors text-ink placeholder:text-muted/30 text-[0.95rem]" 
-                placeholder="hello@example.com" 
+
+            <div className="flex flex-col gap-2.5">
+              <label className="font-mono text-[0.62rem] tracking-[0.14em] uppercase text-muted ml-1">Message</label>
+              <textarea
+                name="message"
+                rows={4}
+                value={formData.message}
+                onChange={handleInputChange}
+                className="bg-transparent border-b border-border-new/60 py-2.5 px-1 focus:outline-none focus:border-accent-new transition-colors text-ink placeholder:text-muted/30 resize-none text-[0.95rem] leading-relaxed"
+                placeholder="Tell me about your project..."
               />
             </div>
-          </div>
-          
-          <div className="flex flex-col gap-3">
-            <label className="font-mono text-[0.68rem] tracking-[0.14em] uppercase text-muted ml-1">Subject</label>
-            <input 
-              type="text" 
-              name="subject" 
-              value={formData.subject} 
-              onChange={handleInputChange} 
-              className="bg-transparent border-b border-border-new/60 py-3 px-1 focus:outline-none focus:border-accent-new transition-colors text-ink placeholder:text-muted/30 text-[0.95rem]" 
-              placeholder="Project Collaboration" 
-            />
-          </div>
 
-          <div className="flex flex-col gap-3">
-            <label className="font-mono text-[0.68rem] tracking-[0.14em] uppercase text-muted ml-1">Message</label>
-            <textarea 
-              name="message" 
-              rows={4} 
-              value={formData.message} 
-              onChange={handleInputChange} 
-              className="bg-transparent border-b border-border-new/60 py-3 px-1 focus:outline-none focus:border-accent-new transition-colors text-ink placeholder:text-muted/30 resize-none text-[0.95rem] leading-relaxed" 
-              placeholder="Tell me about your project..." 
-            />
-          </div>
+            <div className="flex flex-col gap-4 mt-1">
+              <button
+                onClick={handleFormspreeSubmit}
+                disabled={isSubmitting}
+                className="btn-primary w-full py-4 flex items-center justify-center gap-3 group/btn"
+              >
+                {isSubmitting ? "Sending..." : "Send Message"}
+                <Send size={18} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+              </button>
 
-          <div className="flex flex-col gap-5 mt-4">
-            <button 
-              onClick={handleFormspreeSubmit}
-              disabled={isSubmitting}
-              className="btn-primary w-full py-5 flex items-center justify-center gap-3 group/btn"
-            >
-              {isSubmitting ? "Sending..." : "Send Message"}
-              <Send size={18} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
-            </button>
-            
-            <div className="flex items-center gap-4">
-              <div className="h-[1px] flex-1 bg-border-new/30"></div>
-              <span className="font-mono text-[0.65rem] text-muted uppercase tracking-widest">or</span>
-              <div className="h-[1px] flex-1 bg-border-new/30"></div>
+              <div className="flex items-center gap-4">
+                <div className="h-[1px] flex-1 bg-border-new/30"></div>
+                <span className="font-mono text-[0.62rem] text-muted uppercase tracking-widest">or</span>
+                <div className="h-[1px] flex-1 bg-border-new/30"></div>
+              </div>
+
+              <button
+                onClick={handleGmailOption}
+                className="btn-ghost w-full py-3.5 flex items-center justify-center gap-3 text-[0.72rem]"
+              >
+                Quick Mail via Gmail <MailOpen size={16} />
+              </button>
             </div>
-
-            <button 
-              onClick={handleGmailOption}
-              className="btn-ghost w-full py-4 flex items-center justify-center gap-3 text-[0.75rem]"
-            >
-              Quick Mail via Gmail <MailOpen size={16} />
-            </button>
           </div>
         </div>
       </div>

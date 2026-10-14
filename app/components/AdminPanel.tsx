@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Save, LogOut, Edit2, Trash2, Copy, Plus,  Check, AlertCircle, Loader, Upload } from 'lucide-react';
+import { Save, LogOut, Edit2, Trash2, Copy, Plus, Check, AlertCircle, Loader, Upload, ChevronDown, ChevronRight, Search, Star, Image as ImageIcon, X } from 'lucide-react';
 
 interface PortfolioData {
   personalInfo: any;
@@ -61,6 +61,31 @@ const apiService = {
     // We update local state and use the main PUT to save
     return true;
   }
+};
+
+// ── Compact admin primitives (small inputs, collapsible rows, fast fill) ──
+const inputCls = "w-full rounded-lg border border-border-new bg-paper px-2.5 py-1.5 text-[0.8rem] text-ink placeholder:text-muted/50 focus:outline-none focus:border-accent-new transition-colors";
+const labelCls = "block font-mono text-[0.6rem] tracking-[0.1em] uppercase text-muted mb-0.5";
+const cardCls = "rounded-xl border border-border-new/60 bg-card overflow-hidden";
+
+const Field = ({ label, children, span }: { label: string; children: React.ReactNode; span?: boolean }) => (
+  <label className={`block min-w-0 ${span ? 'col-span-full' : ''}`}>
+    <span className={labelCls}>{label}</span>
+    {children}
+  </label>
+);
+const TI = ({ value, onChange, ph }: { value: any; onChange: (v: string) => void; ph?: string }) => (
+  <input value={value ?? ''} onChange={(e) => onChange(e.target.value)} placeholder={ph} className={inputCls} />
+);
+const TA = ({ value, onChange, rows = 2 }: { value: any; onChange: (v: string) => void; rows?: number }) => (
+  <textarea value={Array.isArray(value) ? value.join('\n') : (value ?? '')} onChange={(e) => onChange(e.target.value)} rows={rows} className={`${inputCls} resize-y leading-relaxed`} />
+);
+const arr2str = (a: any) => Array.isArray(a) ? a.join(', ') : (a ?? '');
+const str2arr = (s: string) => s.split(/[,\n]/).map((x) => x.trim()).filter(Boolean);
+const Thumb = ({ src, alt }: { src?: string; alt: string }) => {
+  const [err, setErr] = useState(false);
+  if (!src || err) return <span className="w-10 h-10 rounded-lg bg-paper-warm border border-border-new/50 flex items-center justify-center text-muted shrink-0"><ImageIcon size={15} /></span>;
+  return <img src={src} alt={alt} onError={() => setErr(true)} loading="lazy" className="w-10 h-10 rounded-lg object-cover border border-border-new/50 shrink-0 bg-paper-warm" />;
 };
 
 // Mock data function
@@ -388,12 +413,12 @@ const AdminPanel: React.FC = () => {
   }
 
   const tabs = [
-    { key: 'personalInfo', label: 'Personal Info', icon: '👤', count: null },
+    { key: 'personalInfo', label: 'Profile', icon: '👤', count: null },
     { key: 'contactInfo', label: 'Contact', icon: '📧', count: null },
     { key: 'projects', label: 'Projects', icon: '💼', count: data?.projects?.length },
-    { key: 'experience', label: 'Experience', icon: '🏢', count: data?.experience?.length },
-    { key: 'certifications', label: 'Certifications', icon: '🏆', count: data?.certifications?.length },
-    { key: 'education', label: 'Education', icon: '🎓', count: data?.education?.length }
+    { key: 'experience', label: 'Work', icon: '🏢', count: data?.experience?.length },
+    { key: 'certifications', label: 'Certs', icon: '🏆', count: data?.certifications?.length },
+    { key: 'education', label: 'Edu', icon: '🎓', count: data?.education?.length }
   ];
 
   return (
@@ -409,33 +434,33 @@ const AdminPanel: React.FC = () => {
       )}
 
       {/* Header */}
-      <div className="bg-card border-card sticky top-20 z-40 shadow-xl">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-secondary-500 rounded-xl flex items-center justify-center">
-                <span className="text-xl font-bold text-white">AS</span>
+      <div className="bg-card border-card sticky top-20 z-40 shadow-md">
+        <div className="max-w-6xl mx-auto px-4 py-2.5">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary-600 to-secondary-500 rounded-lg flex items-center justify-center shrink-0">
+                <span className="text-xs font-bold text-white">AS</span>
               </div>
-              <div>
-                <h1 className="text-2xl font-bold text-primary">Portfolio Admin</h1>
-                <p className="text-sm text-secondary">Manage your portfolio content</p>
+              <div className="min-w-0">
+                <h1 className="text-base font-bold text-primary leading-tight truncate">Portfolio Admin</h1>
+                <p className="font-mono text-[0.6rem] text-secondary truncate">{(data?.projects?.length ?? 0) + (data?.experience?.length ?? 0) + (data?.certifications?.length ?? 0) + (data?.education?.length ?? 0)} items · {data?.certifications?.length ?? 0} certs</p>
               </div>
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-2 shrink-0">
               <button
                 onClick={saveData}
                 disabled={saving}
-                className="px-6 py-2.5 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg font-medium hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200 flex items-center gap-2 disabled:opacity-50"
+                className="px-4 py-1.5 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg text-[0.78rem] font-medium hover:shadow-lg transition-all duration-200 flex items-center gap-1.5 disabled:opacity-50"
               >
-                {saving ? <Loader className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                {saving ? 'Saving...' : 'Save Changes'}
+                {saving ? <Loader className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+                {saving ? 'Saving...' : 'Save'}
               </button>
               <button
                 onClick={() => setIsAuthenticated(false)}
-                className="px-4 py-2.5 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-colors flex items-center gap-2"
+                className="px-3 py-1.5 bg-red-500 text-white rounded-lg text-[0.78rem] font-medium hover:bg-red-600 transition-colors flex items-center gap-1.5"
               >
-                <LogOut className="w-4 h-4" />
-                Logout
+                <LogOut className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Logout</span>
               </button>
             </div>
           </div>
@@ -443,23 +468,23 @@ const AdminPanel: React.FC = () => {
       </div>
 
       {/* Tabs */}
-      <div className="bg-card border-card sticky top-[153px] z-30">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex gap-2 overflow-x-auto py-3">
+      <div className="bg-card border-card sticky top-[61px] z-30">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex gap-1.5 overflow-x-auto py-2">
             {tabs.map((tab) => (
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`px-4 py-2.5 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 whitespace-nowrap ${
+                className={`px-3 py-1.5 rounded-lg text-[0.78rem] font-medium transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap ${
                   activeTab === tab.key
-                    ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg'
+                    ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow'
                     : 'bg-gray-100 dark:bg-dark-800 text-secondary hover:bg-gray-200 dark:hover:bg-dark-700'
                 }`}
               >
                 <span>{tab.icon}</span>
                 {tab.label}
                 {tab.count !== null && (
-                  <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
+                  <span className={`px-1.5 py-px rounded-full text-[0.65rem] font-bold ${
                     activeTab === tab.key ? 'bg-white/20' : 'bg-gray-300'
                   }`}>
                     {tab.count}
@@ -472,8 +497,8 @@ const AdminPanel: React.FC = () => {
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="bg-card border-card rounded-xl shadow-xl p-8">
+      <div className="max-w-6xl mx-auto px-4 py-4">
+        <div className="bg-card border-card rounded-xl shadow-lg p-3 sm:p-4">
           {activeTab === 'personalInfo' && (
             <PersonalInfoSection data={data} updateField={updateField} />
           )}
@@ -527,6 +552,35 @@ const AdminPanel: React.FC = () => {
 };
 
 // Section Components
+const SecHead = ({ title, sub, right }: { title: string; sub?: string; right?: React.ReactNode }) => (
+  <div className="flex items-center justify-between gap-2 mb-2">
+    <div className="min-w-0">
+      <h2 className="text-base font-bold text-primary leading-tight">{title}</h2>
+      {sub ? <p className="font-mono text-[0.62rem] text-secondary truncate">{sub}</p> : null}
+    </div>
+    {right}
+  </div>
+);
+
+const AddBtn = ({ onClick, label }: { onClick: () => void; label: string }) => (
+  <button onClick={onClick} className="px-3 py-1.5 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg text-[0.75rem] hover:shadow-lg transition-all duration-200 flex items-center gap-1.5 shrink-0">
+    <Plus className="w-3.5 h-3.5" />{label}
+  </button>
+);
+
+const PreviewModal = ({ src, title, onClose }: { src: string | null; title: string; onClose: () => void }) => {
+  if (!src) return null;
+  return (
+    <div className="fixed inset-0 bg-black/85 z-[100] flex items-center justify-center p-4" onClick={onClose}>
+      <div className="relative max-w-3xl w-full bg-paper border border-border-new rounded-xl p-2 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute -top-9 right-0 font-mono text-xs text-white bg-transparent border border-white/30 px-2.5 py-1 rounded hover:border-white transition-colors flex items-center gap-1"><X size={12} /> Close</button>
+        <div className="font-mono text-[0.65rem] text-muted px-1.5 py-1.5 truncate">{title}</div>
+        <img src={src} alt={title} className="w-full h-auto max-h-[75vh] object-contain block rounded-lg bg-black" />
+      </div>
+    </div>
+  );
+};
+
 const PersonalInfoSection = ({ data, updateField }: any) => {
   const [uploadingResume, setUploadingResume] = React.useState(false);
 
@@ -556,78 +610,57 @@ const PersonalInfoSection = ({ data, updateField }: any) => {
   };
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-primary mb-6">Personal Information</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <InputField label="Name" value={data?.personalInfo?.name} onChange={(v: any) => updateField('personalInfo', 'name', v)} />
-        <InputField label="Title" value={data?.personalInfo?.title} onChange={(v: any) => updateField('personalInfo', 'title', v)} />
-        <InputField label="Subtitle" value={data?.personalInfo?.subtitle} onChange={(v: any) => updateField('personalInfo', 'subtitle', v)} className="md:col-span-2" />
-        <InputField label="Avatar" value={data?.personalInfo?.avatar} onChange={(v: any) => updateField('personalInfo', 'avatar', v)} />
-        <InputField label="GitHub URL" value={data?.personalInfo?.github} onChange={(v: any) => updateField('personalInfo', 'github', v)} />
-        <InputField label="LinkedIn URL" value={data?.personalInfo?.linkedin} onChange={(v: any) => updateField('personalInfo', 'linkedin', v)} />
-        <InputField label="LeetCode URL" value={data?.personalInfo?.leetcode} onChange={(v: any) => updateField('personalInfo', 'leetcode', v)} />
-        
-        {/* Resume Upload Section */}
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-primary mb-2">Resume/CV</label>
-          <div className="flex gap-4 items-start">
-            <div className="flex-1">
-              <InputField label="" value={data?.personalInfo?.resumeLink} onChange={(v: any) => updateField('personalInfo', 'resumeLink', v)} />
-            </div>
-            <div>
-              <label className={`px-4 py-2.5 rounded-lg transition-colors cursor-pointer flex items-center gap-2 ${
-                uploadingResume ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
-              } text-white`}>
-                {uploadingResume ? (
-                  <><Loader className="w-4 h-4 animate-spin" /> Uploading...</>
-                ) : (
-                  <><Upload className="w-4 h-4" /> Upload PDF</>
-                )}
-                <input
-                  type="file"
-                  accept=".pdf"
-                  className="hidden"
-                  disabled={uploadingResume}
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) handleResumeUpload(file);
-                  }}
-                />
-              </label>
-            </div>
+    <div>
+      <SecHead title="Personal Information" sub="Name, links, bio & resume" />
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-1.5">
+        <Field label="Name"><TI value={data?.personalInfo?.name} onChange={(v: any) => updateField('personalInfo', 'name', v)} /></Field>
+        <Field label="Avatar"><TI value={data?.personalInfo?.avatar} onChange={(v: any) => updateField('personalInfo', 'avatar', v)} ph="AS" /></Field>
+        <Field label="Title" span><TI value={data?.personalInfo?.title} onChange={(v: any) => updateField('personalInfo', 'title', v)} /></Field>
+        <Field label="Subtitle" span><TI value={data?.personalInfo?.subtitle} onChange={(v: any) => updateField('personalInfo', 'subtitle', v)} /></Field>
+        <Field label="GitHub"><TI value={data?.personalInfo?.github} onChange={(v: any) => updateField('personalInfo', 'github', v)} /></Field>
+        <Field label="LinkedIn"><TI value={data?.personalInfo?.linkedin} onChange={(v: any) => updateField('personalInfo', 'linkedin', v)} /></Field>
+        <Field label="LeetCode"><TI value={data?.personalInfo?.leetcode} onChange={(v: any) => updateField('personalInfo', 'leetcode', v)} /></Field>
+        <Field label="College"><TI value={data?.personalInfo?.college} onChange={(v: any) => updateField('personalInfo', 'college', v)} /></Field>
+        <Field label="Graduating"><TI value={data?.personalInfo?.graduating} onChange={(v: any) => updateField('personalInfo', 'graduating', v)} /></Field>
+        <Field label="CGPA"><TI value={data?.personalInfo?.cgpa} onChange={(v: any) => updateField('personalInfo', 'cgpa', v)} /></Field>
+        <Field label="Focus"><TI value={data?.personalInfo?.focusAreas} onChange={(v: any) => updateField('personalInfo', 'focusAreas', v)} /></Field>
+        <Field label="Hero loc"><TI value={data?.personalInfo?.heroLocation} onChange={(v: any) => updateField('personalInfo', 'heroLocation', v)} /></Field>
+        <Field label="Badge"><TI value={data?.personalInfo?.availabilityBadge} onChange={(v: any) => updateField('personalInfo', 'availabilityBadge', v)} /></Field>
+        <Field label="LC highlight"><TI value={data?.personalInfo?.leetcodeHighlight} onChange={(v: any) => updateField('personalInfo', 'leetcodeHighlight', v)} /></Field>
+        <Field label="Profile img"><TI value={data?.personalInfo?.profileImage} onChange={(v: any) => updateField('personalInfo', 'profileImage', v)} ph="/profile-image.jpg" /></Field>
+        <Field label="Resume" span>
+          <div className="flex gap-1.5">
+            <div className="flex-1"><TI value={data?.personalInfo?.resumeLink} onChange={(v: any) => updateField('personalInfo', 'resumeLink', v)} ph="/data_files/resume_new.pdf" /></div>
+            <label className={`px-2.5 py-1.5 rounded-lg text-[0.72rem] transition-colors cursor-pointer flex items-center gap-1.5 shrink-0 ${uploadingResume ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'} text-white`}>
+              {uploadingResume ? <Loader className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
+              {uploadingResume ? '...' : 'PDF'}
+              <input type="file" accept=".pdf" className="hidden" disabled={uploadingResume} onChange={(e) => { const file = e.target.files?.[0]; if (file) handleResumeUpload(file); }} />
+            </label>
           </div>
-          {data?.personalInfo?.resumeLink && (
-            <div className="mt-2">
-              <a href={data.personalInfo.resumeLink} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 hover:underline">
-                View Current Resume
-              </a>
-            </div>
-          )}
-        </div>
-        
-        <TextAreaField label="Bio" value={data?.personalInfo?.bio} onChange={(v: any) => updateField('personalInfo', 'bio', v)} className="md:col-span-2" rows={4} />
+        </Field>
+        <Field label="Bio" span><TA value={data?.personalInfo?.bio} onChange={(v: any) => updateField('personalInfo', 'bio', v)} rows={2} /></Field>
+        <Field label="About (one per line)" span><TA value={(data?.personalInfo?.about ?? []).join('\n')} onChange={(v: any) => updateField('personalInfo', 'about', v.split('\n').map((s: string) => s.trim()).filter(Boolean))} rows={3} /></Field>
+        <Field label="Specialties (comma separated)" span><TI value={arr2str(data?.personalInfo?.specialties)} onChange={(v: any) => updateField('personalInfo', 'specialties', str2arr(v))} ph="Backend, DSA, AWS" /></Field>
       </div>
     </div>
   );
 };
 
 const ContactInfoSection = ({ data, updateField, updateNestedField }: any) => (
-  <div className="space-y-6">
-    <h2 className="text-2xl font-bold text-primary mb-6">Contact Information</h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <InputField label="Email" type="email" value={data?.contactInfo?.email} onChange={(v: any) => updateField('contactInfo', 'email', v)} />
-      <InputField label="Phone" value={data?.contactInfo?.phone} onChange={(v: any) => updateField('contactInfo', 'phone', v)} />
-      <InputField label="Location" value={data?.contactInfo?.location} onChange={(v: any) => updateField('contactInfo', 'location', v)} />
-      <InputField label="Availability" value={data?.contactInfo?.availability} onChange={(v: any) => updateField('contactInfo', 'availability', v)} />
-      <div className="md:col-span-2 border-t pt-6">
-        <h3 className="text-lg font-semibold mb-4 text-primary">Social Media</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <InputField label="GitHub" value={data?.contactInfo?.social?.github} onChange={(v: any) => updateNestedField('contactInfo', 'social', 'github', v)} />
-          <InputField label="LinkedIn" value={data?.contactInfo?.social?.linkedin} onChange={(v: any) => updateNestedField('contactInfo', 'social', 'linkedin', v)} />
-          <InputField label="Instagram" value={data?.contactInfo?.social?.instagram} onChange={(v: any) => updateNestedField('contactInfo', 'social', 'instagram', v)} />
-          <InputField label="Twitter" value={data?.contactInfo?.social?.twitter} onChange={(v: any) => updateNestedField('contactInfo', 'social', 'twitter', v)} />
-        </div>
-      </div>
+  <div>
+    <SecHead title="Contact Information" sub="Email, phone, socials & form" />
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-1.5">
+      <Field label="Email"><TI value={data?.contactInfo?.email} onChange={(v: any) => updateField('contactInfo', 'email', v)} /></Field>
+      <Field label="Phone"><TI value={data?.contactInfo?.phone} onChange={(v: any) => updateField('contactInfo', 'phone', v)} /></Field>
+      <Field label="Location"><TI value={data?.contactInfo?.location} onChange={(v: any) => updateField('contactInfo', 'location', v)} /></Field>
+      <Field label="Availability"><TI value={data?.contactInfo?.availability} onChange={(v: any) => updateField('contactInfo', 'availability', v)} /></Field>
+      <Field label="GitHub"><TI value={data?.contactInfo?.social?.github} onChange={(v: any) => updateNestedField('contactInfo', 'social', 'github', v)} /></Field>
+      <Field label="LinkedIn"><TI value={data?.contactInfo?.social?.linkedin} onChange={(v: any) => updateNestedField('contactInfo', 'social', 'linkedin', v)} /></Field>
+      <Field label="LeetCode"><TI value={data?.contactInfo?.social?.leetcode ?? data?.personalInfo?.leetcode} onChange={(v: any) => updateNestedField('contactInfo', 'social', 'leetcode', v)} /></Field>
+      <Field label="Instagram"><TI value={data?.contactInfo?.social?.instagram} onChange={(v: any) => updateNestedField('contactInfo', 'social', 'instagram', v)} /></Field>
+      <Field label="Twitter"><TI value={data?.contactInfo?.social?.twitter} onChange={(v: any) => updateNestedField('contactInfo', 'social', 'twitter', v)} /></Field>
+      <Field label="Formspree ID"><TI value={data?.contactInfo?.formspreeId} onChange={(v: any) => updateField('contactInfo', 'formspreeId', v)} ph="mzznaryk" /></Field>
+      <Field label="Contact intro" span><TA value={data?.contactInfo?.contactIntro} onChange={(v: any) => updateField('contactInfo', 'contactIntro', v)} rows={2} /></Field>
     </div>
   </div>
 );
@@ -717,32 +750,35 @@ const ProjectsSection = ({ data, addItem, updateItem, deleteItem, duplicateItem,
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-primary">Projects</h2>
-        <div className="flex gap-2">
-          <div className="flex gap-2 items-center">
+      <div className="flex items-center justify-between gap-2 mb-2">
+        <div>
+          <h2 className="text-base font-bold text-primary leading-tight">Projects</h2>
+          <p className="font-mono text-[0.62rem] text-secondary">{data?.projects?.length ?? 0} total</p>
+        </div>
+        <div className="flex gap-1.5 items-center">
+          <div className="flex gap-1.5 items-center">
             <input
               type="text"
-              placeholder="GitHub username"
+              placeholder="gh user"
               value={githubUsername}
               onChange={(e) => setGithubUsername(e.target.value)}
-              className="px-3 py-2 border-2 border-card rounded-lg focus:border-primary-500 focus:outline-none bg-card text-primary"
+              className={`${inputCls} !w-24 !py-1 !text-[0.72rem]`}
             />
             <button
               onClick={fetchGitHubRepos}
               disabled={importing}
-              className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center gap-2 disabled:opacity-50"
+              className="px-2.5 py-1.5 bg-green-500 text-white rounded-lg text-[0.72rem] hover:bg-green-600 transition-colors flex items-center gap-1 disabled:opacity-50 shrink-0"
             >
-              {importing ? <Loader className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-              {importing ? 'Loading...' : 'Fetch Repos'}
+              {importing ? <Loader className="w-3 h-3 animate-spin" /> : <Plus className="w-3 h-3" />}
+              {importing ? '...' : 'Fetch'}
             </button>
           </div>
           <button
             onClick={() => addItem('projects')}
-            className="px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg hover:shadow-lg transition-all duration-200 flex items-center gap-2"
+            className="px-3 py-1.5 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg text-[0.75rem] hover:shadow-lg transition-all duration-200 flex items-center gap-1 shrink-0"
           >
-            <Plus className="w-4 h-4" />
-            Add Project
+            <Plus className="w-3.5 h-3.5" />
+            Add
           </button>
         </div>
       </div>
@@ -812,55 +848,43 @@ const ProjectsSection = ({ data, addItem, updateItem, deleteItem, duplicateItem,
           </div>
         </div>
       )}
-    <div className="space-y-4">
+    <div className="grid md:grid-cols-2 gap-1.5">
       {data?.projects?.map((project: any) => (
-        <div key={project.id} className={`border-2 rounded-xl p-6 transition-all ${
-          editingItem === project.id ? 'border-blue-400 bg-blue-50' : 'border-gray-200 bg-white'
-        }`}>
-          <div className="flex justify-between items-start mb-4">
-            <h3 className="text-lg font-semibold text-primary">{project.title || 'Untitled Project'}</h3>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setEditingItem(editingItem === project.id ? null : project.id)}
-                className={`p-2 rounded-lg transition-colors ${
-                  editingItem === project.id ? 'bg-green-500 hover:bg-green-600' : 'bg-gradient-to-r from-primary-500 to-secondary-500 hover:shadow-lg'
-                } text-white`}
-              >
-                {editingItem === project.id ? <Check className="w-4 h-4" /> : <Edit2 className="w-4 h-4" />}
-              </button>
-              <button onClick={() => duplicateItem('projects', project)} className="p-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg transition-colors">
-                <Copy className="w-4 h-4" />
-              </button>
-              <button onClick={() => deleteItem('projects', project.id)} className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors">
-                <Trash2 className="w-4 h-4" />
-              </button>
-            </div>
+        <div key={project.id} className={`${cardCls} ${editingItem === project.id ? '!border-accent-new/60' : ''}`}>
+          <div className="flex items-center gap-2 px-2 py-1.5">
+            <button type="button" onClick={() => setEditingItem(editingItem === project.id ? null : project.id)} className="flex items-center gap-2 flex-1 min-w-0 text-left">
+              {editingItem === project.id ? <ChevronDown size={14} className="text-muted shrink-0" /> : <ChevronRight size={14} className="text-muted shrink-0" />}
+              <Thumb src={project.image} alt={project.title} />
+              <span className="min-w-0 flex-1">
+                <span className="block text-[0.8rem] font-semibold text-primary truncate leading-tight">{project.title || 'Untitled'}</span>
+                <span className="block font-mono text-[0.6rem] text-muted truncate">{project.category}{project.featured ? ' · ★' : ''}</span>
+              </span>
+            </button>
+            <button type="button" title="Featured" onClick={() => updateItem('projects', project.id, { featured: !project.featured })} className={`p-1.5 rounded-lg border transition-all shrink-0 ${project.featured ? 'border-accent-new/60 text-accent-new bg-accent-new/10' : 'border-border-new/60 text-muted hover:text-accent-new'}`}>
+              <Star size={12} className={project.featured ? 'fill-current' : ''} />
+            </button>
+            <button type="button" title="Edit" onClick={() => setEditingItem(editingItem === project.id ? null : project.id)} className="p-1.5 rounded-lg border border-border-new/60 text-muted hover:text-accent-new hover:border-accent-new/50 transition-all shrink-0">
+              {editingItem === project.id ? <Check size={12} /> : <Edit2 size={12} />}
+            </button>
+            <button type="button" title="Duplicate" onClick={() => duplicateItem('projects', project)} className="p-1.5 rounded-lg border border-border-new/60 text-muted hover:text-accent-new hover:border-accent-new/50 transition-all shrink-0">
+              <Copy size={12} />
+            </button>
+            <button type="button" title="Delete" onClick={() => deleteItem('projects', project.id)} className="p-1.5 rounded-lg border border-border-new/60 text-muted hover:!text-red-500 hover:!border-red-400 transition-all shrink-0">
+              <Trash2 size={12} />
+            </button>
           </div>
           
           {editingItem === project.id ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <InputField label="Title" value={project.title} onChange={(v: any) => updateItem('projects', project.id, { title: v })} />
-              <InputField label="Category" value={project.category} onChange={(v: any) => updateItem('projects', project.id, { category: v })} />
-              <TextAreaField label="Description" value={project.description} onChange={(v: any) => updateItem('projects', project.id, { description: v })} className="md:col-span-2" rows={3} />
-              <InputField label="Image URL" value={project.image} onChange={(v: any) => updateItem('projects', project.id, { image: v })} />
-              <InputField label="Technologies (comma-separated)" value={project.technologies?.join(', ')} onChange={(v: string) => updateItem('projects', project.id, { technologies: v.split(',').map((s: string) => s.trim()) })} />
-              <InputField label="GitHub URL" value={project.github} onChange={(v: any) => updateItem('projects', project.id, { github: v })} />
-              <InputField label="Live URL" value={project.live} onChange={(v: any) => updateItem('projects', project.id, { live: v })} />
-              <div className="flex items-center">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" checked={project.featured} onChange={(e) => updateItem('projects', project.id, { featured: e.target.checked })} className="w-4 h-4 text-blue-600" />
-                  <span className="text-sm font-medium text-primary">Featured Project</span>
-                </label>
-              </div>
+            <div className="px-2 pb-2 pt-1.5 border-t border-border-new/40 grid grid-cols-2 gap-1.5">
+              <Field label="Title" span><TI value={project.title} onChange={(v: any) => updateItem('projects', project.id, { title: v })} /></Field>
+              <Field label="Category"><TI value={project.category} onChange={(v: any) => updateItem('projects', project.id, { category: v })} /></Field>
+              <Field label="Tech (comma)"><TI value={arr2str(project.technologies)} onChange={(v: string) => updateItem('projects', project.id, { technologies: str2arr(v) })} /></Field>
+              <Field label="Image" span><TI value={project.image} onChange={(v: any) => updateItem('projects', project.id, { image: v })} ph="/data_images/..." /></Field>
+              <Field label="GitHub" span><TI value={project.github} onChange={(v: any) => updateItem('projects', project.id, { github: v })} /></Field>
+              <Field label="Live" span><TI value={project.live} onChange={(v: any) => updateItem('projects', project.id, { live: v })} /></Field>
+              <Field label="Description" span><TA value={project.description} onChange={(v: any) => updateItem('projects', project.id, { description: v })} rows={2} /></Field>
             </div>
-          ) : (
-            <div className="space-y-2 text-sm text-secondary">
-              <p><strong className="text-primary">Category:</strong> {project.category}</p>
-              <p><strong className="text-primary">Description:</strong> {project.description}</p>
-              <p><strong className="text-primary">Technologies:</strong> {project.technologies?.join(', ')}</p>
-              {project.featured && <span className="inline-block px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs font-medium">Featured</span>}
-            </div>
-          )}
+          ) : null}
         </div>
       ))}
     </div>
@@ -868,42 +892,52 @@ const ProjectsSection = ({ data, addItem, updateItem, deleteItem, duplicateItem,
   );
 };
 
-const ExperienceSection = ({ data, addItem, updateItem, deleteItem }: any) => (
+const ExperienceSection = ({ data, addItem, updateItem, deleteItem }: any) => {
+  const [openId, setOpenId] = useState<number | null>(null);
+  const [query, setQuery] = useState('');
+  const list = (data?.experience ?? []).filter((e: any) => !query || `${e.title} ${e.company}`.toLowerCase().includes(query.toLowerCase()));
+  return (
   <div>
-    <div className="flex justify-between items-center mb-6">
-      <h2 className="text-2xl font-bold text-primary">Experience</h2>
-      <button onClick={() => addItem('experience')} className="px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg hover:shadow-lg transition-all duration-200 flex items-center gap-2">
-        <Plus className="w-4 h-4" />
-        Add Experience
-      </button>
+    <SecHead title="Experience" sub={`${data?.experience?.length ?? 0} roles`} right={<AddBtn onClick={() => { const id = addItem('experience'); setOpenId(typeof id === 'number' ? id : null); }} label="Add" />} />
+    <div className="relative mb-2">
+      <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted" />
+      <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Filter roles..." className={`${inputCls} !pl-8`} />
     </div>
-    <div className="space-y-4">
-      {data?.experience?.map((exp: any) => (
-        <div key={exp.id} className="border-2 border-card rounded-xl p-6 bg-card">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <InputField label="Job Title" value={exp.title} onChange={(v: any) => updateItem('experience', exp.id, { title: v })} />
-            <InputField label="Company" value={exp.company} onChange={(v: any) => updateItem('experience', exp.id, { company: v })} />
-            <InputField label="Period" value={exp.period} onChange={(v: any) => updateItem('experience', exp.id, { period: v })} />
-            <InputField label="Location" value={exp.location} onChange={(v: any) => updateItem('experience', exp.id, { location: v })} />
-            <TextAreaField label="Description" value={exp.description} onChange={(v: any) => updateItem('experience', exp.id, { description: v })} className="md:col-span-2" rows={3} />
-            <InputField label="Image URL" value={exp.image} onChange={(v: any) => updateItem('experience', exp.id, { image: v })} />
-            <InputField label="Technologies (comma-separated)" value={exp.technologies?.join(', ')} onChange={(v: string) => updateItem('experience', exp.id, { technologies: v.split(',').map((s: string) => s.trim()) })} />
-            <TextAreaField label="Achievements (comma-separated)" value={exp.achievements?.join(', ')} onChange={(v: string) => updateItem('experience', exp.id, { achievements: v.split(',').map((s: string) => s.trim()) })} className="md:col-span-2" rows={2} />
-            <div className="flex items-center gap-4">
-              <label className="flex items-center gap-2">
-                <input type="checkbox" checked={exp.featured} onChange={(e) => updateItem('experience', exp.id, { featured: e.target.checked })} className="w-4 h-4" />
-                <span className="text-sm font-medium">Featured</span>
-              </label>
-              <button onClick={() => deleteItem('experience', exp.id)} className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
-                Delete
-              </button>
-            </div>
+    <div className="grid md:grid-cols-2 gap-1.5">
+      {list.map((exp: any) => (
+        <div key={exp.id} className={cardCls}>
+          <div className="flex items-center gap-2 px-2 py-1.5">
+            <button type="button" onClick={() => setOpenId(openId === exp.id ? null : exp.id)} className="flex items-center gap-2 flex-1 min-w-0 text-left">
+              {openId === exp.id ? <ChevronDown size={14} className="text-muted shrink-0" /> : <ChevronRight size={14} className="text-muted shrink-0" />}
+              <Thumb src={exp.image} alt={exp.title} />
+              <span className="min-w-0 flex-1">
+                <span className="block text-[0.8rem] font-semibold text-primary truncate leading-tight">{exp.title || 'Untitled'}</span>
+                <span className="block font-mono text-[0.6rem] text-muted truncate">{exp.company}{exp.featured ? ' · ★' : ''}</span>
+              </span>
+            </button>
+            <button type="button" title="Featured" onClick={() => updateItem('experience', exp.id, { featured: !exp.featured })} className={`p-1.5 rounded-lg border transition-all shrink-0 ${exp.featured ? 'border-accent-new/60 text-accent-new bg-accent-new/10' : 'border-border-new/60 text-muted hover:text-accent-new'}`}>
+              <Star size={12} className={exp.featured ? 'fill-current' : ''} />
+            </button>
+            <button type="button" title="Delete" onClick={() => deleteItem('experience', exp.id)} className="p-1.5 rounded-lg border border-border-new/60 text-muted hover:!text-red-500 hover:!border-red-400 transition-all shrink-0"><Trash2 size={12} /></button>
           </div>
+          {openId === exp.id && (
+          <div className="px-2 pb-2 pt-1.5 border-t border-border-new/40 grid grid-cols-2 gap-1.5">
+            <Field label="Job title"><TI value={exp.title} onChange={(v: any) => updateItem('experience', exp.id, { title: v })} /></Field>
+            <Field label="Company"><TI value={exp.company} onChange={(v: any) => updateItem('experience', exp.id, { company: v })} /></Field>
+            <Field label="Period"><TI value={exp.period} onChange={(v: any) => updateItem('experience', exp.id, { period: v })} ph="Jul 2025 - Aug 2025" /></Field>
+            <Field label="Location"><TI value={exp.location} onChange={(v: any) => updateItem('experience', exp.id, { location: v })} /></Field>
+            <Field label="Image"><TI value={exp.image} onChange={(v: any) => updateItem('experience', exp.id, { image: v })} ph="/data_images/..." /></Field>
+            <Field label="Tech (comma)"><TI value={arr2str(exp.technologies)} onChange={(v: string) => updateItem('experience', exp.id, { technologies: str2arr(v) })} /></Field>
+            <Field label="Description" span><TA value={exp.description} onChange={(v: any) => updateItem('experience', exp.id, { description: v })} rows={2} /></Field>
+            <Field label="Achievements (comma)" span><TI value={arr2str(exp.achievements)} onChange={(v: string) => updateItem('experience', exp.id, { achievements: str2arr(v) })} /></Field>
+          </div>
+          )}
         </div>
       ))}
     </div>
   </div>
-);
+  );
+};
 
 const CertificationsSection = ({ data, addItem, updateItem, deleteItem }: any) => {
   const [uploading, setUploading] = React.useState<number | null>(null);
@@ -935,106 +969,103 @@ const CertificationsSection = ({ data, addItem, updateItem, deleteItem }: any) =
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-primary">Certifications</h2>
-        <button onClick={() => addItem('certifications')} className="px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg hover:shadow-lg transition-all duration-200 flex items-center gap-2">
-          <Plus className="w-4 h-4" />
-          Add Certification
-        </button>
-      </div>
-      <div className="space-y-4">
-        {data?.certifications?.map((cert: any) => (
-          <div key={cert.id} className="border-2 border-card rounded-xl p-6 bg-card">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <InputField label="Name" value={cert.name} onChange={(v: any) => updateItem('certifications', cert.id, { name: v })} />
-              <InputField label="Issuer" value={cert.issuer} onChange={(v: any) => updateItem('certifications', cert.id, { issuer: v })} />
-              <InputField label="Date" value={cert.date} onChange={(v: any) => updateItem('certifications', cert.id, { date: v })} />
-              <InputField label="Credential ID" value={cert.credentialId} onChange={(v: any) => updateItem('certifications', cert.id, { credentialId: v })} />
-              <InputField label="Link" value={cert.link} onChange={(v: any) => updateItem('certifications', cert.id, { link: v })} className="md:col-span-2" />
-              
-              {/* Image Upload Section */}
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-primary mb-2">Certificate Image</label>
-                <div className="flex gap-4 items-start">
-                  <div className="flex-1">
-                    <InputField label="" value={cert.image} onChange={(v: any) => updateItem('certifications', cert.id, { image: v })} />
-                  </div>
-                  <div>
-                    <label className={`px-4 py-2.5 rounded-lg transition-colors cursor-pointer flex items-center gap-2 ${
-                      uploading === cert.id ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
-                    } text-white`}>
-                      {uploading === cert.id ? (
-                        <><Loader className="w-4 h-4 animate-spin" /> Uploading...</>
-                      ) : (
-                        <><Upload className="w-4 h-4" /> Upload</>
-                      )}
-                      <input
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        disabled={uploading === cert.id}
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) handleImageUpload(cert.id, file);
-                        }}
-                      />
-                    </label>
-                  </div>
-                </div>
-                {cert.image && (
-                  <div className="mt-2">
-                    <img src={cert.image} alt="Preview" className="h-24 rounded border" onError={(e) => (e.currentTarget.style.display = 'none')} />
-                  </div>
-                )}
-              </div>
-              
-              <div className="flex items-center gap-4 md:col-span-2">
-                <label className="flex items-center gap-2">
-                  <input type="checkbox" checked={cert.featured} onChange={(e) => updateItem('certifications', cert.id, { featured: e.target.checked })} className="w-4 h-4" />
-                  <span className="text-sm font-medium">Featured</span>
-                </label>
-                <button onClick={() => deleteItem('certifications', cert.id)} className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      <SecHead title="Certifications" sub={`${data?.certifications?.length ?? 0} total · ★ = home page`} right={<AddBtn onClick={() => addItem('certifications')} label="Add" />} />
+      <CertGrid data={data} updateItem={updateItem} deleteItem={deleteItem} handleImageUpload={handleImageUpload} uploading={uploading} />
     </div>
   );
 };
 
-const EducationSection = ({ data, addItem, updateItem, deleteItem }: any) => (
-  <div>
-    <div className="flex justify-between items-center mb-6">
-      <h2 className="text-2xl font-bold text-primary">Education</h2>
-      <button onClick={() => addItem('education')} className="px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg hover:shadow-lg transition-all duration-200 flex items-center gap-2">
-        <Plus className="w-4 h-4" />
-        Add Education
-      </button>
-    </div>
-    <div className="space-y-4">
-      {data?.education?.map((edu: any) => (
-        <div key={edu.id} className="border-2 border-card rounded-xl p-6 bg-card">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <InputField label="Degree" value={edu.degree} onChange={(v: any) => updateItem('education', edu.id, { degree: v })} />
-            <InputField label="School" value={edu.school} onChange={(v: any) => updateItem('education', edu.id, { school: v })} />
-            <InputField label="Period" value={edu.period} onChange={(v: any) => updateItem('education', edu.id, { period: v })} />
-            <InputField label="Location" value={edu.location} onChange={(v: any) => updateItem('education', edu.id, { location: v })} />
-            <TextAreaField label="Description" value={edu.description} onChange={(v: any) => updateItem('education', edu.id, { description: v })} className="md:col-span-2" rows={3} />
-            <TextAreaField label="Achievements (comma-separated)" value={edu.achievements?.join(', ')} onChange={(v: string) => updateItem('education', edu.id, { achievements: v.split(',').map((s: string) => s.trim()) })} className="md:col-span-2" rows={2} />
-            <div>
-              <button onClick={() => deleteItem('education', edu.id)} className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
-                Delete
+const CertGrid = ({ data, updateItem, deleteItem, handleImageUpload, uploading }: any) => {
+  const [openId, setOpenId] = useState<number | null>(null);
+  const [query, setQuery] = useState('');
+  const [preview, setPreview] = useState<{ src: string; title: string } | null>(null);
+  const list = (data?.certifications ?? []).filter((c: any) => !query || `${c.name} ${c.issuer}`.toLowerCase().includes(query.toLowerCase()));
+  return (
+    <>
+      <div className="relative mb-2">
+        <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted" />
+        <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Filter certs... (name, issuer)" className={`${inputCls} !pl-8`} />
+      </div>
+      <div className="grid md:grid-cols-2 gap-1.5">
+        {list.map((cert: any) => (
+          <div key={cert.id} className={cardCls}>
+            <div className="flex items-center gap-2 px-2 py-1.5">
+              <button type="button" onClick={() => setOpenId(openId === cert.id ? null : cert.id)} className="flex items-center gap-2 flex-1 min-w-0 text-left">
+                {openId === cert.id ? <ChevronDown size={14} className="text-muted shrink-0" /> : <ChevronRight size={14} className="text-muted shrink-0" />}
+                <span onClick={(e) => { if (cert.image) { e.stopPropagation(); setPreview({ src: cert.image, title: cert.name }); } }} className={cert.image ? 'cursor-zoom-in' : ''}>
+                  <Thumb src={cert.image} alt={cert.name} />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[0.8rem] font-semibold text-primary truncate leading-tight">{cert.name || 'Untitled'}</span>
+                  <span className="block font-mono text-[0.6rem] text-muted truncate">{cert.issuer}{cert.featured ? ' · ★' : ''}</span>
+                </span>
               </button>
+              <button type="button" title="Featured" onClick={() => updateItem('certifications', cert.id, { featured: !cert.featured })} className={`p-1.5 rounded-lg border transition-all shrink-0 ${cert.featured ? 'border-accent-new/60 text-accent-new bg-accent-new/10' : 'border-border-new/60 text-muted hover:text-accent-new'}`}>
+                <Star size={12} className={cert.featured ? 'fill-current' : ''} />
+              </button>
+              <button type="button" title="Delete" onClick={() => deleteItem('certifications', cert.id)} className="p-1.5 rounded-lg border border-border-new/60 text-muted hover:!text-red-500 hover:!border-red-400 transition-all shrink-0"><Trash2 size={12} /></button>
             </div>
+            {openId === cert.id && (
+            <div className="px-2 pb-2 pt-1.5 border-t border-border-new/40 grid grid-cols-2 gap-1.5">
+              <Field label="Name" span><TI value={cert.name} onChange={(v: any) => updateItem('certifications', cert.id, { name: v })} /></Field>
+              <Field label="Issuer"><TI value={cert.issuer} onChange={(v: any) => updateItem('certifications', cert.id, { issuer: v })} /></Field>
+              <Field label="Date"><TI value={cert.date} onChange={(v: any) => updateItem('certifications', cert.id, { date: v })} ph="2025" /></Field>
+              <Field label="Credential ID" span><TI value={cert.credentialId} onChange={(v: any) => updateItem('certifications', cert.id, { credentialId: v })} /></Field>
+              <Field label="Verify link" span><TI value={cert.link} onChange={(v: any) => updateItem('certifications', cert.id, { link: v })} ph="https://..." /></Field>
+              <Field label="Image path" span>
+                <div className="flex gap-1.5">
+                  <div className="flex-1"><TI value={cert.image} onChange={(v: any) => updateItem('certifications', cert.id, { image: v })} ph="/data_images/xyz.jpg" /></div>
+                  <label className={`px-2 py-1.5 rounded-lg text-[0.7rem] transition-colors cursor-pointer flex items-center gap-1 shrink-0 ${uploading === cert.id ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'} text-white`}>
+                    {uploading === cert.id ? <Loader className="w-3 h-3 animate-spin" /> : <Upload className="w-3 h-3" />}
+                    <input type="file" accept="image/*" className="hidden" disabled={uploading === cert.id} onChange={(e) => { const f = e.target.files?.[0]; if (f) handleImageUpload(cert.id, f); }} />
+                  </label>
+                  {cert.image ? <button type="button" onClick={() => setPreview({ src: cert.image, title: cert.name })} className="px-2 rounded-lg border border-border-new/60 text-[0.7rem] text-muted hover:text-accent-new hover:border-accent-new/50 shrink-0">View</button> : null}
+                </div>
+              </Field>
+            </div>
+            )}
           </div>
+        ))}
+      </div>
+      <PreviewModal src={preview?.src ?? null} title={preview?.title ?? ''} onClose={() => setPreview(null)} />
+    </>
+  );
+};
+
+const EducationSection = ({ data, addItem, updateItem, deleteItem }: any) => {
+  const [openId, setOpenId] = useState<number | null>(null);
+  return (
+  <div>
+    <SecHead title="Education" sub={`${data?.education?.length ?? 0} entries`} right={<AddBtn onClick={() => addItem('education')} label="Add" />} />
+    <div className="grid md:grid-cols-2 gap-1.5">
+      {data?.education?.map((edu: any) => (
+        <div key={edu.id} className={cardCls}>
+          <div className="flex items-center gap-2 px-2 py-1.5">
+            <button type="button" onClick={() => setOpenId(openId === edu.id ? null : edu.id)} className="flex items-center gap-2 flex-1 min-w-0 text-left">
+              {openId === edu.id ? <ChevronDown size={14} className="text-muted shrink-0" /> : <ChevronRight size={14} className="text-muted shrink-0" />}
+              <span className="min-w-0 flex-1">
+                <span className="block text-[0.8rem] font-semibold text-primary truncate leading-tight">{edu.degree || 'Untitled'}</span>
+                <span className="block font-mono text-[0.6rem] text-muted truncate">{edu.school} · {edu.period}</span>
+              </span>
+            </button>
+            <button type="button" title="Delete" onClick={() => deleteItem('education', edu.id)} className="p-1.5 rounded-lg border border-border-new/60 text-muted hover:!text-red-500 hover:!border-red-400 transition-all shrink-0"><Trash2 size={12} /></button>
+          </div>
+          {openId === edu.id && (
+          <div className="px-2 pb-2 pt-1.5 border-t border-border-new/40 grid grid-cols-2 gap-1.5">
+            <Field label="Degree" span><TI value={edu.degree} onChange={(v: any) => updateItem('education', edu.id, { degree: v })} /></Field>
+            <Field label="School"><TI value={edu.school} onChange={(v: any) => updateItem('education', edu.id, { school: v })} /></Field>
+            <Field label="Period"><TI value={edu.period} onChange={(v: any) => updateItem('education', edu.id, { period: v })} /></Field>
+            <Field label="Location" span><TI value={edu.location} onChange={(v: any) => updateItem('education', edu.id, { location: v })} /></Field>
+            <Field label="Description" span><TA value={edu.description} onChange={(v: any) => updateItem('education', edu.id, { description: v })} rows={2} /></Field>
+            <Field label="Achievements (comma)" span><TI value={arr2str(edu.achievements)} onChange={(v: string) => updateItem('education', edu.id, { achievements: str2arr(v) })} /></Field>
+          </div>
+          )}
         </div>
       ))}
     </div>
   </div>
-);
+  );
+};
 
 // Reusable Input Components
 const TextAreaField = ({ label, value, onChange, rows = 3, className = '' }: any) => (

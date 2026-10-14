@@ -161,54 +161,50 @@ const Skills: React.FC = () => {
   };
 
   return (
-    <section id="skills" className="p-[100px_4rem] border-b border-border-new bg-paper">
-      <div className="section-header fade-in visible">
-        <span className="section-num">02</span>
-        <h2 className="font-serif text-[clamp(1.9rem,3.5vw,2.8rem)] line-height-[1.1] text-ink">Skills & Expertise</h2>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20 fade-in visible">
-        {skills.categories.map((category) => (
-          <motion.div 
-            key={category.name}
-            whileHover={{ y: -5 }}
-            className="bg-white/5 backdrop-blur-sm border border-border-new/40 p-8 rounded-2xl hover:border-accent-new/30 transition-all duration-300 group"
-          >
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 bg-accent-new/10 rounded-xl flex items-center justify-center text-accent-new group-hover:bg-accent-new group-hover:text-white transition-all duration-300">
-                {React.createElement(iconMap[category.name] || Code, { size: 24 })}
-              </div>
-              <h3 className="font-serif text-xl text-ink">{category.name}</h3>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {category.skills.map((skill) => (
-                <span 
-                  key={skill.name} 
-                  className="font-mono text-[0.7rem] text-muted border border-border-new/30 px-3 py-1 rounded-full group-hover:border-accent-new/20 transition-colors"
-                >
-                  {skill.name}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="fade-in visible">
-        <div className="font-mono text-[0.68rem] tracking-[0.12em] uppercase text-muted mb-6 flex items-center gap-4">
-          <span className="h-[1px] w-8 bg-border-new"></span>
-          Full Technical Stack
+    <section id="skills" className="page-section border-b border-border-new bg-paper">
+      <div className="container-shell">
+        <div className="section-header fade-in visible">
+          <span className="section-num">02</span>
+          <h2 className="font-serif text-[clamp(1.9rem,3.2vw,2.8rem)] leading-[1.08] text-ink">Skills & Expertise</h2>
         </div>
-        <div className="flex flex-wrap gap-3">
-          {[
-            "C++", "JavaScript", "Python", "HTML", "CSS", "React.js", "Next.js", 
-            "Node.js", "Express.js", "Tailwind CSS", "MongoDB", "MySQL", 
-            "PostgreSQL", "Git", "Firebase", "Netlify", "AWS (basic)", 
-            "REST APIs", "Jupyter", "Prisma", "JWT", "Vercel", "NPM", 
-            "Flutter", "TypeScript"
-          ].map((skill) => (
-            <span key={skill} className="pill rounded-full px-4 py-2 hover:bg-accent-new/5 hover:border-accent-new/30 transition-all cursor-default shadow-sm">{skill}</span>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5 mb-10 fade-in visible">
+          {skills.categories.map((category) => (
+            <motion.div
+              key={category.name}
+              whileHover={{ y: -5 }}
+              className="bg-white/5 backdrop-blur-sm border border-border-new/40 p-5 md:p-6 rounded-2xl hover:border-accent-new/30 transition-all duration-300 group"
+            >
+              <div className="flex items-center gap-3.5 mb-5">
+                <div className="w-11 h-11 bg-accent-new/10 rounded-xl flex items-center justify-center text-accent-new group-hover:bg-accent-new group-hover:text-white transition-all duration-300">
+                  {React.createElement(iconMap[category.name] || Code, { size: 20 })}
+                </div>
+                <h3 className="font-serif text-xl text-ink">{category.name}</h3>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {category.skills.map((skill) => (
+                  <span
+                    key={skill.name}
+                    className="font-mono text-[0.66rem] text-muted border border-border-new/30 px-2.5 py-1 rounded-full group-hover:border-accent-new/20 transition-colors"
+                  >
+                    {skill.name}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
           ))}
+        </div>
+
+        <div className="fade-in visible">
+          <div className="font-mono text-[0.64rem] tracking-[0.12em] uppercase text-muted mb-4 flex items-center gap-4">
+            <span className="h-[1px] w-8 bg-border-new"></span>
+            Full Technical Stack
+          </div>
+          <div className="flex flex-wrap gap-2.5">
+            {skills.categories.flatMap(cat => cat.skills.map(s => s.name)).map((skill) => (
+              <span key={skill} className="pill rounded-full hover:bg-accent-new/5 hover:border-accent-new/30 transition-all cursor-default shadow-sm">{skill}</span>
+            ))}
+          </div>
         </div>
       </div>
     </section>

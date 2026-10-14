@@ -1,259 +1,217 @@
-# Modern Portfolio Website
+# Aditya Sagar — Portfolio
 
-[Click To View](https://adityass-portfolio.netlify.app/)
+> 🌐 Live: [adityass.vercel.app](https://adityass.vercel.app/)
 
-A beautiful, responsive portfolio website built with React, Tailwind CSS, and Framer Motion. Features dark/light mode toggle, smooth animations, and a comprehensive data-driven structure.
-
-## 🚀 Features
-
-- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **Dark/Light Mode**: Smooth theme switching with persistent state
-- **Custom Cursor**: Interactive cursor with hover effects (desktop only)
-- **Smooth Animations**: Powered by Framer Motion
-- **Data-Driven**: Easy to customize content through a single data file
-- **Modern UI**: Clean, professional design with gradient accents
-- **Mobile-First**: Touch-friendly interface with optimized mobile experience
-- **Featured Sections**: Show only your best work/experience/certificates on the main page, with 'See All' pages for full lists
-
-## 📁 Project Structure
-
-```
-src/
-├── components/          # React components
-│   ├── About.js        # About section
-│   ├── Certificates.js # Featured certificates (main page)
-│   ├── AllCertificates.js # All certificates page
-│   ├── Contact.js      # Contact form and info
-│   ├── Education.js    # Education section
-│   ├── Experience.js   # Featured work experience (main page)
-│   ├── AllExperience.js # All experience page
-│   ├── Footer.js       # Footer component
-│   ├── Hero.js         # Hero/landing section
-│   ├── Navbar.js       # Navigation bar
-│   ├── Projects.js     # Featured projects (main page)
-│   ├── AllProjects.js  # All projects page
-│   ├── Skills.js       # Skills and technologies
-│   └── ThemeToggle.js  # Theme toggle component
-├── context/
-│   └── ThemeContext.js # Theme context provider
-├── data/
-│   └── portfolioData.js # All portfolio data (edit this file!)
-├── App.js              # Main app component
-├── index.css           # Global styles
-└── index.js            # App entry point
-```
-
-## 🎨 Customization: Edit Your Data in `src/data/portfolioData.js`
-
-### Getting data from github in raw
-
-```
-https://raw.githubusercontent.com/adityass2004/my-portfolio/main/public/portfolioData.json
-```
-
-### 1. Personal Information
-
-```js
-export const personalInfo = {
-  name: "Your Name",
-  title: "Full Stack Developer",
-  subtitle: "AI-Integrated Applications & Practical Solutions",
-  email: "your.email@example.com",
-  phone: "+1 (555) 123-4567",
-  location: "Your City, Country",
-  github: "https://github.com/yourusername",
-  linkedin: "https://linkedin.com/in/yourusername",
-  twitter: "https://twitter.com/yourusername",
-  website: "https://yourwebsite.com",
-  avatar: "AS", // Your initials for avatar
-  profileImage: "/profile-image.jpg", // Place in public/
-  heroImage: "/hero-image.jpg", // Place in public/
-  favicon: "/favicon.ico", // Place in public/
-  bio: "Your bio description...",
-  about: ["First paragraph about you...", "Second paragraph about you..."],
-  specialties: ["Your specialty 1", "Your specialty 2", "Your specialty 3"],
-  resumeLink: "/resume.pdf", // Place your resume in public/
-  cvLink: "/cv.pdf", // Place your CV in public/
-};
-```
-
-### 2. Statistics
-
-```js
-export const stats = [
-  { icon: "Award", value: "5+", label: "Years Experience" },
-  { icon: "Users", value: "50+", label: "Happy Clients" },
-  { icon: "Code", value: "100+", label: "Projects Completed" },
-  { icon: "Coffee", value: "1000+", label: "Cups of Coffee" },
-];
-```
-
-### 3. Skills
-
-```js
-export const skills = {
-  categories: [
-    {
-      name: "Frontend Development",
-      skills: [
-        { name: "React", level: 90, color: "from-blue-500 to-cyan-500" },
-        { name: "Flutter", level: 95, color: "from-blue-600 to-indigo-600" },
-        // Add more skills...
-      ],
-    },
-    // Add more categories...
-  ],
-};
-```
-
-### 4. Projects
-
-```js
-export const projects = [
-  {
-    id: 1,
-    title: "Project Name",
-    description: "Project description...",
-    image: "/project1.jpg", // Place images in public/ or use a full URL
-    technologies: ["React", "Node.js", "MongoDB"],
-    github: "https://github.com/yourusername/project",
-    live: "https://project-demo.vercel.app",
-    category: "Full Stack",
-    featured: true, // Only featured projects show on main page
-  },
-  // Add more projects...
-];
-```
-
-### 5. Experience
-
-```js
-export const experience = [
-  {
-    id: 1,
-    title: "Senior Developer",
-    company: "Company Name",
-    period: "2022 - Present",
-    location: "Remote",
-    description: "Job description...",
-    achievements: ["Achievement 1", "Achievement 2", "Achievement 3"],
-    technologies: ["React", "Python", "AWS"],
-    image: "/data_images/experience1.jpg", // Place images in public/data_images/
-    featured: true, // Only featured experiences show on main page
-  },
-  // Add more experience...
-];
-```
-
-### 6. Education
-
-```js
-export const education = [
-  {
-    id: 1,
-    degree: "Bachelor of Computer Science",
-    school: "University Name",
-    period: "2015 - 2019",
-    location: "City, Country",
-    description: "Degree description...",
-    achievements: [
-      "Graduated with honors",
-      "Final year project award",
-      "Other achievements...",
-    ],
-  },
-];
-```
-
-### 7. Certifications
-
-```js
-export const certifications = [
-  {
-    id: 1,
-    name: "AWS Certified Developer",
-    issuer: "Amazon Web Services",
-    date: "2023",
-    credentialId: "AWS-123456",
-    link: "https://aws.amazon.com/verification",
-    image: "/data_images/certificate1.jpg", // Place images in public/data_images/
-    featured: true, // Only featured certificates show on main page
-  },
-  // Add more certifications...
-];
-```
-
-### 8. Contact Information
-
-```js
-export const contactInfo = {
-  email: "your.email@example.com",
-  phone: "+1 (555) 123-4567",
-  location: "Your City, Country",
-  social: {
-    github: "https://github.com/yourusername",
-    linkedin: "https://linkedin.com/in/yourusername",
-    twitter: "https://twitter.com/yourusername",
-    instagram: "https://instagram.com/yourusername",
-    youtube: "https://youtube.com/@yourusername",
-  },
-  availability: "Available for freelance opportunities and full-time positions",
-  responseTime: "Usually responds within 24 hours",
-};
-```
-
-## ⭐️ Featured Items & 'See All' Pages
-
-- Only items with `featured: true` are shown on the main page for Projects, Experience, and Certificates.
-- Use the 'See All' buttons to view all entries for each section (e.g., all projects, all experience, all certificates).
-
-## 🖼️ Image Paths
-
-- Place all images in the `public/` or `public/data_images/` folder.
-- Use paths like `/data_images/your-image.jpg` in your data file.
-- For best results, use rectangular images for certificates.
-
-## 📄 Resume & CV
-
-- Place your resume and CV files in the `public/` folder as `resume.pdf` and `cv.pdf`.
-- Update the `resumeLink` and `cvLink` in `personalInfo` if you use different filenames.
-
-## 📱 Mobile Compatibility
-
-- The site is fully responsive and mobile-friendly.
-- All grids, images, and layouts adapt to mobile screens.
-
-## 🚀 Getting Started
-
-1. **Clone the repository**
-
-   ```bash
-   git clone <repository-url>
-   cd my-portfolio
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   npm install
-   ```
-
-3. **Customize your data**
-   - Edit `src/data/portfolioData.js` with your information
-   - Add images and files to the `public/` folder
-   - Update social media links
-
-4. **Start development server**
-
-   ```bash
-   npm start
-   ```
-
-5. **Build for production**
-   ```bash
-   npm run build
-   ```
+A full-stack, data-driven developer portfolio built with **Next.js 14**, **TypeScript**, **Tailwind CSS**, and **Framer Motion**. All content is fetched dynamically from a single JSON file hosted on GitHub — no rebuild needed to update content.
 
 ---
 
-**Enjoy your modern, data-driven portfolio!**
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS + CSS Variables |
+| Animations | Framer Motion |
+| Fonts | DM Serif Display · DM Mono · Instrument Sans |
+| Deployment | Vercel |
+| Forms | Formspree |
+
+---
+
+## Features
+
+### UI & Design
+- **Dark / Light mode** — system-aware with manual toggle, persisted via React context
+- **Custom animated cursor** — dot + ring with hover scale effect (desktop only, hidden on mobile)
+- **Paper texture overlay** — subtle SVG fractal noise grain fixed over the entire page
+- **Animated navbar** — active route underline with spring animation, mobile full-screen overlay menu with scroll lock
+- **Framer Motion animations** — page-level fade-ins, card hover lifts (`y: -8`), staggered children, `AnimatePresence` transitions
+- **Responsive layout** — mobile-first grid system, adapts across all screen sizes
+- **Smooth scroll** — native CSS `scroll-behavior: smooth`
+- **Custom scrollbar** — accent-colored thin scrollbar via `::-webkit-scrollbar`
+- **Text selection styling** — accent color highlight on `::selection`
+
+### Pages & Sections
+
+| Route | Description |
+|---|---|
+| `/` | Main portfolio — all sections in a single page |
+| `/all-projects` | Full projects list with category filters |
+| `/all-experience` | Full career timeline |
+| `/all-certificates` | All certifications with image lightbox |
+| `/github-repos` | Live GitHub repos with sort/filter + contribution heatmap |
+| `/leetcode-stats` | Full LeetCode stats with daily/weekly/monthly submission charts |
+| `/admin` | Admin panel for editing portfolio data via UI |
+
+### Main Page Sections (in order)
+1. **Hero** — name, animated rotating role text (2s interval), profile image, stats grid, resume viewer (iframe popup modal), social links
+2. **About** — bio paragraphs, specialties pills, research card, aside info panel (college, CGPA, graduating year, LeetCode highlight, availability)
+3. **Skills** — categorised skill cards (Frontend / Backend / Tools / DBMS) + full tech stack pill cloud
+4. **Coding Profile** — live GitHub stats (repos, stars, followers, top languages, earned achievements) + LeetCode stats (contest rating, solved breakdown by difficulty, earned badges) side by side
+5. **Projects** — featured projects grid with category label, tech pills, GitHub & live demo links
+6. **Experience** — featured vertical timeline with animated dot markers, achievement arrow lists, tech pills
+7. **Certifications** — featured certificates with `16/9` image thumbnails, click-to-expand lightbox modal, credential verify links
+8. **Education** — vertical timeline with degree, institution, location, achievement lists
+9. **Contact** — contact detail cards (email/phone/location), social icon links, Formspree contact form + Gmail compose fallback, success/error popup modal
+
+### GitHub Integration (`/api/github`)
+- Fetches public profile via `https://api.github.com/users/:username` — no token required
+- Returns: public repos count, total stars, followers, following, top 3 languages, contribution heatmap data
+- Scrapes GitHub profile HTML for earned achievement badges (name + icon)
+- Optional `GITHUB_TOKEN` in `.env.local` raises rate limit from 60 → 5000 req/h
+- Username validated with regex `/^[a-zA-Z0-9-]{1,39}$/` to prevent injection
+
+### LeetCode Integration (`/api/leetcode`)
+- Fetches solved stats (easy / medium / hard totals), contest rating, global ranking, total submissions
+- Returns earned badges with icons, active badge, submission calendar
+- Submission calendar processed client-side into daily / weekly / monthly SVG bar chart views
+
+### GitHub Repos Page (`/github-repos`)
+- Fetches all public repos directly from GitHub API (browser-side)
+- Sort by: last pushed / stars / created date
+- Filter by programming language (dynamic list from repo data)
+- Shows: repo name, description, language, stars, forks, size, topics, last updated date
+- GitHub-style contribution heatmap (7-day grid, month labels, 5-level color scale) via `github-contributions-api.jogruber.de`
+- Aggregate stats: total repos, total stars, total forks
+
+### LeetCode Stats Page (`/leetcode-stats`)
+- Overview stat cards: total solved, contest rating, contests attended, global rank, stars, submissions
+- Difficulty breakdown: Easy / Medium / Hard with color-coded left borders
+- Submission activity chart with toggle: Daily (last 30 days) / Weekly (last 12 weeks) / Monthly
+- All charts built with raw SVG — no chart library dependency
+- Earned badges grid with hover effects
+- Profile info panel: display name, country, global ranking, star rating
+
+### Admin Panel (`/admin`)
+- Full CRUD UI for all portfolio sections
+- Backed by `/api/portfolio` Next.js route handler
+- Edit personal info, projects, experience, certifications, skills, education without touching code
+
+### Data Architecture
+- All content lives in `public/portfolioData.json`
+- Fetched at runtime by `app/data/portfolioService.ts` with typed interfaces
+- Raw GitHub URL for direct access:
+  ```
+  https://raw.githubusercontent.com/adityass2004/my-portfolio/main/public/portfolioData.json
+  ```
+- Update content without redeploying — push a JSON change and it reflects immediately
+- `featured: true` flag controls what appears on the main page vs "See All" pages
+
+---
+
+## Project Structure
+
+```
+main/
+├── app/
+│   ├── api/
+│   │   ├── github/             # GitHub profile + achievements API route
+│   │   ├── leetcode/           # LeetCode stats API route
+│   │   ├── portfolio/          # Portfolio data CRUD API route
+│   │   └── health/             # Health check endpoint
+│   ├── components/
+│   │   ├── Hero.tsx            # Landing section
+│   │   ├── About.tsx           # About + research card
+│   │   ├── Skills.tsx          # Skills categories + tech stack
+│   │   ├── CodingProfile.tsx   # GitHub + LeetCode side-by-side cards
+│   │   ├── Projects.tsx        # Featured projects grid
+│   │   ├── Experience.tsx      # Featured experience timeline
+│   │   ├── Certificates.tsx    # Featured certificates + lightbox
+│   │   ├── Education.tsx       # Education timeline
+│   │   ├── Contact.tsx         # Contact form + social links
+│   │   ├── GithubRepos.tsx     # All repos page with heatmap
+│   │   ├── LeetCodeStats.tsx   # Full LeetCode stats + charts
+│   │   ├── AllProjects.tsx     # All projects with filters
+│   │   ├── AllExperience.tsx   # Full experience timeline
+│   │   ├── AllCertificates.tsx # All certificates grid
+│   │   ├── Navbar.tsx          # Fixed navbar + mobile overlay
+│   │   ├── Footer.tsx          # Minimal footer with social links
+│   │   ├── ThemeToggle.tsx     # Dark/light mode toggle button
+│   │   ├── CustomCursor.tsx    # Custom cursor (desktop only)
+│   │   ├── AdminPanel.tsx      # Admin UI shell
+│   │   ├── Dashboard.tsx       # Admin dashboard
+│   │   ├── PortfolioCRUD.tsx   # CRUD operations UI
+│   │   └── PortfolioEditor.tsx # Data editor forms
+│   ├── context/
+│   │   └── ThemeContext.tsx    # Theme provider + toggle logic
+│   ├── data/
+│   │   └── portfolioService.ts # Typed data fetching service
+│   ├── all-projects/page.tsx
+│   ├── all-experience/page.tsx
+│   ├── all-certificates/page.tsx
+│   ├── github-repos/page.tsx
+│   ├── leetcode-stats/page.tsx
+│   ├── admin/page.tsx
+│   ├── globals.css             # CSS variables, base styles, component classes
+│   ├── layout.tsx              # Root layout with fonts + metadata
+│   └── page.tsx                # Main page — all sections composed here
+├── public/
+│   ├── portfolioData.json      ← edit this to update all content
+│   ├── data_images/            ← certificate & experience images
+│   ├── data_files/             ← resume / CV PDFs
+│   ├── profile-image.jpg
+│   ├── hero-image.jpg
+│   └── favicon.ico
+├── .env.local                  ← GITHUB_TOKEN (optional)
+├── next.config.js
+├── tailwind.config.js
+└── tsconfig.json
+```
+
+---
+
+## Getting Started
+
+```bash
+# 1. Clone
+git clone https://github.com/adityass2004/my-portfolio.git main
+cd main
+
+# 2. Install dependencies
+npm install
+
+# 3. (Optional) Add GitHub token to raise API rate limit 60 → 5000 req/h
+echo "GITHUB_TOKEN=ghp_your_token_here" >> .env.local
+
+# 4. Start dev server
+npm run dev
+
+# 5. Production build
+npm run build && npm start
+```
+
+---
+
+## Customization
+
+Edit `public/portfolioData.json` — no code changes needed:
+
+| Key | What it controls |
+|---|---|
+| `personalInfo` | Name, title, bio, profile image, resume link, social URLs, LeetCode URL |
+| `stats` | Hero section stat cards (value + label) |
+| `skills.categories` | Skill groups and individual skill names |
+| `projects` | Project cards — set `featured: true` to show on main page |
+| `experience` | Work timeline — set `featured: true` to show on main page |
+| `education` | Degree, school, period, achievements |
+| `certifications` | Certificate cards — set `featured: true` to show on main page |
+| `contactInfo` | Email, phone, location, social links, Formspree ID |
+
+Place images in `public/data_images/` and reference as `/data_images/filename.jpg`.
+Place resume/CV in `public/data_files/` and reference as `/data_files/resume.pdf`.
+
+---
+
+## Environment Variables
+
+| Variable | Required | Description |
+|---|---|---|
+| `GITHUB_TOKEN` | No | Personal access token — raises GitHub API rate limit from 60 to 5000 req/h |
+
+---
+
+## License
+
+MIT

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
+// Cache successful profile responses for 1h (rate-limit friendly).
+export const revalidate = 3600;
 
 interface GitHubUser {
   name: string;
@@ -19,6 +21,18 @@ interface GitHubUser {
 interface GitHubRepo {
   language: string | null;
   stargazers_count: number;
+}
+
+function githubHeaders() {
+  const headers: Record<string, string> = {
+    'User-Agent': 'portfolio-app',
+    Accept: 'application/vnd.github+json',
+  };
+  // Optional: set GITHUB_TOKEN in .env.local to raise the rate limit 60 -> 5000 req/h
+  if (process.env.GITHUB_TOKEN) {
+    headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+  }
+  return headers;
 }
 
 export async function GET(request: NextRequest) {

@@ -146,7 +146,7 @@ const LeetCodeStats: React.FC = () => {
 
       try {
         // Extract username from LeetCode URL
-        const username = personalInfo.leetcode.split("/").pop() || "adityass2004";
+        const username = personalInfo.leetcode.split("/").filter(Boolean).pop() || "";
 
         const response = await fetch(
           `/api/leetcode?username=${encodeURIComponent(username)}`

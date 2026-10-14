@@ -52,48 +52,48 @@ const Navbar: React.FC = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[100] flex justify-between items-center p-[1.4rem_2rem] md:p-[1.6rem_4rem] bg-paper/70 backdrop-blur-[10px] border-b border-white/5 sticky-navbar">
-      <Link href="/" className="nav-logo font-serif text-[1.3rem] md:text-[1.5rem] text-ink no-underline font-medium tracking-tight hover:text-accent-new transition-colors">
-        Aditya Sagar.
-      </Link>
+    <nav className="fixed top-0 left-0 right-0 z-[100] border-b border-border-new/60 bg-paper/80 backdrop-blur-md sticky-navbar">
+      <div className="container-shell flex items-center justify-between py-3">
+        <Link href="/" className="nav-logo font-serif text-[1.2rem] md:text-[1.4rem] text-ink no-underline font-medium tracking-tight hover:text-accent-new transition-colors">
+          {personalInfo.name.split(' ').slice(0, 2).join(' ')}.
+        </Link>
 
-      <ul className="hidden md:flex gap-[3rem] list-none items-center">
-        {navItems.map((item) => {
-          const isActive = pathname === item.href;
-          return (
-            <li key={item.name} className="relative">
-              <Link
-                href={item.href}
-                className={`font-mono text-[0.8rem] md:text-[0.85rem] font-normal no-underline tracking-[0.1em] uppercase transition-colors duration-300 hover:text-accent-new py-2 ${isActive ? 'text-accent-new' : 'text-muted'
-                  }`}
-              >
-                {item.name}
-              </Link>
-              {isActive && (
-                <motion.div
-                  layoutId="nav-underline"
-                  className="absolute bottom-0 left-0 right-0 h-[2px] bg-accent-new rounded-full"
-                  initial={false}
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                />
-              )}
-            </li>
-          );
-        })}
-        <li className="ml-2"><ThemeToggle /></li>
-      </ul>
+        <ul className="hidden lg:flex items-center gap-6 lg:gap-8 list-none">
+          {navItems.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <li key={item.name} className="relative">
+                <Link
+                  href={item.href}
+                  className={`font-mono text-[0.7rem] lg:text-[0.75rem] font-normal no-underline tracking-[0.1em] uppercase transition-colors duration-300 hover:text-accent-new py-2 ${isActive ? 'text-accent-new' : 'text-muted'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-new/40 focus-visible:ring-offset-2 focus-visible:ring-offset-paper rounded-full`}
+                >
+                  {item.name}
+                </Link>
+                {isActive && (
+                  <motion.div
+                    layoutId="nav-underline"
+                    className="absolute -bottom-1 left-0 right-0 h-[2px] bg-accent-new rounded-full"
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </li>
+            );
+          })}
+          <li className="ml-1"><ThemeToggle /></li>
+        </ul>
 
-      <button
-        className="md:hidden flex flex-col gap-[5px] cursor-pointer bg-none border-none p-2 rounded-lg hover:bg-ink/5 dark:hover:bg-white/5 transition-colors text-ink"
-        onClick={() => setIsOpen(true)}
-        aria-label="Open Menu"
-      >
-        <span className="block w-6 h-[2px] bg-current"></span>
-        <span className="block w-6 h-[2px] bg-current"></span>
-        <span className="block w-6 h-[2px] bg-current"></span>
-      </button>
+        <button
+          className="lg:hidden flex flex-col gap-[5px] cursor-pointer bg-none border-none p-2 rounded-lg hover:bg-ink/5 dark:hover:bg-white/5 transition-colors text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-new/40"
+          onClick={() => setIsOpen(true)}
+          aria-label="Open Menu"
+        >
+          <span className="block w-6 h-[2px] bg-current"></span>
+          <span className="block w-6 h-[2px] bg-current"></span>
+          <span className="block w-6 h-[2px] bg-current"></span>
+        </button>
+      </div>
 
-      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -103,7 +103,7 @@ const Navbar: React.FC = () => {
             className="fixed inset-0 w-full h-[100dvh] bg-white/95 dark:bg-black/95 backdrop-blur-xl z-[200] flex flex-col justify-start items-center gap-6 overflow-y-auto pt-24 pb-12"
           >
             <button
-              className="absolute top-6 right-6 font-mono text-[0.78rem] border border-border-new p-[0.4rem_0.8rem] cursor-pointer text-ink hover:border-ink hover:text-accent-new transition-all rounded"
+              className="absolute top-6 right-6 font-mono text-[0.78rem] border border-border-new p-[0.4rem_0.8rem] cursor-pointer text-ink hover:border-ink hover:text-accent-new transition-all rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-new/40"
               onClick={() => setIsOpen(false)}
             >
               ✕ Close
@@ -112,8 +112,7 @@ const Navbar: React.FC = () => {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`font-serif text-[1.5rem] md:text-[2rem] no-underline transition-colors hover:text-accent-new ${pathname === item.href ? 'text-accent-new' : 'text-ink'
-                  }`}
+                className={`font-serif text-[1.5rem] md:text-[2rem] no-underline transition-colors hover:text-accent-new ${pathname === item.href ? 'text-accent-new' : 'text-ink'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-new/40 rounded-md`}
                 onClick={() => setIsOpen(false)}
               >
                 {item.name}

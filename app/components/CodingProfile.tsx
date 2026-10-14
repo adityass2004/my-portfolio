@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Github, Code, ExternalLink } from "lucide-react";
 import { getPersonalInfo, PersonalInfo } from "../data/portfolioService";
 
@@ -71,9 +71,10 @@ type LeetCodeData = {
 export default function CodingProfile() {
   const [data, setData] = useState<GithubData | null>(null);
   const [leetcodeData, setLeetcodeData] = useState<LeetCodeData | null>(null);
-  const [, setPersonalData] = useState<PersonalInfo | null>(null);
+  const [personalData, setPersonalData] = useState<PersonalInfo | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   async function fetchLeetCodeProfile(username: string): Promise<LeetCodeData> {
     try {
@@ -114,7 +115,7 @@ export default function CodingProfile() {
         setLoading(true);
         const personalInfo = await getPersonalInfo();
         setPersonalData(personalInfo);
-        const username = "adityass2004";
+        const username = personalInfo.github.split("/").filter(Boolean).pop() || "adityass2004";
         const res = await fetch(`/api/github?username=${username}`);
         if (!res.ok) throw new Error("Failed to fetch GitHub data");
         const json = await res.json();
@@ -154,17 +155,22 @@ export default function CodingProfile() {
   }
 
   return (
-    <section id="coding" className="p-[100px_4rem] border-b border-border-new bg-paper">
-      <div className="section-header fade-in visible">
-        <span className="section-num">03</span>
-        <h2 className="font-serif text-[clamp(1.9rem,3.5vw,2.8rem)] line-height-[1.1] text-ink">Coding profile</h2>
-      </div>
+    <section id="coding" className="page-section border-b border-border-new bg-paper">
+      <div className="container-shell">
+        <div className="section-header fade-in visible">
+          <span className="section-num">03</span>
+          <h2 className="font-serif text-[clamp(1.9rem,3.2vw,2.8rem)] leading-[1.08] text-ink">Coding profile</h2>
+        </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6">
         {/* GitHub Card */}
         <motion.div 
-          whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
-          className="bg-white/80 dark:bg-white/5 backdrop-blur-sm border border-border-new/40 p-10 rounded-3xl transition-all duration-300 group"
+          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          whileInView={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.4 }}
+          whileHover={shouldReduceMotion ? undefined : { y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
+          className="bg-white/80 dark:bg-white/5 backdrop-blur-sm border border-border-new/40 p-5 sm:p-8 lg:p-10 rounded-3xl transition-all duration-300 group"
         >
           <div className="flex justify-between items-center mb-10">
             <div className="flex items-center gap-3">
@@ -173,24 +179,31 @@ export default function CodingProfile() {
               </div>
               <div>
                 <div className="font-serif text-xl text-ink">GitHub</div>
-                <div className="font-mono text-[0.7rem] text-muted">@adityass2004</div>
+                <div className="font-mono text-[0.7rem] text-muted">@{data.username || personalData?.github.split("/").filter(Boolean).pop()}</div>
               </div>
             </div>
-            <a href="https://github.com/adityass2004" target="_blank" rel="noopener" className="text-muted hover:text-accent-new transition-colors">
+            <a href={personalData?.github || data.profileUrl} target="_blank" rel="noopener" className="text-muted hover:text-accent-new transition-colors">
               <ExternalLink size={18} />
             </a>
           </div>
           
-          <div className="grid grid-cols-3 gap-6 mb-10">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-6 mb-10">
             {[
               { label: "Repos", value: data.publicRepos },
               { label: "Stars", value: data.stars },
               { label: "Followers", value: data.followers }
             ].map((stat, i) => (
-              <div key={i} className="text-center p-4 rounded-2xl bg-paper-warm/50 border border-border-new/20">
+              <motion.div
+                key={i}
+                initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
+                whileInView={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.35, delay: shouldReduceMotion ? 0 : i * 0.06 }}
+                className="text-center p-2 sm:p-4 rounded-2xl bg-paper-warm/50 border border-border-new/20"
+              >
                 <div className="font-serif text-[24px] text-ink leading-none mb-1">{stat.value}</div>
                 <div className="font-mono text-[12px] tracking-wider uppercase text-muted">{stat.label}</div>
-              </div>
+              </motion.div>
             ))}
           </div>
           <p className="text-[0.92rem] text-muted leading-[1.7] mb-8">{data.bio || "Full Stack Developer passionate about building scalable web applications."}</p>
@@ -214,13 +227,17 @@ export default function CodingProfile() {
             </div>
           )}
 
-          <a href="https://github.com/adityass2004" target="_blank" rel="noopener" className="btn-ghost w-full justify-center rounded-xl border-border-new/40 hover:border-accent-new hover:text-accent-new transition-all">View Profile ↗</a>
+          <a href={personalData?.github || data.profileUrl} target="_blank" rel="noopener" className="btn-ghost w-full justify-center rounded-xl border-border-new/40 hover:border-accent-new hover:text-accent-new transition-all">View Profile ↗</a>
         </motion.div>
 
         {/* LeetCode Card */}
         <motion.div 
-          whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
-          className="bg-white/80 dark:bg-white/5 backdrop-blur-sm border border-border-new/40 p-10 rounded-3xl transition-all duration-300 group"
+          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          whileInView={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.45, delay: shouldReduceMotion ? 0 : 0.08 }}
+          whileHover={shouldReduceMotion ? undefined : { y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
+          className="bg-white/80 dark:bg-white/5 backdrop-blur-sm border border-border-new/40 p-5 sm:p-8 lg:p-10 rounded-3xl transition-all duration-300 group"
         >
           <div className="flex justify-between items-center mb-10">
             <div className="flex items-center gap-3">
@@ -239,15 +256,15 @@ export default function CodingProfile() {
                     />
                   )}
                 </div>
-                <div className="font-mono text-[0.7rem] text-muted">adityasagar9991 · {Math.round(leetcodeData?.contest.rating || 1633)} Rating</div>
+                <div className="font-mono text-[0.7rem] text-muted">{personalData?.leetcode ? (personalData.leetcode.split("/").filter(Boolean).pop() ?? "") : ""} · {Math.round(leetcodeData?.contest.rating || 1633)} Rating</div>
               </div>
             </div>
-            <a href="https://leetcode.com/u/adityasagar9991" target="_blank" rel="noopener" className="text-muted hover:text-accent-new transition-colors">
+            <a href={personalData?.leetcode || "https://leetcode.com"} target="_blank" rel="noopener" className="text-muted hover:text-accent-new transition-colors">
               <ExternalLink size={18} />
             </a>
           </div>
 
-          <div className="grid grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-6 mb-8">
             {[
               { label: "Solved", value: leetcodeData?.solved.total || "120+" },
               { label: "Rating", value: Math.round(leetcodeData?.contest.rating || 1633) },
@@ -256,10 +273,17 @@ export default function CodingProfile() {
               { label: "Medium", value: leetcodeData?.solved.medium || "—" },
               { label: "Hard", value: leetcodeData?.solved.hard || "—" }
             ].map((stat, i) => (
-              <div key={i} className="text-center p-4 rounded-2xl bg-paper-warm/50 border border-border-new/20">
+              <motion.div
+                key={i}
+                initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
+                whileInView={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.35, delay: shouldReduceMotion ? 0 : i * 0.05 }}
+                className="text-center p-2 sm:p-4 rounded-2xl bg-paper-warm/50 border border-border-new/20"
+              >
                 <div className="font-serif text-[24px] text-ink leading-none mb-1">{stat.value}</div>
                 <div className="font-mono text-[12px] tracking-wider uppercase text-muted">{stat.label}</div>
-              </div>
+              </motion.div>
             ))}
           </div>
 
@@ -282,8 +306,9 @@ export default function CodingProfile() {
             </div>
           )}
 
-          <a href="https://leetcode.com/u/adityasagar9991" target="_blank" rel="noopener" className="btn-ghost w-full justify-center rounded-xl border-border-new/40 hover:border-accent-new hover:text-accent-new transition-all">View Profile ↗</a>
+          <a href={personalData?.leetcode || "https://leetcode.com"} target="_blank" rel="noopener" className="btn-ghost w-full justify-center rounded-xl border-border-new/40 hover:border-accent-new hover:text-accent-new transition-all">View Profile ↗</a>
         </motion.div>
+      </div>
       </div>
     </section>
   );

@@ -20,6 +20,14 @@ export interface PersonalInfo {
   resumeLink: string;
   cvLink: string;
   leetcode: string;
+  // Optional highlight fields (all editable via data.json — no hardcoding in UI)
+  college?: string;
+  graduating?: string;
+  cgpa?: string;
+  focusAreas?: string;
+  heroLocation?: string;
+  availabilityBadge?: string;
+  leetcodeHighlight?: string;
 }
 
 export interface Skill {
@@ -93,19 +101,40 @@ export interface ContactInfo {
     twitter: string;
     instagram: string;
     youtube: string;
+    leetcode?: string;
   };
   availability: string;
   responseTime: string;
+  contactIntro?: string;
+  formspreeId?: string;
+}
+
+export interface StatItem {
+  value: string;
+  label: string;
+}
+
+export interface ResearchItem {
+  id: number;
+  title: string;
+  status: string;
+  institution: string;
+  description: string;
+  highlights: string[];
+  keywords: string[];
 }
 
 export interface PortfolioData {
   personalInfo: PersonalInfo;
+  stats?: StatItem[];
   skills: SkillsData;
   projects: Project[];
   experience: Experience[];
   education: Education[];
   certifications: Certification[];
   contactInfo: ContactInfo;
+  research?: ResearchItem[];
+  achievements?: string[];
 }
 
 let portfolioData: PortfolioData | null = null;
@@ -169,6 +198,16 @@ export const getContactInfo = async (): Promise<ContactInfo> => {
   return data.contactInfo;
 };
 
+export const getStats = async (): Promise<StatItem[]> => {
+  const data = await loadPortfolioData();
+  return data.stats ?? [];
+};
+
+export const getResearch = async (): Promise<ResearchItem[]> => {
+  const data = await loadPortfolioData();
+  return data.research ?? [];
+};
+
 // Export portfolioService object for compatibility
 export const portfolioService = {
   getPortfolioData: loadPortfolioData,
@@ -179,7 +218,9 @@ export const portfolioService = {
   getEducation,
   getCertifications,
   getSkills,
-  getContactInfo
+  getContactInfo,
+  getStats,
+  getResearch
 };
 
 // All data is loaded from JSON - no legacy exports

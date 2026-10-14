@@ -15,6 +15,9 @@
     --muted: #7a7368;
     --border-new: #d6d0c4;
     --border-new-rgb: 214, 208, 196;
+    --container: 1150px;
+    --section-y: clamp(3.5rem, 6vw, 5rem);
+    --card-pad: clamp(1.125rem, 1.8vw, 1.5rem);
   }
 
   .dark {
@@ -34,15 +37,18 @@
   html {
     scroll-behavior: smooth;
   }
-  
+
   body {
     background: var(--paper);
     color: var(--ink);
     font-family: var(--font-sans);
     font-size: 16px;
     line-height: 1.65;
-    overflow-x: hidden;
     @apply transition-colors duration-300;
+  }
+
+  section[id] {
+    scroll-margin-top: 5.5rem;
   }
 
   body::before {
@@ -132,16 +138,25 @@
 }
 
 @layer components {
+  .container-shell {
+    width: min(var(--container), calc(100% - 2rem));
+    margin-inline: auto;
+  }
+
+  .page-section {
+    padding-block: var(--section-y);
+  }
+
   .btn-primary {
-    @apply inline-flex items-center gap-2 bg-ink text-paper font-mono text-[0.8rem] tracking-[0.1em] uppercase px-[2rem] py-[1rem] rounded-full border border-ink transition-all duration-300 cursor-pointer hover:bg-accent-new hover:border-accent-new hover:-translate-y-1 shadow-lg hover:shadow-accent-new/20;
+    @apply inline-flex items-center gap-2 bg-ink text-paper font-mono text-[0.74rem] tracking-[0.12em] uppercase px-[1.4rem] py-[0.85rem] rounded-full border border-ink transition-all duration-300 cursor-pointer hover:bg-accent-new hover:border-accent-new hover:-translate-y-0.5 shadow-md hover:shadow-accent-new/15;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center gap-2 bg-transparent text-ink font-mono text-[0.8rem] tracking-[0.1em] uppercase px-[2rem] py-[1rem] rounded-full border border-border-new transition-all duration-300 cursor-pointer hover:border-ink hover:bg-ink hover:text-white hover:-translate-y-1;
+    @apply inline-flex items-center gap-2 bg-transparent text-ink font-mono text-[0.74rem] tracking-[0.12em] uppercase px-[1.4rem] py-[0.85rem] rounded-full border border-border-new transition-all duration-300 cursor-pointer hover:border-ink hover:bg-ink hover:text-white hover:-translate-y-0.5;
   }
 
   .hero-tag {
-    @apply inline-flex items-center gap-3 font-mono text-[0.75rem] tracking-[0.16em] uppercase text-accent-new mb-[2rem] before:content-[''] before:inline-block before:w-8 before:h-[1px] before:bg-accent-new/50;
+    @apply inline-flex items-center gap-3 font-mono text-[0.68rem] tracking-[0.14em] uppercase text-accent-new mb-5 before:content-[''] before:inline-block before:w-8 before:h-[1px] before:bg-accent-new/50;
   }
 
   .glass-card {
@@ -149,19 +164,19 @@
   }
 
   .section-header {
-    @apply flex items-baseline gap-[1.5rem] mb-[5rem];
+    @apply flex items-baseline gap-4 md:gap-5 mb-8 md:mb-10;
   }
 
   .section-num {
-    @apply font-mono text-[0.8rem] tracking-[0.2em] text-accent-new/60 font-medium;
+    @apply font-mono text-[0.72rem] tracking-[0.16em] text-accent-new/70 font-medium;
   }
 
   .pill {
-    @apply font-mono text-[0.72rem] text-muted px-[1rem] py-[0.4rem] border border-border-new/40 bg-white/80 dark:bg-white/5 rounded-full transition-all hover:border-accent-new/30 hover:text-accent-new;
+    @apply font-mono text-[0.7rem] text-muted px-[0.8rem] py-[0.38rem] border border-border-new/40 bg-white/80 dark:bg-white/5 rounded-full transition-all hover:border-accent-new/30 hover:text-accent-new;
   }
 
   .stat-card {
-    @apply bg-white/80 dark:bg-white/5 backdrop-blur-md border border-border-new/40 p-[1.8rem] rounded-2xl relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+    @apply bg-white/80 dark:bg-white/5 backdrop-blur-md border border-border-new/40 p-[1.2rem] rounded-2xl relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
   }
 
   .stat-card::after {
@@ -192,12 +207,142 @@
   }
 
   .coding-card {
-    @apply bg-white/80 dark:bg-white/5 border border-border-new/40 p-8 rounded-3xl transition-all duration-300;
+    @apply bg-white/80 dark:bg-white/5 border border-border-new/40 p-5 md:p-6 rounded-2xl transition-all duration-300;
+  }
+
+  .tech-marquee {
+    position: relative;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
+  .tech-marquee-track {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: max-content;
+    min-width: max-content;
+    padding-block: 0.25rem;
+    animation: tech-marquee 26s linear infinite;
+  }
+
+  .tech-marquee-item {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    border: 1px solid rgba(var(--border-new-rgb), 0.8);
+    background: rgba(255, 255, 255, 0.4);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 9999px;
+    padding: 0.45rem 0.8rem;
+  }
+
+  @keyframes tech-marquee {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  /* ── Certificate / card shared styles (AllCertificates + dashboard grids) ── */
+  .cert-card {
+    @apply flex flex-col gap-2 border border-border-new/60 bg-white/80 dark:bg-white/5 backdrop-blur-sm p-4 rounded-2xl transition-all duration-300 hover:border-accent-new/50 hover:shadow-xl hover:-translate-y-1;
+  }
+
+  .cert-thumb {
+    @apply relative block w-full aspect-[16/10] overflow-hidden rounded-xl bg-paper-warm border border-border-new/40 cursor-pointer p-0;
+  }
+
+  .cert-thumb img {
+    @apply w-full h-full object-cover block transition-transform duration-500 hover:scale-[1.04];
+  }
+
+  .cert-thumb-fallback {
+    @apply flex items-center justify-center text-muted cursor-default;
+  }
+
+  .project-card {
+    @apply flex flex-col gap-2 border border-border-new/60 bg-white/80 dark:bg-white/5 backdrop-blur-sm p-5 rounded-2xl transition-all duration-300 hover:border-accent-new/50 hover:shadow-xl hover:-translate-y-1;
+  }
+
+  .exp-item {
+    @apply grid md:grid-cols-[200px_1fr] gap-4 md:gap-8 py-8 border-b border-border-new/50 first:border-t;
   }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    .tech-marquee-track {
+      animation: none;
+    }
+
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ─── Admin Panel Classes ──────────────────────────────────────────────────── */
+@layer components {
+  /* Page background */
+  .section-bg {
+    background: var(--paper-warm);
+  }
+
+  /* Card surface — sits one level above page bg */
+  .bg-card {
+    background: var(--paper);
+  }
+
+  /* Card border */
+  .border-card {
+    border-color: var(--border-new);
+  }
+
+  /* Primary text — full ink */
+  .text-primary {
+    color: var(--ink);
+  }
+
+  /* Secondary / muted text */
+  .text-secondary {
+    color: var(--muted);
+  }
+
+  /* Slide-in toast animation */
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(2rem); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .animate-slide-in {
+    animation: slideIn 0.25s ease-out forwards;
+  }
+
+  /* Admin inputs — inherit card bg + ink text + accent focus ring */
+  .admin-input {
+    @apply w-full rounded-lg px-4 py-2.5 text-[0.88rem] font-sans
+           bg-paper border-2 border-border-new text-ink
+           placeholder:text-muted
+           focus:outline-none focus:border-accent-new
+           transition-colors duration-200;
   }
 }

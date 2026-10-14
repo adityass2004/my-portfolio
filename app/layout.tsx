@@ -6,10 +6,10 @@ import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const dmSerif = DM_Serif_Display({ weight: '400', subsets: ['latin'], variable: '--font-serif' });
-const dmMono = DM_Mono({ weight: ['300', '400', '500'], subsets: ['latin'], variable: '--font-mono' });
-const instrumentSans = Instrument_Sans({ subsets: ['latin'], variable: '--font-sans' });
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap', adjustFontFallback: false });
+const dmSerif = DM_Serif_Display({ weight: '400', subsets: ['latin'], variable: '--font-serif', display: 'swap', adjustFontFallback: false });
+const dmMono = DM_Mono({ weight: ['300', '400', '500'], subsets: ['latin'], variable: '--font-mono', display: 'swap', adjustFontFallback: false });
+const instrumentSans = Instrument_Sans({ subsets: ['latin'], variable: '--font-sans', display: 'swap', adjustFontFallback: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://adityass-portfolio.netlify.app'),

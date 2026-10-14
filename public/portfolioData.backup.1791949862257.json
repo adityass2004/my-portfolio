@@ -1,38 +1,52 @@
 {
   "personalInfo": {
     "name": "Aditya Sagar Sharma",
-    "title": "B.Tech CSE Student & Full Stack Developer",
-    "subtitle": "Building scalable web applications with React, Node.js & Databases",
+    "title": "Software Development Engineer | Backend | Distributed Systems",
+    "subtitle": "Building scalable backend systems with Node.js, PostgreSQL, Redis & AWS",
     "email": "adityasagar9991@gmail.com",
     "phone": "+91 9709303105",
     "location": "Muzaffarpur, Bihar, India",
     "github": "https://github.com/adityass2004",
-    "linkedin": "https://www.linkedin.com/in/aditya-sagar-sharma-1955a7288/",
+    "linkedin": "https://www.linkedin.com/in/adityasagar9991",
     "twitter": "",
     "website": "https://adityass.vercel.app",
     "avatar": "AS",
     "profileImage": "/profile-image.jpg",
     "heroImage": "/hero-image.jpg",
     "favicon": "/favicon.ico",
-    "bio": "I'm a B.Tech Computer Science student at SRM Institute of Science and Technology, focused on full-stack web development, data structures, and software engineering. I enjoy building scalable web applications using React, Node.js, MongoDB, and REST APIs that solve practical, real-world problems.",
+    "bio": "B.Tech CSE student at SRMIST focused on backend engineering and distributed systems. I build scalable APIs, caching layers, and load balancers — with a LeetCode rating of 1930+ and 480+ problems solved.",
     "about": [
-      "I specialize in building full-stack web applications with React.js, Node.js, Express.js, and databases like MongoDB, PostgreSQL and MySQL.",
-      "My approach focuses on clean architecture, responsive UI, and writing maintainable code while continuously improving my problem-solving skills through DSA and real-world projects."
+      "I specialize in backend engineering with Node.js, Express.js, Prisma ORM, PostgreSQL, Redis, and REST API design — with hands-on experience in caching, rate limiting, microservices, and distributed system patterns.",
+      "I approach every project with a focus on scalability, fault tolerance, and clean architecture — from designing database schemas to deploying on AWS EC2, S3, and Google Cloud Run."
     ],
     "specialties": [
-      "Full-Stack Web Development",
-      "React.js & Modern Frontend",
-      "Node.js & REST APIs",
-      "Database Design (MongoDB, PostgreSQL & MySQL)",
-      "Problem Solving & DSA",
-      "AI/ML & RAG Systems",
+      "Backend Engineering & REST APIs",
+      "Distributed Systems & System Design",
+      "Node.js, Express.js & Prisma ORM",
+      "PostgreSQL, Redis & Caching",
+      "AWS (EC2, S3) & Docker",
+      "Problem Solving & DSA (LeetCode 1930+)",
       "Neural Network Pruning Research"
     ],
-    "resumeLink": "/data_files/resume.pdf",
-    "cvLink": "/data_files/resume.pdf",
-    "leetcode": "https://leetcode.com/u/adityasagar9991"
+    "resumeLink": "/data_files/resume_new.pdf",
+    "cvLink": "/data_files/resume_new.pdf",
+    "leetcode": "https://leetcode.com/u/adityasagar9991",
+    "college": "B.Tech CSE — SRM KTR, Chennai",
+    "graduating": "May 2027",
+    "cgpa": "9.0 / 10.0",
+    "focusAreas": "Backend · Distributed Systems · DSA",
+    "heroLocation": "SRM KTR · Chennai",
+    "availabilityBadge": "Available for internships & roles",
+    "leetcodeHighlight": "Rating 1930+ · Top 5% globally"
   },
-  "stats": [],
+  "stats": [
+    { "value": "9.0", "label": "CGPA / 10" },
+    { "value": "1930+", "label": "LeetCode Rating" },
+    { "value": "480+", "label": "LC Problems" },
+    { "value": "10+", "label": "Projects" },
+    { "value": "40%", "label": "Perf. improved" },
+    { "value": "26", "label": "Certifications" }
+  ],
   "skills": {
     "categories": [
       {
@@ -112,6 +126,16 @@
             "name": "Express.js",
             "level": 80,
             "color": "from-gray-600 to-gray-700"
+          },
+          {
+            "name": "Prisma ORM",
+            "level": 82,
+            "color": "from-teal-500 to-cyan-600"
+          },
+          {
+            "name": "Redis",
+            "level": 78,
+            "color": "from-red-500 to-rose-600"
           },
           {
             "name": "REST APIs",
@@ -204,8 +228,8 @@
             "color": "from-emerald-400 to-teal-500"
           },
           {
-            "name": "AWS (Basic)",
-            "level": 60,
+            "name": "AWS (EC2, S3)",
+            "level": 70,
             "color": "from-orange-500 to-yellow-500"
           },
           {
@@ -265,6 +289,24 @@
       "featured": true
     },
     {
+      "id": 1775379895077,
+      "title": "Load Balancer",
+      "description": "Built a Layer-7 load balancer solving request distribution and backend availability challenges. Implemented weighted round-robin routing, health checks, retries, and failover with an in-memory server cache synced to PostgreSQL. Deployed on Google Cloud Run for scalable backend orchestration.",
+      "image": "",
+      "technologies": [
+        "Next.js",
+        "TypeScript",
+        "Node.js",
+        "Prisma ORM",
+        "PostgreSQL",
+        "Google Cloud Run"
+      ],
+      "github": "https://github.com/adityass2004/Load-Balancer",
+      "live": "",
+      "category": "Backend",
+      "featured": true
+    },
+    {
       "id": 2,
       "title": "Social Media Platform – Backend-First Full-Stack",
       "description": "Designed scalable backend supporting profiles, posts, likes, comments, and follow relationships with JWT auth across dual PostgreSQL + MongoDB architecture.",
@@ -281,22 +323,6 @@
       "live": "",
       "category": "Full Stack",
       "featured": false
-    },
-    {
-      "id": 3,
-      "title": "Track-It – Academic Productivity Platform",
-      "description": "Full-stack system unifying attendance, placement notices, and student records with role-based access on Next.js API routes backed by optimized MongoDB schemas.",
-      "image": "",
-      "technologies": [
-        "Next.js",
-        "MongoDB",
-        "Tailwind CSS",
-        "Node.js"
-      ],
-      "github": "",
-      "live": "https://trckitsrm.vercel.app",
-      "category": "Full Stack",
-      "featured": true
     },
     {
       "id": 4,
@@ -394,19 +420,21 @@
     },
     {
       "id": 1775379895076.8513,
-      "title": "Track-It – Academic Productivity Platform",
-      "description": "Full-stack system unifying attendance, and with 2000+ active users. Next.js API routes backed by optimized MongoDB schemas.",
+      "title": "Track-It – Academic Management System",
+      "description": "Built Track-It to centralize academic workflows for students. Designed modular service-layer backend with RESTful APIs, PostgreSQL data modeling, and Redis caching with pagination, filtering, and structured error handling. Improved performance by 40% through cache-first access.",
       "image": "",
       "technologies": [
         "Next.js",
-        "MongoDB",
-        "Tailwind CSS",
-        "Node.js"
+        "Prisma ORM",
+        "PostgreSQL",
+        "Redis",
+        "Node.js",
+        "Tailwind CSS"
       ],
-      "github": "https://github.com/adityass2004/Trackit",
-      "live": "https://trckitsrm.vercel.app",
+      "github": "https://github.com/adityass2004/Track-It",
+      "live": "https://trackitsrm.vercel.app",
       "category": "Full Stack",
-      "featured": false
+      "featured": true
     }
   ],
   "experience": [
@@ -463,8 +491,17 @@
       "location": "Chennai, Tamil Nadu, India",
       "description": "Focus on software engineering, data structures, algorithms, and web development.",
       "achievements": [
-        "CGPA: 8.97 / 10.0 (Till 4th semester).",
-        "Completed coursework in Data Structures & Algorithms, Design & Analysis of Algorithms, Operating Systems, DBMS, Computer Networks, Artificial Intelligence, Machine Learning, NLP, Discrete Mathematics, and Formal Languages & Automata."
+        "CGPA: 9.0 / 10.0 (Till 6th semester).",
+        "Completed coursework in Data Structures & Algorithms",
+        "Design & Analysis of Algorithms",
+        "Operating Systems",
+        "DBMS",
+        "Computer Networks",
+        "Artificial Intelligence",
+        "Machine Learning",
+        "NLP",
+        "Discrete Mathematics",
+        "and Formal Languages & Automata."
       ]
     },
     {
@@ -513,6 +550,28 @@
   ],
   "certifications": [
     {
+      "id": 1790828061275,
+      "name": "AWS Certified Cloud Practitioner",
+      "issuer": "Amazon Web Services",
+      "date": "June 28, 2026",
+      "credentialId": "4dd1b1edb2b24eeaa46ce777c4b520da",
+      "link": "https://aws.amazon.com/verification",
+      "image": "/data_images/aws_cloud_practitioner.jpg",
+      "featured": true,
+      "duration": "",
+      "grade": ""
+    },
+    {
+      "id": 26,
+      "name": "Google Cloud Gen AI Academy",
+      "issuer": "Google",
+      "date": "2026",
+      "credentialId": "2026H2S07GCGENAIAPACC2-P01429",
+      "link": "https://certificate.hack2skill.com/verify/2026H2S07GCGENAIAPACC2-P01429",
+      "image": "/data_images/gen_ai_google.jpg",
+      "featured": true
+    },
+    {
       "id": 1,
       "name": "Oracle Cloud Infrastructure 2025 Certified Foundations Associate",
       "issuer": "Oracle",
@@ -543,6 +602,18 @@
       "featured": false
     },
     {
+      "id": 1790828062015,
+      "name": "AI & Machine Learning Course",
+      "issuer": "Udemy",
+      "date": "",
+      "credentialId": "",
+      "link": "",
+      "image": "/data_images/udemy_ai_ml.jpg",
+      "featured": false,
+      "duration": "",
+      "grade": ""
+    },
+    {
       "id": 4,
       "name": "Gen AI Academy",
       "issuer": "Hack2Skill",
@@ -551,6 +622,30 @@
       "link": "https://certificate.hack2skill.com/user/genai12/2025H2S04GENAI-A1200022",
       "image": "/data_images/Hack2skill-Certificate.png",
       "featured": true
+    },
+    {
+      "id": 1790828061179,
+      "name": "Be10x AI Tools Workshop",
+      "issuer": "Be10x",
+      "date": "2024",
+      "credentialId": "",
+      "link": "",
+      "image": "/data_images/Be10x.jpg",
+      "featured": false,
+      "duration": "",
+      "grade": ""
+    },
+    {
+      "id": 1790828061885,
+      "name": "Web Development Internship Completion",
+      "issuer": "Cognifyz Technologies",
+      "date": "August 2025",
+      "credentialId": "CTI/A1/C190747",
+      "link": "",
+      "image": "/data_images/cognifyz_completion.jpg",
+      "featured": false,
+      "duration": "",
+      "grade": ""
     },
     {
       "id": 5,
@@ -563,6 +658,90 @@
       "featured": false
     },
     {
+      "id": 1790828061071,
+      "name": "Data Structures & Algorithms",
+      "issuer": "Scalar",
+      "date": "2024",
+      "credentialId": "",
+      "link": "",
+      "image": "/data_images/dsa_course.jpg",
+      "featured": false,
+      "duration": "",
+      "grade": ""
+    },
+    {
+      "id": 1790828061607,
+      "name": "Database Management System",
+      "issuer": "Scalar",
+      "date": "2024",
+      "credentialId": "",
+      "link": "",
+      "image": "/data_images/dbms_course.jpg",
+      "featured": false,
+      "duration": "",
+      "grade": ""
+    },
+    {
+      "id": 1790828061945,
+      "name": "Problem Solving (Basic)",
+      "issuer": "HackerRank",
+      "date": "",
+      "credentialId": "",
+      "link": "https://www.hackerrank.com/certificates",
+      "image": "/data_images/problem_solving_basic.jpg",
+      "featured": false,
+      "duration": "",
+      "grade": ""
+    },
+    {
+      "id": 1790828061632,
+      "name": "SQL (Basic)",
+      "issuer": "HackerRank",
+      "date": "",
+      "credentialId": "",
+      "link": "https://www.hackerrank.com/certificates",
+      "image": "/data_images/sql_basic.jpg",
+      "featured": false,
+      "duration": "",
+      "grade": ""
+    },
+    {
+      "id": 1790828061443,
+      "name": "Java (Basic)",
+      "issuer": "HackerRank",
+      "date": "",
+      "credentialId": "",
+      "link": "https://www.hackerrank.com/certificates",
+      "image": "/data_images/java_basic.jpg",
+      "featured": false,
+      "duration": "",
+      "grade": ""
+    },
+    {
+      "id": 1790828061139,
+      "name": "Python Programming",
+      "issuer": "DataFlair",
+      "date": "November 21, 2023",
+      "credentialId": "PY-144941-1121",
+      "link": "",
+      "image": "/data_images/dataflair_python.jpg",
+      "featured": false,
+      "duration": "20 total hours",
+      "grade": ""
+    },
+    {
+      "id": 1790828061946,
+      "name": "Introduction to Python",
+      "issuer": "DataFlair",
+      "date": "November 21, 2023",
+      "credentialId": "758B508B1E-736CE9DEA2-734F5A9411",
+      "link": "",
+      "image": "/data_images/python_dataflair.jpg",
+      "featured": false,
+      "duration": "",
+      "grade": ""
+    },
+    {
       "id": 6,
       "name": "Google Play Academy - Store Listing Certificate",
       "issuer": "Google",
@@ -571,6 +750,30 @@
       "link": "https://www.credential.net/3ad885ff-ec11-4080-91b2-aff3831fc3f8#acc.ScM37vFG",
       "image": "/data_images/playstore.png",
       "featured": false
+    },
+    {
+      "id": 1790828061281,
+      "name": "NPTEL Course Certificate",
+      "issuer": "NPTEL",
+      "date": "",
+      "credentialId": "",
+      "link": "",
+      "image": "/data_images/nptel_cert.jpg",
+      "featured": false,
+      "duration": "",
+      "grade": ""
+    },
+    {
+      "id": 1790828061376,
+      "name": "Workshop on Data Visualisation with Python",
+      "issuer": "",
+      "date": "",
+      "credentialId": "",
+      "link": "",
+      "image": "/data_images/data_viz_workshop.jpg",
+      "featured": false,
+      "duration": "",
+      "grade": ""
     },
     {
       "id": 7,
@@ -591,12 +794,62 @@
       "link": "https://www.aaruush.org/verify/Cosmic_1080",
       "image": "/data_images/cosmic_workshop.jpg",
       "featured": false
+    },
+    {
+      "id": 1790828061541,
+      "name": "WIE Hackathon Participation",
+      "issuer": "WIE",
+      "date": "",
+      "credentialId": "",
+      "link": "",
+      "image": "/data_images/wie_hackathon.jpg",
+      "featured": false,
+      "duration": "",
+      "grade": ""
+    },
+    {
+      "id": 1790828061658,
+      "name": "VIT-AP Participation Certificate",
+      "issuer": "VIT-AP",
+      "date": "",
+      "credentialId": "",
+      "link": "",
+      "image": "/data_images/vit_ap.jpg",
+      "featured": false,
+      "duration": "",
+      "grade": ""
+    },
+    {
+      "id": 1790828061486,
+      "name": "Python Workshop",
+      "issuer": "LetsUpgrade",
+      "date": "",
+      "credentialId": "",
+      "link": "",
+      "image": "/data_images/python_workshop_lu.jpg",
+      "featured": false,
+      "duration": "",
+      "grade": ""
+    },
+    {
+      "id": 1790828061471,
+      "name": "Community Connect Volunteer Certificate",
+      "issuer": "Sandeshkhali Maa Saroda Women & Rural Welfare Society",
+      "date": "July 08, 2025",
+      "credentialId": "",
+      "link": "",
+      "image": "/data_images/community_connect.jpeg",
+      "featured": false,
+      "duration": "",
+      "grade": ""
     }
   ],
   "achievements": [
-    "Solved 65+ DSA problems on LeetCode (graphs, DP, trees)",
-    "Participated in HackRx 6.0 hackathon",
-    "Live portfolio deployed – 10+ projects showcased"
+    "LeetCode Rating 1930+ (Top 5% globally); solved 480+ problems across Graphs, DP, and Trees.",
+    "Applied scalable backend architecture — caching, load balancing, fault tolerance, and distributed-system patterns across projects.",
+    "Certifications: AWS Certified Cloud Practitioner; Cisco Networking Basics; Google Cloud Gen AI Academy 2026.",
+    "Participated in HackRx 6.0 hackathon.",
+    "Live portfolio deployed — 10+ projects showcased."
   ],
   "contactInfo": {
     "email": "adityasagar9991@gmail.com",
@@ -607,9 +860,12 @@
       "linkedin": "https://www.linkedin.com/in/aditya-sagar-sharma-1955a7288/",
       "twitter": "",
       "instagram": "https://instagram.com/adityass0401",
-      "youtube": ""
+      "youtube": "",
+      "leetcode": "https://leetcode.com/u/adityasagar9991"
     },
     "availability": "Available for internship opportunities.",
-    "responseTime": "Usually responds within a few hours."
+    "responseTime": "Usually responds within a few hours.",
+    "contactIntro": "I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions. Feel free to reach out through any of the channels below or use the form.",
+    "formspreeId": "mzznaryk"
   }
 }

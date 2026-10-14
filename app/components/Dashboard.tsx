@@ -112,11 +112,54 @@ const Dashboard: React.FC = () => {
     });
   }, []);
 
-  if (loading || !portfolioData) {
-    return <div>Loading...</div>;
-  }
+  const fallbackPortfolio: PortfolioData = {
+    personalInfo: {
+      name: '',
+      title: '',
+      subtitle: '',
+      email: '',
+      phone: '',
+      location: '',
+      github: '',
+      linkedin: '',
+      twitter: '',
+      website: '',
+      avatar: '',
+      profileImage: '',
+      heroImage: '',
+      favicon: '',
+      bio: '',
+      about: [],
+      specialties: [],
+      resumeLink: '',
+      cvLink: '',
+      leetcode: '',
+    },
+    stats: [],
+    skills: { categories: [] },
+    projects: [],
+    experience: [],
+    education: [],
+    certifications: [],
+    contactInfo: {
+      email: '',
+      phone: '',
+      location: '',
+      social: {
+        github: '',
+        linkedin: '',
+        twitter: '',
+        instagram: '',
+        youtube: '',
+      },
+      availability: '',
+      responseTime: '',
+    },
+    research: [],
+    achievements: [],
+  };
 
-  const { personalInfo, projects, skills, experience, certifications } = portfolioData;
+  const { personalInfo, projects, skills, experience, certifications } = portfolioData ?? fallbackPortfolio;
 
   const sidebarItems: SidebarItem[] = [
     { name: 'Home', icon: Home, href: '#home' },
@@ -128,8 +171,12 @@ const Dashboard: React.FC = () => {
     { name: 'Contact', icon: Mail, href: '#contact' },
   ];
 
-  // Fetch API data on component mount
   useEffect(() => {
+    if (!personalInfo?.github && !personalInfo?.leetcode) {
+      setApiLoading(false);
+      return;
+    }
+
     const fetchApiData = async () => {
       try {
         setApiLoading(true);
@@ -189,7 +236,11 @@ const Dashboard: React.FC = () => {
     };
 
     fetchApiData();
-  }, []);
+  }, [personalInfo?.github, personalInfo?.leetcode]);
+
+  if (loading || !portfolioData) {
+    return <div className="flex min-h-screen items-center justify-center font-mono text-[0.72rem] uppercase tracking-[0.14em] text-muted">Loading dashboard...</div>;
+  }
 
   // Calculate metrics from real data
   const metrics = {

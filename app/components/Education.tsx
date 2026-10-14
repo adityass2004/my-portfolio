@@ -21,13 +21,14 @@ const Education: React.FC = () => {
     return <div>Loading...</div>;
   }
   return (
-    <section id="education" className="p-[100px_4rem] border-b border-border-new bg-paper">
-      <div className="section-header fade-in visible">
-        <span className="section-num">07</span>
-        <h2 className="font-serif text-[clamp(1.9rem,3.5vw,2.8rem)] line-height-[1.1] text-ink">Education</h2>
-      </div>
+    <section id="education" className="page-section border-b border-border-new bg-paper">
+      <div className="container-shell">
+        <div className="section-header fade-in visible">
+          <span className="section-num">07</span>
+          <h2 className="font-serif text-[clamp(1.9rem,3.2vw,2.8rem)] leading-[1.08] text-ink">Education</h2>
+        </div>
 
-      <div className="relative pl-8 md:pl-12 fade-in visible">
+        <div className="relative pl-8 md:pl-12 fade-in visible">
         {/* Vertical Line */}
         <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-accent-new via-accent-soft to-transparent ml-[5px] md:ml-[7px]"></div>
 
@@ -55,14 +56,14 @@ const Education: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-white/5 backdrop-blur-sm border border-border-new/40 p-8 rounded-2xl hover:border-accent-new/30 transition-all duration-300 shadow-sm hover:shadow-xl group">
-                <h3 className="font-serif text-xl text-ink mb-3 group-hover:text-accent-new transition-colors">{edu.degree}</h3>
-                <p className="text-[0.95rem] text-muted mb-6 leading-relaxed">{edu.description}</p>
+              <div className="bg-white/5 backdrop-blur-sm border border-border-new/40 p-5 md:p-6 rounded-2xl hover:border-accent-new/30 transition-all duration-300 shadow-sm hover:shadow-xl group">
+                <h3 className="font-serif text-xl text-ink mb-2.5 group-hover:text-accent-new transition-colors">{edu.degree}</h3>
+                <p className="text-[0.92rem] text-muted mb-4 leading-relaxed">{edu.description}</p>
                 
                 {edu.achievements.length > 0 && (
-                  <ul className="flex flex-col gap-3">
+                  <ul className="flex flex-col gap-2.5">
                     {edu.achievements.map((achievement, idx) => (
-                      <li key={idx} className="text-[0.9rem] text-muted leading-relaxed pl-6 relative before:content-['→'] before:absolute before:left-0 before:text-accent-new/70 before:font-bold">{achievement}</li>
+                      <li key={idx} className="text-[0.9rem] text-muted leading-relaxed pl-5 relative before:content-['→'] before:absolute before:left-0 before:text-accent-new/70 before:font-bold">{achievement}</li>
                     ))}
                   </ul>
                 )}
@@ -70,6 +71,7 @@ const Education: React.FC = () => {
             </div>
           </motion.div>
         ))}
+      </div>
       </div>
     </section>
   );
